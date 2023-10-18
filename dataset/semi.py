@@ -68,7 +68,7 @@ class SemiDataset(Dataset):
             # mode == 'semi_train' and the id corresponds to unlabeled image
             fname = os.path.basename(id.split(' ')[1])
             mask = Image.open(os.path.join(self.pseudo_mask_path, fname))
-
+        #Phần này em sửa để chuyển pixel value của cái mask thành class index
         mask = np.array(mask)
         mask[mask == 0] = 0
         mask[mask == 255] = 1
@@ -77,6 +77,7 @@ class SemiDataset(Dataset):
         mask = Image.fromarray(mask)
         # basic augmentation on all training images
         #base_size = 400 if self.name == 'pascal' else 2048
+        #Phần này em sửa để base_size không quá lớn so với ảnh ban đầu
         if self.name == 'dataset1':
             base_size = 128
         elif self.name == 'dataset2':
