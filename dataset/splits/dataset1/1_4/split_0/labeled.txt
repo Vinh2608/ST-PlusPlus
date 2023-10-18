@@ -92,5 +92,3 @@ Dataset1/Image/train/093.bmp Dataset1/Masks/train/093.png
 Dataset1/Image/train/094.bmp Dataset1/Masks/train/094.png
 Dataset1/Image/train/095.bmp Dataset1/Masks/train/095.png
 Dataset1/Image/train/096.bmp Dataset1/Masks/train/096.png
-Dataset1/Image/train/201.bmp Dataset1/Masks/train/201.png
-
