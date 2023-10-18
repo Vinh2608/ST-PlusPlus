@@ -71,24 +71,10 @@ Part of the training hyper-parameters and network structures are adapted from **
 + MoCo: [https://github.com/facebookresearch/moco](https://github.com/facebookresearch/moco).
 + OpenSelfSup: [https://github.com/open-mmlab/OpenSelfSup](https://github.com/open-mmlab/OpenSelfSup).
 
-Thanks a lot for their great works!
+export semi_setting='dataset1/1_4/split_0/'
+CUDA_LAUNCH_BLOCKING=1 python3 -W ignore main.py --dataset dataset1 --data-root ./  --batch-size 16 --backbone resnet101 --model deeplabv3plus --labeled-id-path dataset/splits/$semi_setting/labeled.txt --unlabeled-id-path dataset/splits/$semi_setting/unlabeled.txt --pseudo-mask-path outdir/pseudo_masks/$semi_setting --save-path outdir/models/$semi_setting --plus --reliable-id-path outdir/reliable_ids/$semi_setting
 
-## Citation
+export semi_setting='dataset2/1_4/split_0'
+CUDA_LAUNCH_BLOCKING=1 python3 -W ignore main.py --dataset dataset2 --data-root ./  --batch-size 16 --backbone resnet101 --model deeplabv3plus --labeled-id-path dataset/splits/$semi_setting/labeled.txt --unlabeled-id-path dataset/splits/$semi_setting/unlabeled.txt --pseudo-mask-path outdir/pseudo_masks/$semi_setting --save-path outdir/models/$semi_setting --plus --reliable-id-path outdir/reliable_ids/$semi_setting
 
-If you find this project useful, please consider citing:
 
-```bibtex
-@inproceedings{st++,
-  title={ST++: Make Self-training Work Better for Semi-supervised Semantic Segmentation},
-  author={Yang, Lihe and Zhuo, Wei and Qi, Lei and Shi, Yinghuan and Gao, Yang},
-  booktitle={CVPR},
-  year={2022}
-}
-
-@inproceedings{unimatch,
-  title={Revisiting Weak-to-Strong Consistency in Semi-Supervised Semantic Segmentation},
-  author={Yang, Lihe and Qi, Lei and Feng, Litong and Zhang, Wayne and Shi, Yinghuan},
-  booktitle={CVPR},
-  year={2023}
-}
-```

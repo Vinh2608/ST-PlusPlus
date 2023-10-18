@@ -6,6 +6,8 @@ from PIL import Image
 import random
 from torch.utils.data import Dataset
 from torchvision import transforms
+import numpy as np
+import torch
 
 
 class SemiDataset(Dataset):
@@ -49,6 +51,8 @@ class SemiDataset(Dataset):
             with open(id_path, 'r') as f:
                 self.ids = f.read().splitlines()
 
+            self.class_values = [255,128]
+
     def __getitem__(self, item):
         id = self.ids[item]
         img = Image.open(os.path.join(self.root, id.split(' ')[0]))
@@ -65,11 +69,23 @@ class SemiDataset(Dataset):
             fname = os.path.basename(id.split(' ')[1])
             mask = Image.open(os.path.join(self.pseudo_mask_path, fname))
 
+        mask = np.array(mask)
+        mask[mask == 0] = 0
+        mask[mask == 255] = 1
+        mask[mask == 128] = 2
+        
+        mask = Image.fromarray(mask)
         # basic augmentation on all training images
-        base_size = 400 if self.name == 'pascal' else 2048
+        #base_size = 400 if self.name == 'pascal' else 2048
+        if self.name == 'dataset1':
+            base_size = 128
+        elif self.name == 'dataset2':
+            base_size = 320
+            
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
         img, mask = crop(img, mask, self.size)
         img, mask = hflip(img, mask, p=0.5)
+    
 
         # strong augmentation on unlabeled images
         if self.mode == 'semi_train' and id in self.unlabeled_ids:
@@ -79,7 +95,7 @@ class SemiDataset(Dataset):
             img = blur(img, p=0.5)
             img, mask = cutout(img, mask, p=0.5)
 
-        img, mask = normalize(img, mask)
+        img, mask = normalize(img, mask)    
 
         return img, mask
 

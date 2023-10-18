@@ -66,5 +66,17 @@ def color_map(dataset='pascal'):
         cmap[16] = np.array([0, 80, 100])
         cmap[17] = np.array([0,  0, 230])
         cmap[18] = np.array([119, 11, 32])
+    
+    elif dataset == 'dataset1':
+        cmap[0] = np.array([253, 244, 157])
+        cmap[1] = np.array([159, 150, 119])
+        cmap[2] = np.array([76, 17, 87])
+    
+    elif dataset == 'dataset2':
+        cmap[0] = np.array([253, 244, 157])
+        cmap[1] = np.array([159, 150, 119])
+        cmap[2] = np.array([76, 17, 87])
+        
+
 
     return cmap
