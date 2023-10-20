@@ -64,6 +64,7 @@ Dataset1/Image/train/063.bmp Dataset1/Masks/train/063.png
 Dataset1/Image/train/064.bmp Dataset1/Masks/train/064.png
 Dataset1/Image/train/065.bmp Dataset1/Masks/train/065.png
 Dataset1/Image/train/066.bmp Dataset1/Masks/train/066.png
+Dataset1/Image/train/067.bmp Dataset1/Masks/train/067.png
 Dataset1/Image/train/068.bmp Dataset1/Masks/train/068.png
 Dataset1/Image/train/069.bmp Dataset1/Masks/train/069.png
 Dataset1/Image/train/070.bmp Dataset1/Masks/train/070.png
@@ -92,5 +93,3 @@ Dataset1/Image/train/093.bmp Dataset1/Masks/train/093.png
 Dataset1/Image/train/094.bmp Dataset1/Masks/train/094.png
 Dataset1/Image/train/095.bmp Dataset1/Masks/train/095.png
 Dataset1/Image/train/096.bmp Dataset1/Masks/train/096.png
-Dataset1/Image/train/201.bmp Dataset1/Masks/train/201.png
-
