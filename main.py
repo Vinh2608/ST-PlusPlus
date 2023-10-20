@@ -14,6 +14,7 @@ from torch.nn import CrossEntropyLoss, DataParallel
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 
 
 MODE = None
@@ -292,10 +293,10 @@ def select_reliable(models, dataloader, args):
 
     id_to_reliability.sort(key=lambda elem: elem[1], reverse=True)
     with open(os.path.join(args.reliable_id_path, 'reliable_ids.txt'), 'w') as f:
-        for elem in id_to_reliability[:len(id_to_reliability) // 2]:
+        for elem in id_to_reliability[:int(3/4 * len(id_to_reliability))]:
             f.write(elem[0] + '\n')
     with open(os.path.join(args.reliable_id_path, 'unreliable_ids.txt'), 'w') as f:
-        for elem in id_to_reliability[len(id_to_reliability) // 2:]:
+        for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
             f.write(elem[0] + '\n')
 
 
@@ -315,8 +316,30 @@ def label(model, dataloader, args):
             pred = model(img, True)
             pred = torch.argmax(pred, dim=1).cpu()
 
+            # # Create a new figure
+            # plt.figure(figsize=(10,10))
+
+            # plt.subplot(1, 3, 1)
+            # plt.imshow(img.cpu().detach().numpy().squeeze(0).transpose(1,2,0))
+            # plt.title('Image')
+
+            # # Plot `mask` on the left
+            # plt.subplot(1, 3, 2)
+            # plt.imshow(mask.numpy().squeeze(0), cmap='gray')
+            # plt.title('Mask')
+
+            # # Plot `pred` on the right
+            # plt.subplot(1, 3, 3)
+            # plt.imshow(pred.numpy().squeeze(0), cmap='gray')
+            # plt.title('Prediction')
+
+            
+            # # Display the figure
+            # plt.show()
+
             metric.add_batch(pred.numpy(), mask.numpy())
             mIOU = metric.evaluate()[-1]
+            
 
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
@@ -330,9 +353,9 @@ if __name__ == '__main__':
     args = parse_args()
 
     if args.epochs is None:
-        args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 50, 'dataset2': 50}[args.dataset]
+        args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 30, 'dataset2': 30}[args.dataset]
     if args.lr is None:
-        args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.001, 'dataset2': 0.001}[args.dataset] / 16 * args.batch_size
+        args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.crop_size is None:
         if args.dataset == 'dataset1':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset1': 128}[args.dataset]

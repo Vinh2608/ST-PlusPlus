@@ -559,6 +559,7 @@ outdir/models/dataset1/1_4/split_0/first_time_fine/deeplabv3plus_resnet50_32.82.
 outdir/models/dataset1/1_4/split_0/first_time_fine/deeplabv3plus_resnet50_32.86.pth
 outdir/models/dataset1/1_4/split_0/first_time_fine/deeplabv3plus_resnet50_33.11.pth
 outdir/models/dataset1/1_4/split_0/first_time_fine/deeplabv3plus_resnet50_46.67.pthoutdir/pseudo_masks/dataset1/1_4/split_0/resnet101/097.png
+outdir/models/dataset1/1_4/split_0/first_time_fine/deeplabv3plus_resnet50_46.67.pth
 outdir/pseudo_masks/dataset1/1_4/split_0/resnet101/098.png
 outdir/pseudo_masks/dataset1/1_4/split_0/resnet101/099.png
 outdir/pseudo_masks/dataset1/1_4/split_0/resnet101/100.png
@@ -898,3 +899,5 @@ outdir/reliable_ids/dataset1/1_4/split_0/reliable_ids.txt
 outdir/reliable_ids/dataset1/1_4/split_0/unreliable_ids.txt
 outdir/reliable_ids/dataset2/1_4/split_0/reliable_ids.txt
 outdir/reliable_ids/dataset2/1_4/split_0/unreliable_ids.txt
+Dataset1Full/*
+Dataset2Full/*

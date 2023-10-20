@@ -59,6 +59,13 @@ class SemiDataset(Dataset):
 
         if self.mode == 'val' or self.mode == 'label':
             mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
+            
+            mask = np.array(mask)
+            mask[mask == 0] = 0
+            mask[mask == 255] = 1
+            mask[mask == 128] = 2
+            mask = Image.fromarray(mask)
+
             img, mask = normalize(img, mask)
             return img, mask, id
 
@@ -73,7 +80,7 @@ class SemiDataset(Dataset):
         mask[mask == 0] = 0
         mask[mask == 255] = 1
         mask[mask == 128] = 2
-        
+
         mask = Image.fromarray(mask)
         # basic augmentation on all training images
         #base_size = 400 if self.name == 'pascal' else 2048
@@ -81,7 +88,7 @@ class SemiDataset(Dataset):
             base_size = 128
         elif self.name == 'dataset2':
             base_size = 320
-            
+
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
         img, mask = crop(img, mask, self.size)
         img, mask = hflip(img, mask, p=0.5)

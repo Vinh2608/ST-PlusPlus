@@ -1,6 +1,6 @@
 import numpy as np
 from PIL import Image
-
+import torch
 
 def count_params(model):
     param_num = sum(p.numel() for p in model.parameters())
@@ -13,6 +13,12 @@ class meanIOU:
         self.hist = np.zeros((num_classes, num_classes))
 
     def _fast_hist(self, label_pred, label_true):
+        # if np.all(label_true == 0):
+        #     print("The array true is full of zeros.")
+        # if np.all(label_pred == 0):
+        #     print(set(label_true.flatten()))
+        #     print("The array pred is full of zeros.")
+
         mask = (label_true >= 0) & (label_true < self.num_classes)
         hist = np.bincount(
             self.num_classes * label_true[mask].astype(int) +
@@ -68,14 +74,14 @@ def color_map(dataset='pascal'):
         cmap[18] = np.array([119, 11, 32])
     
     elif dataset == 'dataset1':
-        cmap[0] = np.array([253, 244, 157])
-        cmap[1] = np.array([159, 150, 119])
-        cmap[2] = np.array([76, 17, 87])
+        cmap[0] = np.array([0, 0, 0])
+        cmap[1] = np.array([255, 255, 255])
+        cmap[2] = np.array([128, 128, 128])
     
     elif dataset == 'dataset2':
-        cmap[0] = np.array([253, 244, 157])
-        cmap[1] = np.array([159, 150, 119])
-        cmap[2] = np.array([76, 17, 87])
+        cmap[0] = np.array([0, 0, 0])
+        cmap[1] = np.array([255, 255, 255])
+        cmap[2] = np.array([128, 128, 128])
         
 
 

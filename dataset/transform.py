@@ -3,6 +3,7 @@ from PIL import Image, ImageOps, ImageFilter
 import random
 import torch
 from torchvision import transforms
+import cv2
 
 
 def crop(img, mask, size):
