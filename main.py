@@ -171,6 +171,7 @@ def init_basic_elems(args):
     #model = model_zoo[args.model](args.backbone, 21 if args.dataset == 'pascal' else 19)
     
     #This is for dataset1 and dataset2
+    #Sửa lại class = 3 bao gồm nhân, vỏ và background
     model=model_zoo[args.model](args.backbone, 3)
     
     head_lr_multiple = 10.0
@@ -229,6 +230,7 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
             tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         #This is old code
         #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
+        #Sửa lại class = 3 bao gồm nhân, vỏ và background
         metric = meanIOU(num_classes=3)
         model.eval()
         tbar = tqdm(valloader)
@@ -284,6 +286,7 @@ def select_reliable(models, dataloader, args):
             mIOU = []
             for i in range(len(preds) - 1):
                 #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
+                #Sửa lại số class = 3 bao gồm nhân, vỏ và background
                 metric = meanIOU(num_classes=3)
                 metric.add_batch(preds[i], preds[-1])
                 mIOU.append(metric.evaluate()[-1])
@@ -306,6 +309,7 @@ def label(model, dataloader, args):
 
     #This is old code
     #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
+    #Sửa lại số class = 3 bao gồm nhân, vỏ và background
     metric = meanIOU(num_classes=3)
 
     cmap = color_map(args.dataset)
@@ -358,8 +362,10 @@ if __name__ == '__main__':
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.crop_size is None:
         if args.dataset == 'dataset1':
+            #Crop size = 128 cho dataset1
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset1': 128}[args.dataset]
         elif args.dataset == 'dataset2':
+            #Crop size - 320 cho dataset2
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320}[args.dataset]
 
     print()
