@@ -3,7 +3,7 @@ from model.semseg.deeplabv2 import DeepLabV2
 from model.semseg.deeplabv3plus import DeepLabV3Plus
 from model.semseg.pspnet import PSPNet
 from utils import count_params, meanIOU, color_map
-
+import random
 import argparse
 from copy import deepcopy
 import numpy as np
@@ -15,6 +15,10 @@ from torch.optim import SGD
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+from loss import consistency_loss
+from loss import consistency_loss_
+from dataset.transform import crop, hflip, normalize, resize, blur, cutout
+from torchvision import transforms
 
 
 MODE = None
@@ -38,6 +42,7 @@ def parse_args():
     parser.add_argument('--labeled-id-path', type=str, required=True)
     parser.add_argument('--unlabeled-id-path', type=str, required=True)
     parser.add_argument('--pseudo-mask-path', type=str, required=True)
+    parser.add_argument('--pseudo-consistency-mask-path', type=str, default = None)
 
     parser.add_argument('--save-path', type=str, required=True)
 
@@ -80,6 +85,13 @@ def main(args):
     print('\nParams: %.1fM' % count_params(model))
 
     best_model, checkpoints = train(model, trainloader, valloader, criterion, optimizer, args)
+
+    # <================================== Consistency_training on unlabeled images ==================================>
+    print('\n================> Auxillary Stage 1.5: '
+          'Consistency training on unlabeled images')
+    dataset = SemiDataset(args.dataset, args.data_root, 'label', None, None, args.unlabeled_id_path)
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
+    best_model, checkpoint = train_consistency(model, dataloader, consistency_loss, optimizer, args)
 
     """
         ST framework without selective re-training
@@ -189,6 +201,21 @@ def init_basic_elems(args):
 
     return model, optimizer
 
+def weak_augment(img, mask, args):
+    base_size = 128 if args.dataset in ['dataset1', 'lisc'] else 320
+    img, mask = resize(img, mask, base_size, (0.5, 2.0))
+    img, mask = crop(img, mask, args.crop_size)
+    img, mask = hflip(img, mask, p=0.5)
+    #img, mask = normalize(img, mask)
+    return img, mask
+
+def strong_augment(img, mask, args):
+    img = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img)
+    img = transforms.RandomGrayscale(p=0.2)(img)
+    img = blur(img, p=0.5)
+    img, mask = cutout(img, mask, p=0.5)
+    #img, mask = normalize(img, mask)
+    return img, mask
 
 def train(model, trainloader, valloader, criterion, optimizer, args):
     iters = 0
@@ -200,6 +227,8 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
 
     if MODE == 'train':
         checkpoints = []
+    
+    unlabeled_loss = 0
 
     for epoch in range(args.epochs):
         print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
@@ -213,7 +242,10 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
             img, mask = img.cuda(), mask.cuda()
 
             pred = model(img)
+
+            
             loss = criterion(pred, mask)
+            
 
             optimizer.zero_grad()
             loss.backward()
@@ -262,6 +294,55 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
 
     return best_model
 
+def val_inference(model, dataloader, args):
+    model.eval()
+    tbar = tqdm(dataloader)
+
+    #This is old code
+    #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
+    metric = meanIOU(num_classes=3)
+
+    cmap = color_map(args.dataset)
+
+    with torch.no_grad():
+        for img, mask, id in tbar:
+            img = img.cuda()
+            pred = model(img, True)
+            pred = torch.argmax(pred, dim=1).cpu()
+
+            # Create a new figure
+            plt.figure(figsize=(10,10))
+
+            plt.subplot(1, 3, 1)
+            plt.imshow(img.cpu().detach().numpy().squeeze(0).transpose(1,2,0))
+            plt.title('Image')
+
+            # Plot `mask` on the left
+            plt.subplot(1, 3, 2)
+            plt.imshow(mask.numpy().squeeze(0), cmap='gray')
+            plt.title('Mask')
+
+            # Plot `pred` on the right
+            plt.subplot(1, 3, 3)
+            plt.imshow(pred.numpy().squeeze(0), cmap='gray')
+            plt.title('Prediction')
+
+            plt.savefig('output.png')
+            
+            # Display the figure
+            plt.show()
+
+            metric.add_batch(pred.numpy(), mask.numpy())
+            mIOU = metric.evaluate()[-1]
+            
+
+            pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
+            pred.putpalette(cmap)
+            if args.pseudo-consistency-mask-path is None:
+                pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
+            else:
+                pred.save('%s/%s' % (args.pseudo_consistency_mask_path, os.path.basename(id[0].split(' ')[1])))
+            tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
 
 def select_reliable(models, dataloader, args):
     if not os.path.exists(args.reliable_id_path):
@@ -300,10 +381,107 @@ def select_reliable(models, dataloader, args):
             f.write(elem[0] + '\n')
 
 
+def train_consistency(model, trainloader, criterion, optimizer, args):
+    iters = 0
+    total_iters = len(trainloader) * args.epochs
+
+    previous_best = 0.0
+
+    global MODE
+    MODE = 'consistency_training'
+
+    if MODE == 'consistency_training':
+        checkpoints = []
+    
+    unlabeled_loss = 0
+
+    for epoch in range(args.epochs):
+        print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
+              (epoch, optimizer.param_groups[0]["lr"], previous_best))
+
+        total_loss = 0.0
+        tbar = tqdm(trainloader)
+
+        for i, (img, mask, id) in enumerate(tbar):
+            img, mask = img.cuda(), mask.cuda()
+
+            model.eval()
+            pred = model(img)
+
+            if MODE == 'consistency_training':
+                img = img.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
+                pred = pred.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
+                mask = mask.detach().cpu().numpy().squeeze(0)
+                
+                img = Image.fromarray(img.astype(np.uint8))
+                pred = Image.fromarray(pred.astype(np.uint8))
+                mask = Image.fromarray(mask.astype(np.uint8))
+
+                _ ,pred_weak = weak_augment(img, pred, args) #Weak augmentation on prediction images
+                img_strong, _ = strong_augment(img, mask, args)
+
+                img_strong = normalize(img_strong)
+                img_strong = img_strong.cuda()
+                msk_strong = model(img_strong.unsqueeze(0)) #Strong augmentation on images and then have the model output
+                
+                model.train()
+                pred_weak = normalize(pred_weak)
+                unlabeled_loss = torch.nn.CrossEntropyLoss()(msk_strong, pred_weak.unsqueeze(0).cuda())
+            
+            loss = unlabeled_loss
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.item()
+
+            iters += 1
+            lr = args.lr * (1 - iters / total_iters) ** 0.9
+            optimizer.param_groups[0]["lr"] = lr
+            optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+
+            tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
+        #This is old code
+        #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
+        metric = meanIOU(num_classes=3)
+        model.eval()
+        tbar = tqdm(trainloader)
+
+        with torch.no_grad():
+            for img, mask, _ in tbar:
+                img = img.cuda()
+                pred = model(img)
+                pred = torch.argmax(pred, dim=1)
+
+                metric.add_batch(pred.cpu().numpy(), mask.numpy())
+                mIOU = metric.evaluate()[-1]
+
+                tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
+
+        mIOU *= 100.0
+        if mIOU > previous_best:
+            if previous_best != 0:
+                os.remove(os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, previous_best)))
+            previous_best = mIOU
+            torch.save(model.module.state_dict(),
+                       os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, mIOU)))
+
+            best_model = deepcopy(model)
+
+        if MODE == 'consistency_training' and ((epoch + 1) in [args.epochs // 3, args.epochs * 2 // 3, args.epochs]):
+            checkpoints.append(deepcopy(model))
+
+    if MODE == 'consistency_training':
+        return best_model, checkpoints
+
+    return best_model
+
 def label(model, dataloader, args):
     model.eval()
     tbar = tqdm(dataloader)
 
+    global MODE
     #This is old code
     #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
     metric = meanIOU(num_classes=3)
@@ -315,6 +493,7 @@ def label(model, dataloader, args):
             img = img.cuda()
             pred = model(img, True)
             pred = torch.argmax(pred, dim=1).cpu()
+
 
             # # Create a new figure
             # plt.figure(figsize=(10,10))
@@ -343,9 +522,11 @@ def label(model, dataloader, args):
 
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
-
-            pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
-
+            if args.pseudo_consistency_mask_path is None:
+                pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
+            else:
+                pred.save('%s/%s' % (args.pseudo_consistency_mask_path, os.path.basename(id[0].split(' ')[1])))
+            
             tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
 
 
@@ -356,11 +537,14 @@ if __name__ == '__main__':
         args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
+        args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.crop_size is None:
         if args.dataset == 'dataset1':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset1': 128}[args.dataset]
         elif args.dataset == 'dataset2':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320}[args.dataset]
+        elif args.dataset == 'lisc':
+            args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320, 'lisc': 128}[args.dataset]
         elif args.dataset == 'lisc':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320, 'lisc': 128}[args.dataset]
 
