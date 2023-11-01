@@ -8,6 +8,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import numpy as np
 import torch
+import matplotlib.pyplot as plt
 
 
 class SemiDataset(Dataset):
@@ -75,8 +76,27 @@ class SemiDataset(Dataset):
             # mode == 'semi_train' and the id corresponds to unlabeled image
             fname = os.path.basename(id.split(' ')[1])
             mask = Image.open(os.path.join(self.pseudo_mask_path, fname))
-        #Phần này em sửa để chuyển pixel value của cái mask thành class index
+
         mask = np.array(mask)
+        msk_name = id.split(' ')[1]
+        if msk_name == 'Dataset2/Mask/train/047.png':
+            mask [mask == 7] = 0
+        if msk_name == 'Dataset2/Mask/train/034.png':
+            mask [mask == 7] = 0
+            mask [mask == 45] = 0
+            mask [mask == 25] = 0
+            mask [mask == 44] = 0
+            mask [mask == 42] = 0
+            mask [mask == 2] = 0
+        if msk_name == 'Dataset2/Mask/train/035.png':
+            mask [mask == 3] = 0
+        if msk_name == 'Dataset2/Mask/train/050.png':
+            mask [mask == 9] = 0
+        if msk_name == 'Dataset2/Mask/train/076.png':
+            mask [mask == 37] = 0
+            mask [mask == 50] = 0
+            mask [mask == 24] = 0
+
         mask[mask == 0] = 0
         mask[mask == 255] = 1
         mask[mask == 128] = 2
@@ -84,8 +104,7 @@ class SemiDataset(Dataset):
         mask = Image.fromarray(mask)
         # basic augmentation on all training images
         #base_size = 400 if self.name == 'pascal' else 2048
-        #Phần này em sửa để base_size không quá lớn so với ảnh ban đầu
-        if self.name == 'dataset1':
+        if self.name == 'dataset1' or self.name == 'lisc':
             base_size = 128
         elif self.name == 'dataset2':
             base_size = 320
