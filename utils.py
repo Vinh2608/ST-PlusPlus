@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 import torch
+import ramps
 
 def count_params(model):
     param_num = sum(p.numel() for p in model.parameters())
@@ -18,7 +19,6 @@ class meanIOU:
         # if np.all(label_pred == 0):
         #     print(set(label_true.flatten()))
         #     print("The array pred is full of zeros.")
-
         mask = (label_true >= 0) & (label_true < self.num_classes)
         hist = np.bincount(
             self.num_classes * label_true[mask].astype(int) +
@@ -73,16 +73,32 @@ def color_map(dataset='pascal'):
         cmap[17] = np.array([0,  0, 230])
         cmap[18] = np.array([119, 11, 32])
     
-    elif dataset == 'dataset1':
+    else:
         cmap[0] = np.array([0, 0, 0])
         cmap[1] = np.array([255, 255, 255])
         cmap[2] = np.array([128, 128, 128])
     
-    elif dataset == 'dataset2':
-        cmap[0] = np.array([0, 0, 0])
-        cmap[1] = np.array([255, 255, 255])
-        cmap[2] = np.array([128, 128, 128])
         
 
 
     return cmap
+
+class consistency_weight(object):
+    """
+    ramp_types = ['sigmoid_rampup', 'linear_rampup', 'cosine_rampup', 'log_rampup', 'exp_rampup']
+    """
+    def __init__(self, final_w, iters_per_epoch, rampup_starts=0, rampup_ends=10, ramp_type='sigmoid_rampup'):
+        self.final_w = final_w
+        self.iters_per_epoch = iters_per_epoch
+        self.rampup_starts = rampup_starts * iters_per_epoch
+        self.rampup_ends = rampup_ends * iters_per_epoch
+        self.rampup_length = (self.rampup_ends - self.rampup_starts)
+        self.rampup_func = getattr(ramps, ramp_type)
+        self.current_rampup = 0
+
+    def __call__(self, epoch, curr_iter):
+        cur_total_iter = self.iters_per_epoch * epoch + curr_iter
+        if cur_total_iter < self.rampup_starts:
+            return 0
+        self.current_rampup = self.rampup_func(cur_total_iter - self.rampup_starts, self.rampup_length)
+        return self.final_w * self.current_rampup
