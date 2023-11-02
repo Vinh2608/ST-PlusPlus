@@ -1,4 +1,5 @@
 from dataset.semi import SemiDataset
+from dataset.semi import DatasetConsistency
 from model.semseg.deeplabv2 import DeepLabV2
 from model.semseg.deeplabv3plus import DeepLabV3Plus
 from model.semseg.pspnet import PSPNet
@@ -18,8 +19,10 @@ import matplotlib.pyplot as plt
 from loss import consistency_loss
 from loss import consistency_loss_
 from dataset.transform import crop, hflip, normalize, resize, blur, cutout
+from dataset.transform import crop_img, hflip_img, resize_img
 from torchvision import transforms
-
+import torch.nn.functional as F
+from utils import consistency_weight
 
 MODE = None
 
@@ -80,18 +83,21 @@ def main(args):
     trainset.ids = 2 * trainset.ids if len(trainset.ids) < 200 else trainset.ids
     trainloader = DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
                              pin_memory=True, num_workers=16, drop_last=True)
+    
+    dataset = DatasetConsistency(args.dataset, args.data_root, 'consistency_training', args.crop_size, None, args.unlabeled_id_path)
+    consistency_loader = DataLoader(dataset, batch_size=16, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
 
     model, optimizer = init_basic_elems(args)
     print('\nParams: %.1fM' % count_params(model))
 
-    best_model, checkpoints = train(model, trainloader, valloader, criterion, optimizer, args)
+    best_model, checkpoints = train(model, trainloader, valloader, criterion, optimizer, args)#, consistency_loader)
 
     # <================================== Consistency_training on unlabeled images ==================================>
-    print('\n================> Auxillary Stage 1.5: '
-          'Consistency training on unlabeled images')
-    dataset = SemiDataset(args.dataset, args.data_root, 'label', None, None, args.unlabeled_id_path)
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
-    best_model, checkpoint = train_consistency(model, dataloader, consistency_loss, optimizer, args)
+    # MODE = 'consistency_training'
+    # print('\n================> Auxillary Stage 1.5: '
+    #       'Consistency training on unlabeled images')
+   
+    # best_model, checkpoint = train_consistency(best_model, consistency_loader, valloader, criterion, optimizer, args)
 
     """
         ST framework without selective re-training
@@ -201,25 +207,42 @@ def init_basic_elems(args):
 
     return model, optimizer
 
-def weak_augment(img, mask, args):
-    base_size = 128 if args.dataset in ['dataset1', 'lisc'] else 320
-    img, mask = resize(img, mask, base_size, (0.5, 2.0))
-    img, mask = crop(img, mask, args.crop_size)
-    img, mask = hflip(img, mask, p=0.5)
-    #img, mask = normalize(img, mask)
-    return img, mask
+def softmax_mse_loss(inputs, targets, conf_mask=False, threshold=None, use_softmax=False):
+    #assert inputs.requires_grad == True and targets.requires_grad == False
+    assert inputs.size() == targets.size() # (batch_size * num_classes * H * W)
+    inputs = F.softmax(inputs, dim=1)
+    if use_softmax:
+        targets = F.softmax(targets, dim=1)
 
-def strong_augment(img, mask, args):
-    img = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img)
-    img = transforms.RandomGrayscale(p=0.2)(img)
-    img = blur(img, p=0.5)
-    img, mask = cutout(img, mask, p=0.5)
-    #img, mask = normalize(img, mask)
-    return img, mask
+    if conf_mask:
+        loss_mat = F.mse_loss(inputs, targets, reduction='none')
+        mask = (targets.max(1)[0] > threshold)
+        loss_mat = loss_mat[mask.unsqueeze(1).expand_as(loss_mat)]
+        if loss_mat.shape.numel() == 0: loss_mat = torch.tensor([0.]).to(inputs.device)
+        return loss_mat.mean()
+    else:
+        return F.mse_loss(inputs, targets, reduction='mean') # take the mean over the batch_size
 
-def train(model, trainloader, valloader, criterion, optimizer, args):
+def softmax_kl_loss(inputs, targets, conf_mask=False, threshold=None, use_softmax=False):
+    assert inputs.requires_grad == True and targets.requires_grad == False
+    assert inputs.size() == targets.size()
+    input_log_softmax = F.log_softmax(inputs, dim=1)
+    if use_softmax:
+        targets = F.softmax(targets, dim=1)
+    
+    if conf_mask:
+        loss_mat = F.kl_div(input_log_softmax, targets, reduction='none')
+        mask = (targets.max(1)[0] > threshold)
+        loss_mat = loss_mat[mask.unsqueeze(1).expand_as(loss_mat)]
+        if loss_mat.shape.numel() == 0: loss_mat = torch.tensor([0.]).to(inputs.device)
+        return loss_mat.sum() / mask.shape.numel()
+    else:
+        return F.kl_div(input_log_softmax, targets, reduction='mean')
+
+def train(model, trainloader , valloader, criterion, optimizer, args, consistency_loader = None):
     iters = 0
     total_iters = len(trainloader) * args.epochs
+    iters_per_epoch = len(trainloader)
 
     previous_best = 0.0
 
@@ -228,37 +251,76 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
     if MODE == 'train':
         checkpoints = []
     
-    unlabeled_loss = 0
-
     for epoch in range(args.epochs):
         print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
               (epoch, optimizer.param_groups[0]["lr"], previous_best))
 
         model.train()
         total_loss = 0.0
-        tbar = tqdm(trainloader)
+        if consistency_loader != None:
+            tbar1 = tqdm(zip(trainloader, consistency_loader))
+            for i, ((img, mask), (img_weak, img_strong)) in enumerate(tbar1):
+                #confidence_threshold=0.95
+                img, mask = img.cuda(), mask.cuda()
+                img_weak, img_strong = img_weak.cuda(), img_strong.cuda()
 
-        for i, (img, mask) in enumerate(tbar):
-            img, mask = img.cuda(), mask.cuda()
+                pred = model(img)
+                loss_labeled = criterion(pred, mask)
 
-            pred = model(img)
+                output_weak = model(img_weak).cpu()
+                output_weak = F.softmax(output_weak)
+                output_weak = torch.max(output_weak, dim=1)[0]
+                output_weak = torch.where(output_weak > 0.7, output_weak, torch.zeros(output_weak.shape))
 
-            
-            loss = criterion(pred, mask)
-            
+                output_strong = model(img_strong).cpu()
+                output_strong = F.softmax(output_strong)
+                output_strong = torch.max(output_strong, dim=1)[0]
+                output_strong = torch.where(output_strong > 0.7, output_strong, torch.zeros(output_strong.shape))
+                
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+                loss_unlabeled = softmax_mse_loss(output_strong, output_weak, True,0.9,False)
+                w = consistency_weight(0.002, iters_per_epoch)(epoch, iters)
+                loss_unlabeled = loss_unlabeled * w
 
-            total_loss += loss.item()
+                loss = loss_labeled + 0.01 * loss_unlabeled #+ loss_unlabeled  # Combine the losses if needed
 
-            iters += 1
-            lr = args.lr * (1 - iters / total_iters) ** 0.9
-            optimizer.param_groups[0]["lr"] = lr
-            optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
 
-            tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
+                total_loss += loss.item()
+
+                iters += 1
+                lr = args.lr * (1 - iters / total_iters) ** 0.9
+                optimizer.param_groups[0]["lr"] = lr
+                optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+
+                tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
+        else:
+            tbar1 = tqdm(trainloader)
+            for i, (img, mask) in enumerate(tbar1):
+                img, mask = img.cuda(), mask.cuda()
+
+                pred = model(img)
+                if MODE == 'semi_train':
+                    loss = softmax_kl_loss(pred, mask, True,0.7,False) 
+                    w = consistency_weight(0.1, iters_per_epoch)(epoch, iters)
+                    loss = loss * w
+                else:
+                    loss = criterion(pre, mask)
+                
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+
+                iters += 1
+                lr = args.lr * (1 - iters / total_iters) ** 0.9
+                optimizer.param_groups[0]["lr"] = lr
+                optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+
+                tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         #This is old code
         #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
         metric = meanIOU(num_classes=3)
@@ -338,10 +400,7 @@ def val_inference(model, dataloader, args):
 
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
-            if args.pseudo-consistency-mask-path is None:
-                pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
-            else:
-                pred.save('%s/%s' % (args.pseudo_consistency_mask_path, os.path.basename(id[0].split(' ')[1])))
+            pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
             tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
 
 def select_reliable(models, dataloader, args):
@@ -379,103 +438,6 @@ def select_reliable(models, dataloader, args):
     with open(os.path.join(args.reliable_id_path, 'unreliable_ids.txt'), 'w') as f:
         for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
             f.write(elem[0] + '\n')
-
-
-def train_consistency(model, trainloader, criterion, optimizer, args):
-    iters = 0
-    total_iters = len(trainloader) * args.epochs
-
-    previous_best = 0.0
-
-    global MODE
-    MODE = 'consistency_training'
-
-    if MODE == 'consistency_training':
-        checkpoints = []
-    
-    unlabeled_loss = 0
-
-    for epoch in range(args.epochs):
-        print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
-              (epoch, optimizer.param_groups[0]["lr"], previous_best))
-
-        total_loss = 0.0
-        tbar = tqdm(trainloader)
-
-        for i, (img, mask, id) in enumerate(tbar):
-            img, mask = img.cuda(), mask.cuda()
-
-            model.eval()
-            pred = model(img)
-
-            if MODE == 'consistency_training':
-                img = img.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
-                pred = pred.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
-                mask = mask.detach().cpu().numpy().squeeze(0)
-                
-                img = Image.fromarray(img.astype(np.uint8))
-                pred = Image.fromarray(pred.astype(np.uint8))
-                mask = Image.fromarray(mask.astype(np.uint8))
-
-                _ ,pred_weak = weak_augment(img, pred, args) #Weak augmentation on prediction images
-                img_strong, _ = strong_augment(img, mask, args)
-
-                img_strong = normalize(img_strong)
-                img_strong = img_strong.cuda()
-                msk_strong = model(img_strong.unsqueeze(0)) #Strong augmentation on images and then have the model output
-                
-                model.train()
-                pred_weak = normalize(pred_weak)
-                unlabeled_loss = torch.nn.CrossEntropyLoss()(msk_strong, pred_weak.unsqueeze(0).cuda())
-            
-            loss = unlabeled_loss
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            total_loss += loss.item()
-
-            iters += 1
-            lr = args.lr * (1 - iters / total_iters) ** 0.9
-            optimizer.param_groups[0]["lr"] = lr
-            optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
-
-            tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
-        #This is old code
-        #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
-        metric = meanIOU(num_classes=3)
-        model.eval()
-        tbar = tqdm(trainloader)
-
-        with torch.no_grad():
-            for img, mask, _ in tbar:
-                img = img.cuda()
-                pred = model(img)
-                pred = torch.argmax(pred, dim=1)
-
-                metric.add_batch(pred.cpu().numpy(), mask.numpy())
-                mIOU = metric.evaluate()[-1]
-
-                tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
-
-        mIOU *= 100.0
-        if mIOU > previous_best:
-            if previous_best != 0:
-                os.remove(os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, previous_best)))
-            previous_best = mIOU
-            torch.save(model.module.state_dict(),
-                       os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, mIOU)))
-
-            best_model = deepcopy(model)
-
-        if MODE == 'consistency_training' and ((epoch + 1) in [args.epochs // 3, args.epochs * 2 // 3, args.epochs]):
-            checkpoints.append(deepcopy(model))
-
-    if MODE == 'consistency_training':
-        return best_model, checkpoints
-
-    return best_model
 
 def label(model, dataloader, args):
     model.eval()
@@ -519,7 +481,6 @@ def label(model, dataloader, args):
             metric.add_batch(pred.numpy(), mask.numpy())
             mIOU = metric.evaluate()[-1]
             
-
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
             if args.pseudo_consistency_mask_path is None:
@@ -537,14 +498,11 @@ if __name__ == '__main__':
         args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
-        args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.crop_size is None:
         if args.dataset == 'dataset1':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset1': 128}[args.dataset]
         elif args.dataset == 'dataset2':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320}[args.dataset]
-        elif args.dataset == 'lisc':
-            args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320, 'lisc': 128}[args.dataset]
         elif args.dataset == 'lisc':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset2': 320, 'lisc': 128}[args.dataset]
 
