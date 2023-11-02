@@ -1,5 +1,5 @@
 from dataset.transform import crop, hflip, normalize, resize, blur, cutout
-
+from dataset.transform import crop_img, hflip_img, resize_img, cutout_img
 import math
 import os
 from PIL import Image
@@ -8,7 +8,6 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import numpy as np
 import torch
-import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 
 
@@ -46,7 +45,7 @@ class SemiDataset(Dataset):
             if mode == 'val':
                 id_path = 'dataset/splits/%s/val.txt' % name
             elif mode == 'label':
-                id_path = unlabeled_id_path
+                id_path = unlabeled_id_path   
             elif mode == 'train':
                 id_path = labeled_id_path
 
@@ -64,10 +63,10 @@ class SemiDataset(Dataset):
         base_size = 128
         img = img.resize((base_size, base_size), Image.BILINEAR)
 
-
         if self.mode == 'val' or self.mode == 'label':
             mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
             #mask_old = Image.open(os.path.join(self.root, id.split(' ')[1]))
+            #This is for LISC only
             mask = mask.resize((base_size, base_size), Image.NEAREST)
 
             mask = np.array(mask)
@@ -75,161 +74,8 @@ class SemiDataset(Dataset):
             mask[mask == 255] = 1
             mask[mask == 128] = 2
             mask = Image.fromarray(mask)
-
-            # if np.array(img_old).shape[0:2] != np.array(mask_old).shape:
-            #     print(np.array(img_old).shape)
-            #     print(np.array(mask_old).shape)
-
-            #     plt.figure(figsize= (10, 10 ))
-                
-            #     # Plot `img` on the left
-            #     plt.subplot(2, 2, 1)
-            #     plt.imshow(img_old)
-            #     plt.title('Image_old')
-
-            #     # Plot `mask` on the right
-            #     plt.subplot(2, 2, 2)
-            #     plt.imshow(img)
-            #     plt.title('Image_new')
-
-            #     plt.subplot(2, 2, 3)
-            #     plt.imshow(mask_old)
-            #     plt.title('Mask_old')
-
-            #     plt.subplot(2, 2, 4)
-            #     plt.imshow(mask)
-            #     plt.title('Mask_new')
-
-            #     plt.show()
 
             img, mask = normalize(img, mask)
-            return img, mask, id
-
-        if self.mode == 'train' or (self.mode == 'semi_train' and id in self.labeled_ids):
-            mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
-        else:
-            # mode == 'semi_train' and the id corresponds to unlabeled image
-            fname = os.path.basename(id.split(' ')[1])
-            mask = Image.open(os.path.join(self.pseudo_mask_path, fname))
-
-        mask = np.array(mask)
-        msk_name = id.split(' ')[1]
-        if msk_name == 'Dataset2/Mask/train/047.png':
-            mask [mask == 7] = 0
-        if msk_name == 'Dataset2/Mask/train/034.png':
-            mask [mask == 7] = 0
-            mask [mask == 45] = 0
-            mask [mask == 25] = 0
-            mask [mask == 44] = 0
-            mask [mask == 42] = 0
-            mask [mask == 2] = 0
-        if msk_name == 'Dataset2/Mask/train/035.png':
-            mask [mask == 3] = 0
-        if msk_name == 'Dataset2/Mask/train/050.png':
-            mask [mask == 9] = 0
-        if msk_name == 'Dataset2/Mask/train/076.png':
-            mask [mask == 37] = 0
-            mask [mask == 50] = 0
-            mask [mask == 24] = 0
-
-        mask[mask == 0] = 0
-        mask[mask == 255] = 1
-        mask[mask == 128] = 2
-
-        mask = Image.fromarray(mask)
-        # basic augmentation on all training images
-        #base_size = 400 if self.name == 'pascal' else 2048
-        if self.name == 'dataset1' or self.name == 'lisc':
-        if self.name == 'dataset1' or self.name == 'lisc':
-            base_size = 128
-        elif self.name == 'dataset2':
-            base_size = 320
-
-        img, mask = resize(img, mask, base_size, (0.5, 2.0))
-        img, mask = crop(img, mask, self.size)
-        img, mask = hflip(img, mask, p=0.5)
-    
-
-        # strong augmentation on unlabeled images
-        if self.mode == 'semi_train' and id in self.unlabeled_ids:
-            if random.random() < 0.8:
-                img = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img)
-            img = transforms.RandomGrayscale(p=0.2)(img)
-            img = blur(img, p=0.5)
-            img, mask = cutout(img, mask, p=0.5)
-
-        img, mask = normalize(img, mask)    
-
-        return img, mask
-
-    def __len__(self):
-        return len(self.ids)
-
-class DatasetConsistency(Dataset):
-    def __init__(self, name, root, mode, size, labeled_id_path=None, unlabeled_id_path=None, pseudo_mask_path=None):
-        """
-        :param name: dataset name, pascal or cityscapes
-        :param root: root path of the dataset.
-        :param mode: train: supervised learning only with labeled images, no unlabeled images are leveraged.
-                     label: pseudo labeling the remaining unlabeled images.
-                     semi_train: semi-supervised learning with both labeled and unlabeled images.
-                     val: validation.
-
-        :param size: crop size of training images.
-        :param labeled_id_path: path of labeled image ids, needed in train or semi_train mode.
-        :param unlabeled_id_path: path of unlabeled image ids, needed in semi_train or label mode.
-        :param pseudo_mask_path: path of generated pseudo masks, needed in semi_train mode.
-        """
-        self.name = name
-        self.root = root
-        self.mode = mode
-        self.size = size
-
-        self.pseudo_mask_path = pseudo_mask_path
-
-        if mode == 'semi_train':
-            with open(labeled_id_path, 'r') as f:
-                self.labeled_ids = f.read().splitlines()
-            with open(unlabeled_id_path, 'r') as f:
-                self.unlabeled_ids = f.read().splitlines()
-            self.ids = \
-                self.labeled_ids * math.ceil(len(self.unlabeled_ids) / len(self.labeled_ids)) + self.unlabeled_ids
-
-        else:
-            if mode == 'val':
-                id_path = 'dataset/splits/%s/val.txt' % name
-            elif mode == 'label':
-                id_path = unlabeled_id_path
-            elif mode == 'train':
-                id_path = labeled_id_path
-
-            with open(id_path, 'r') as f:
-                self.ids = f.read().splitlines()
-
-            self.class_values = [255,128]
-
-    def __getitem__(self, item):
-        id = self.ids[item]
-        img = Image.open(os.path.join(self.root, id.split(' ')[0]))
-        #img_old = Image.open(os.path.join(self.root, id.split(' ')[0]))
-        
-        #This is for dataset lisc only
-        base_size = 128
-        img = img.resize((base_size, base_size), Image.BILINEAR)
-
-
-        if self.mode == 'val' or self.mode == 'label':
-            mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
-            #mask_old = Image.open(os.path.join(self.root, id.split(' ')[1]))
-            mask = mask.resize((base_size, base_size), Image.NEAREST)
-
-            mask = np.array(mask)
-            mask[mask == 0] = 0
-            mask[mask == 255] = 1
-            mask[mask == 128] = 2
-            mask = Image.fromarray(mask)
-
-            #img, mask = normalize(img, mask)
             return img, mask, id
 
         if self.mode == 'train' or (self.mode == 'semi_train' and id in self.labeled_ids):
@@ -271,22 +117,89 @@ class DatasetConsistency(Dataset):
         elif self.name == 'dataset2':
             base_size = 320
 
+            
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
         img, mask = crop(img, mask, self.size)
         img, mask = hflip(img, mask, p=0.5)
     
-
         # strong augmentation on unlabeled images
-        if self.mode == 'semi_train' and id in self.unlabeled_ids:
+        if (self.mode == 'semi_train' and id in self.unlabeled_ids):
             if random.random() < 0.8:
+                #for color-jtter only, contrast (2.0,2.0)
                 img = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img)
             img = transforms.RandomGrayscale(p=0.2)(img)
             img = blur(img, p=0.5)
             img, mask = cutout(img, mask, p=0.5)
 
-        img, mask = normalize(img, mask)    
-
+        img, mask = normalize(img, mask)
+    
+        
         return img, mask
+
+    def __len__(self):
+        return len(self.ids)
+
+class DatasetConsistency(Dataset):
+    def __init__(self, name, root, mode, size, labeled_id_path=None, unlabeled_id_path=None, pseudo_mask_path=None):
+        """
+        :param name: dataset name, pascal or cityscapes
+        :param root: root path of the dataset.
+        :param mode: train: supervised learning only with labeled images, no unlabeled images are leveraged.
+                     label: pseudo labeling the remaining unlabeled images.
+                     semi_train: semi-supervised learning with both labeled and unlabeled images.
+                     val: validation.
+
+        :param size: crop size of training images.
+        :param labeled_id_path: path of labeled image ids, needed in train or semi_train mode.
+        :param unlabeled_id_path: path of unlabeled image ids, needed in semi_train or label mode.
+        :param pseudo_mask_path: path of generated pseudo masks, needed in semi_train mode.
+        """
+        self.name = name
+        self.root = root
+        self.mode = mode
+        self.size = size
+
+        self.pseudo_mask_path = pseudo_mask_path
+
+        if mode == 'consistency_training':
+            id_path = unlabeled_id_path
+
+        with open(id_path, 'r') as f:
+            self.ids = f.read().splitlines()
+
+        self.class_values = [255,128]
+
+    def __getitem__(self, item):
+        id = self.ids[item]
+        img = Image.open(os.path.join(self.root, id.split(' ')[0]))
+        #img_old = Image.open(os.path.join(self.root, id.split(' ')[0]))
+        
+        fname = os.path.basename(id.split(' ')[1])
+        mask = Image.open(os.path.join(self.pseudo_mask_path, fname))
+        
+        #This is for dataset lisc only
+        base_size = 128
+        img = img.resize((base_size, base_size), Image.BILINEAR)
+        
+        if self.name == 'dataset1' or self.name == 'lisc':
+            base_size = 128
+        elif self.name == 'dataset2':
+            base_size = 320
+            
+        img_weak = resize_img(img, base_size, (0.5, 2.0))
+        img_weak = crop_img(img_weak, self.size)
+        img_weak = hflip_img(img_weak, p=0.5)
+    
+        # strong augmentation on unlabeled images
+        img_strong = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img_weak)
+        img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
+        img_strong = blur(img_strong, p=0.5)
+        img_strong = cutout_img(img_strong, p=0.5)
+
+        img_weak = normalize(img_weak)
+        img_strong = normalize(img_strong)    
+        
+        return img_strong, mask
 
     def __len__(self):
         return len(self.ids)
