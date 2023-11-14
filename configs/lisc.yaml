@@ -1,0 +1,4 @@
+conf_thres: 0.95
+rand_thres: 0.4
+consistency_training: True
+time: 2

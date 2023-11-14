@@ -18,7 +18,14 @@ import matplotlib.pyplot as plt
 from loss import consistency_loss
 from loss import consistency_loss_
 from dataset.transform import crop, hflip, normalize, resize, blur, cutout
+from dataset.transform import crop_img, hflip_img, resize_img
 from torchvision import transforms
+import torch.nn.functional as F
+from utils import consistency_weight
+import math
+import yaml
+import logging
+import pprint
 
 
 MODE = None
@@ -29,10 +36,13 @@ def parse_args():
 
     # basic settings
     parser.add_argument('--data-root', type=str, required=True)
+
     parser.add_argument('--dataset', type=str, choices=['pascal', 'cityscapes', 'dataset1', 'dataset2', 'lisc'], default='pascal')
     parser.add_argument('--batch-size', type=int, default=16)
+    parser.add_argument('--batch-size-consistency', type=int, default=16)
     parser.add_argument('--lr', type=float, default=None)
     parser.add_argument('--epochs', type=int, default=None)
+    parser.add_argument('--warm_up', type=int, default=None)
     parser.add_argument('--crop-size', type=int, default=None)
     parser.add_argument('--backbone', type=str, choices=['resnet50', 'resnet101'], default='resnet50')
     parser.add_argument('--model', type=str, choices=['deeplabv3plus', 'pspnet', 'deeplabv2'],
@@ -43,6 +53,7 @@ def parse_args():
     parser.add_argument('--unlabeled-id-path', type=str, required=True)
     parser.add_argument('--pseudo-mask-path', type=str, required=True)
     parser.add_argument('--pseudo-consistency-mask-path', type=str, default = None)
+    parser.add_argument('--config', type=str, required=True)
 
     parser.add_argument('--save-path', type=str, required=True)
 
@@ -62,40 +73,82 @@ def main(args):
         os.makedirs(args.pseudo_mask_path)
     if args.plus and args.reliable_id_path is None:
         exit('Please specify reliable-id-path in ST++.')
+    if not os.path.exists(os.path.join('log', args.dataset)):
+        os.makedirs(os.path.join('log', args.dataset ))
+
 
     criterion = CrossEntropyLoss(ignore_index=255)
+    criterion2 = CrossEntropyLoss(ignore_index=255, reduction= 'none')
 
     valset = SemiDataset(args.dataset, args.data_root, 'val', None)
     valloader = DataLoader(valset, batch_size=4 if args.dataset == 'cityscapes' else 1,
                            shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
 
-    # <====================== Supervised training with labeled images (SupOnly) ======================>
-    print('\n================> Total stage 1/%i: '
-          'Supervised training on labeled images (SupOnly)' % (6 if args.plus else 3))
-
+    cfg = yaml.load(open(args.config, "r"), Loader=yaml.Loader)
+    
+     
+     # <====================== Supervised training with labeled images (SupOnly) ======================>
     global MODE
     MODE = 'train'
 
-    trainset = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size, args.labeled_id_path)
-    trainset.ids = 2 * trainset.ids if len(trainset.ids) < 200 else trainset.ids
-    trainloader = DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
-                             pin_memory=True, num_workers=16, drop_last=True)
+    print('\n================> Total stage 1/%i: '
+          'Supervised training on labeled images (SupOnly)' % (6 if args.plus else 3))
+
+    trainset_labeled = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size, args.labeled_id_path)    
+    if cfg['consistency_training']:
+        trainset_unlabeled = SemiDataset(args.dataset, args.data_root, 'consistency_training', args.crop_size, None, args.unlabeled_id_path)
+    
+        nsample = len(trainset_unlabeled.ids) 
+        trainset_labeled.ids = trainset_labeled.ids * math.ceil(len(trainset_unlabeled.ids)/len(trainset_labeled.ids))
+        trainset_labeled.ids = trainset_labeled.ids[:nsample]
+        trainset_unlabeled_loader = DataLoader(trainset_unlabeled, batch_size=args.batch_size_consistency, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
+        if args.plus:
+            if cfg['time'] == 1:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_consistency_{args.backbone}_st++1.log', level=logging.INFO)
+            else:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_consistency_{args.backbone}_st++2.log', level=logging.INFO)
+        else:
+            if cfg['time'] == 1: 
+                logging.basicConfig(filename=f'log/{args.dataset}/training_consistency_{args.backbone}_st1.log', level=logging.INFO)
+            else:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_consistency_{args.backbone}_st2.log', level=logging.INFO)
+    else:
+        trainset_labeled.ids = 2 * trainset_labeled.ids if len(trainset_labeled.ids) < 200 else trainset_labeled.ids
+        if args.plus:
+            if cfg['time'] == 1:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_non_consistency_{args.backbone}_st++1.log', level=logging.INFO)
+            else:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_non_consistency_{args.backbone}_st++2.log', level=logging.INFO)
+        else:
+            if cfg['time'] == 1:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_non_consistency_{args.backbone}_st1.log', level=logging.INFO)
+            else:
+                logging.basicConfig(filename=f'log/{args.dataset}/training_non_consistency_{args.backbone}_st2.log', level=logging.INFO)
+    
+    trainloader_labeled_loader = DataLoader(trainset_labeled, batch_size=args.batch_size, shuffle=True,
+                             pin_memory=True, num_workers=16, drop_last=True)    
+    
+    all_args = {**cfg, **vars(args), 'ngpus': 1}
+    logging.info('{}\n'.format(pprint.pformat(all_args)))
 
     model, optimizer = init_basic_elems(args)
     print('\nParams: %.1fM' % count_params(model))
 
-    best_model, checkpoints = train(model, trainloader, valloader, criterion, optimizer, args)
-
+    if cfg['consistency_training']:
+        best_model, checkpoints = train(model, trainloader_labeled_loader, valloader, criterion, criterion2, optimizer, args, trainset_unlabeled_loader, cfg)
+    else:
+        best_model, checkpoints = train(model, trainloader_labeled_loader, valloader, criterion, None, optimizer, args)
     # <================================== Consistency_training on unlabeled images ==================================>
-    print('\n================> Auxillary Stage 1.5: '
-          'Consistency training on unlabeled images')
-    dataset = SemiDataset(args.dataset, args.data_root, 'label', None, None, args.unlabeled_id_path)
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
-    best_model, checkpoint = train_consistency(model, dataloader, consistency_loss, optimizer, args)
+    # MODE = 'consistency_training'
+    # print('\n================> Auxillary Stage 1.5: '
+    #       'Consistency training on unlabeled images')
+   
+    # best_model, checkpoint = train_consistency(best_model, consistency_loader, valloader, criterion, optimizer, args)
 
     """
         ST framework without selective re-training
     """
+
     if not args.plus:
         # <============================= Pseudo label all unlabeled images =============================>
         print('\n\n\n================> Total stage 2/3: Pseudo labeling all unlabeled images')
@@ -117,7 +170,7 @@ def main(args):
 
         model, optimizer = init_basic_elems(args)
 
-        train(model, trainloader, valloader, criterion, optimizer, args)
+        train(model, trainloader, valloader, criterion, None, optimizer, args)
 
         return
 
@@ -153,7 +206,7 @@ def main(args):
 
     model, optimizer = init_basic_elems(args)
 
-    best_model = train(model, trainloader, valloader, criterion, optimizer, args)
+    best_model = train(model, trainloader, valloader, criterion, None, optimizer, args)
 
     # <=============================== Pseudo label unreliable images ================================>
     print('\n\n\n================> Total stage 5/6: Pseudo labeling unreliable images')
@@ -174,7 +227,7 @@ def main(args):
 
     model, optimizer = init_basic_elems(args)
 
-    train(model, trainloader, valloader, criterion, optimizer, args)
+    train(model, trainloader, valloader, criterion, None, optimizer, args)
 
 
 def init_basic_elems(args):
@@ -201,64 +254,96 @@ def init_basic_elems(args):
 
     return model, optimizer
 
-def weak_augment(img, mask, args):
-    base_size = 128 if args.dataset in ['dataset1', 'lisc'] else 320
-    img, mask = resize(img, mask, base_size, (0.5, 2.0))
-    img, mask = crop(img, mask, args.crop_size)
-    img, mask = hflip(img, mask, p=0.5)
-    #img, mask = normalize(img, mask)
-    return img, mask
 
-def strong_augment(img, mask, args):
-    img = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img)
-    img = transforms.RandomGrayscale(p=0.2)(img)
-    img = blur(img, p=0.5)
-    img, mask = cutout(img, mask, p=0.5)
-    #img, mask = normalize(img, mask)
-    return img, mask
+def train(model, trainloader , valloader, criterion, criterion2, optimizer, args, consistency_loader = None, cfg=None):
+    global MODE
 
-def train(model, trainloader, valloader, criterion, optimizer, args):
     iters = 0
     total_iters = len(trainloader) * args.epochs
+    
+    iters_per_epoch = len(trainloader)
 
     previous_best = 0.0
 
-    global MODE
-
     if MODE == 'train':
         checkpoints = []
-    
-    unlabeled_loss = 0
 
-    for epoch in range(args.epochs):
+    epochs = args.epochs
+    if MODE == 'train':
+        logging.info(f"Training supervised with consistency on unlabeled images")
+    else:
+        logging.info(f"Semi-training")
+
+    for epoch in range(epochs):
         print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
-              (epoch, optimizer.param_groups[0]["lr"], previous_best))
+            (epoch, optimizer.param_groups[0]["lr"], previous_best))
 
         model.train()
         total_loss = 0.0
-        tbar = tqdm(trainloader)
+        if consistency_loader != None:
+            tbar1 = tqdm(zip(trainloader, consistency_loader))
+            for i, ((img, mask), (img_u_w, img_u_s)) in enumerate(tbar1):
+                #confidence_threshold=0.95
+                img, mask = img.cuda(), mask.cuda()
+                img_u_w, img_u_s = img_u_w.cuda(), img_u_s.cuda()
+                
+                num_l, num_u = img.shape[0], img_u_w.shape[0]
+                pred = model(torch.cat((img, img_u_w)))
+                
+                pred_l, pred_w = pred.split([num_l, num_u])
+                
+                pred_u_w = pred_w.detach()
+                conf_u_w = pred_u_w.softmax(dim=1).max(dim=1)[0]
+                mask_u_w = pred_u_w.argmax(dim=1)
 
-        for i, (img, mask) in enumerate(tbar):
-            img, mask = img.cuda(), mask.cuda()
+                loss_s = criterion(pred_l, mask)
 
-            pred = model(img)
+                pred_s = model(img_u_s)
 
-            
-            loss = criterion(pred, mask)
-            
+                # loss_unlabeled = softmax_mse_loss(output_strong, output_weak, True,0.9,False)
+                # w = consistency_weight(0.002, iters_per_epoch)(epoch, iters)
+                # loss_unlabeled = loss_unlabeled * w
+                loss_u = criterion2(pred_s, mask_u_w)
+                loss_u = loss_u * (conf_u_w >= cfg['conf_thres'])
+                loss_u = loss_u.mean()
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+                loss = (loss_s + 0.25 * loss_u)/2 #+ loss_unlabeled  # Combine the losses if needed
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
 
-            total_loss += loss.item()
+                total_loss += loss.item()
 
-            iters += 1
-            lr = args.lr * (1 - iters / total_iters) ** 0.9
-            optimizer.param_groups[0]["lr"] = lr
-            optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+                iters += 1
+                logging.info(f"Epoch: {epoch}, Iteration: {iters}, Loss: {loss.item()}, Loss_s: {loss_s.item()}, Loss_u: {loss_u.item()}")
 
-            tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
+                lr = args.lr * (1 - iters / total_iters) ** 0.9
+                optimizer.param_groups[0]["lr"] = lr
+                optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+
+                tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
+        else:
+            tbar1 = tqdm(trainloader)
+            for i, (img, mask) in enumerate(tbar1):
+                img, mask = img.cuda(), mask.cuda()
+
+                pred = model(img)
+                
+                loss = criterion(pred, mask)
+                
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
+                total_loss += loss.item()
+
+                iters += 1
+                logging.info(f"Epoch: {epoch}, Iteration: {iters}, Loss: {loss.item()}")
+                lr = args.lr * (1 - iters / total_iters) ** 0.9
+                optimizer.param_groups[0]["lr"] = lr
+                optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
+
+                tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         #This is old code
         #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
         metric = meanIOU(num_classes=3)
@@ -277,72 +362,23 @@ def train(model, trainloader, valloader, criterion, optimizer, args):
                 tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
 
         mIOU *= 100.0
+        logging.info(f"Validation set mIOU: {mIOU}")
         if mIOU > previous_best:
             if previous_best != 0:
                 os.remove(os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, previous_best)))
             previous_best = mIOU
             torch.save(model.module.state_dict(),
-                       os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, mIOU)))
+                    os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, mIOU)))
 
             best_model = deepcopy(model)
 
-        if MODE == 'train' and ((epoch + 1) in [args.epochs // 3, args.epochs * 2 // 3, args.epochs]):
+        if MODE == 'train' and ((epoch + 1) in [epochs // 3, epochs * 2 // 3, epochs]):
             checkpoints.append(deepcopy(model))
 
     if MODE == 'train':
         return best_model, checkpoints
 
     return best_model
-
-def val_inference(model, dataloader, args):
-    model.eval()
-    tbar = tqdm(dataloader)
-
-    #This is old code
-    #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
-    metric = meanIOU(num_classes=3)
-
-    cmap = color_map(args.dataset)
-
-    with torch.no_grad():
-        for img, mask, id in tbar:
-            img = img.cuda()
-            pred = model(img, True)
-            pred = torch.argmax(pred, dim=1).cpu()
-
-            # Create a new figure
-            plt.figure(figsize=(10,10))
-
-            plt.subplot(1, 3, 1)
-            plt.imshow(img.cpu().detach().numpy().squeeze(0).transpose(1,2,0))
-            plt.title('Image')
-
-            # Plot `mask` on the left
-            plt.subplot(1, 3, 2)
-            plt.imshow(mask.numpy().squeeze(0), cmap='gray')
-            plt.title('Mask')
-
-            # Plot `pred` on the right
-            plt.subplot(1, 3, 3)
-            plt.imshow(pred.numpy().squeeze(0), cmap='gray')
-            plt.title('Prediction')
-
-            plt.savefig('output.png')
-            
-            # Display the figure
-            plt.show()
-
-            metric.add_batch(pred.numpy(), mask.numpy())
-            mIOU = metric.evaluate()[-1]
-            
-
-            pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
-            pred.putpalette(cmap)
-            if args.pseudo-consistency-mask-path is None:
-                pred.save('%s/%s' % (args.pseudo_mask_path, os.path.basename(id[0].split(' ')[1])))
-            else:
-                pred.save('%s/%s' % (args.pseudo_consistency_mask_path, os.path.basename(id[0].split(' ')[1])))
-            tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
 
 def select_reliable(models, dataloader, args):
     if not os.path.exists(args.reliable_id_path):
@@ -380,102 +416,6 @@ def select_reliable(models, dataloader, args):
         for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
             f.write(elem[0] + '\n')
 
-
-def train_consistency(model, trainloader, criterion, optimizer, args):
-    iters = 0
-    total_iters = len(trainloader) * args.epochs
-
-    previous_best = 0.0
-
-    global MODE
-    MODE = 'consistency_training'
-
-    if MODE == 'consistency_training':
-        checkpoints = []
-    
-    unlabeled_loss = 0
-
-    for epoch in range(args.epochs):
-        print("\n==> Epoch %i, learning rate = %.4f\t\t\t\t\t previous best = %.2f" %
-              (epoch, optimizer.param_groups[0]["lr"], previous_best))
-
-        total_loss = 0.0
-        tbar = tqdm(trainloader)
-
-        for i, (img, mask, id) in enumerate(tbar):
-            img, mask = img.cuda(), mask.cuda()
-
-            model.eval()
-            pred = model(img)
-
-            if MODE == 'consistency_training':
-                img = img.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
-                pred = pred.detach().cpu().numpy().squeeze(0).transpose(1,2,0)
-                mask = mask.detach().cpu().numpy().squeeze(0)
-                
-                img = Image.fromarray(img.astype(np.uint8))
-                pred = Image.fromarray(pred.astype(np.uint8))
-                mask = Image.fromarray(mask.astype(np.uint8))
-
-                _ ,pred_weak = weak_augment(img, pred, args) #Weak augmentation on prediction images
-                img_strong, _ = strong_augment(img, mask, args)
-
-                img_strong = normalize(img_strong)
-                img_strong = img_strong.cuda()
-                msk_strong = model(img_strong.unsqueeze(0)) #Strong augmentation on images and then have the model output
-                
-                model.train()
-                pred_weak = normalize(pred_weak)
-                unlabeled_loss = torch.nn.CrossEntropyLoss()(msk_strong, pred_weak.unsqueeze(0).cuda())
-            
-            loss = unlabeled_loss
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            total_loss += loss.item()
-
-            iters += 1
-            lr = args.lr * (1 - iters / total_iters) ** 0.9
-            optimizer.param_groups[0]["lr"] = lr
-            optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
-
-            tbar.set_description('Loss: %.3f' % (total_loss / (i + 1)))
-        #This is old code
-        #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
-        metric = meanIOU(num_classes=3)
-        model.eval()
-        tbar = tqdm(trainloader)
-
-        with torch.no_grad():
-            for img, mask, _ in tbar:
-                img = img.cuda()
-                pred = model(img)
-                pred = torch.argmax(pred, dim=1)
-
-                metric.add_batch(pred.cpu().numpy(), mask.numpy())
-                mIOU = metric.evaluate()[-1]
-
-                tbar.set_description('mIOU: %.2f' % (mIOU * 100.0))
-
-        mIOU *= 100.0
-        if mIOU > previous_best:
-            if previous_best != 0:
-                os.remove(os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, previous_best)))
-            previous_best = mIOU
-            torch.save(model.module.state_dict(),
-                       os.path.join(args.save_path, '%s_%s_%.2f.pth' % (args.model, args.backbone, mIOU)))
-
-            best_model = deepcopy(model)
-
-        if MODE == 'consistency_training' and ((epoch + 1) in [args.epochs // 3, args.epochs * 2 // 3, args.epochs]):
-            checkpoints.append(deepcopy(model))
-
-    if MODE == 'consistency_training':
-        return best_model, checkpoints
-
-    return best_model
 
 def label(model, dataloader, args):
     model.eval()
@@ -519,7 +459,6 @@ def label(model, dataloader, args):
             metric.add_batch(pred.numpy(), mask.numpy())
             mIOU = metric.evaluate()[-1]
             
-
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
             if args.pseudo_consistency_mask_path is None:
@@ -534,9 +473,12 @@ if __name__ == '__main__':
     args = parse_args()
 
     if args.epochs is None:
-        args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 1}[args.dataset]
+        args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
+    if args.warm_up is None:
+        args.warm_up = {'pascal': 20, 'cityscapes': 20, 'dataset1': 20, 'dataset2': 30, 'lisc': 30}[args.dataset]
+    
     if args.crop_size is None:
         if args.dataset == 'dataset1':
             args.crop_size = {'pascal': 321, 'cityscapes': 721, 'dataset1': 128}[args.dataset]
