@@ -1,4 +1,5 @@
 from dataset.semi import SemiDataset
+from dataset.semi import DatasetConsistency
 from model.semseg.deeplabv2 import DeepLabV2
 from model.semseg.deeplabv3plus import DeepLabV3Plus
 from model.semseg.pspnet import PSPNet
@@ -18,6 +19,7 @@ import matplotlib.pyplot as plt
 from loss import consistency_loss
 from loss import consistency_loss_
 from dataset.transform import crop, hflip, normalize, resize, blur, cutout
+from dataset.transform import crop_img, hflip_img, resize_img
 from dataset.transform import crop_img, hflip_img, resize_img
 from torchvision import transforms
 import torch.nn.functional as F
@@ -139,6 +141,11 @@ def main(args):
     else:
         best_model, checkpoints = train(model, trainloader_labeled_loader, valloader, criterion, None, optimizer, args)
     # <================================== Consistency_training on unlabeled images ==================================>
+    # MODE = 'consistency_training'
+    # print('\n================> Auxillary Stage 1.5: '
+    #       'Consistency training on unlabeled images')
+   
+    # best_model, checkpoint = train_consistency(best_model, consistency_loader, valloader, criterion, optimizer, args)
     # MODE = 'consistency_training'
     # print('\n================> Auxillary Stage 1.5: '
     #       'Consistency training on unlabeled images')
@@ -336,6 +343,7 @@ def train(model, trainloader , valloader, criterion, criterion2, optimizer, args
                 optimizer.step()
 
                 total_loss += loss.item()
+                total_loss += loss.item()
 
                 iters += 1
                 logging.info(f"Epoch: {epoch}, Iteration: {iters}, Loss: {loss.item()}")
@@ -343,6 +351,7 @@ def train(model, trainloader , valloader, criterion, criterion2, optimizer, args
                 optimizer.param_groups[0]["lr"] = lr
                 optimizer.param_groups[1]["lr"] = lr * 1.0 if args.model == 'deeplabv2' else lr * 10.0
 
+                tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
                 tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         #This is old code
         #metric = meanIOU(num_classes=21 if args.dataset == 'pascal' else 19)
@@ -459,6 +468,7 @@ def label(model, dataloader, args):
             metric.add_batch(pred.numpy(), mask.numpy())
             mIOU = metric.evaluate()[-1]
             
+            
             pred = Image.fromarray(pred.squeeze(0).numpy().astype(np.uint8), mode='P')
             pred.putpalette(cmap)
             if args.pseudo_consistency_mask_path is None:
@@ -473,6 +483,7 @@ if __name__ == '__main__':
     args = parse_args()
 
     if args.epochs is None:
+        args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
         args.epochs = {'pascal': 80, 'cityscapes': 240, 'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009, 'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
