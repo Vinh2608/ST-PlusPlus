@@ -143,6 +143,8 @@ class SemiDataset(Dataset):
                     img_strong = transforms.ColorJitter(0.5, (2.0,2.0), 0.5, 0.25)(img_strong)
                 else:    
                     img_strong = transforms.ColorJitter(0.5, 0.5, 0.5, 0.25)(img_strong)
+
+                    
             img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
             img_strong = blur(img_strong, p=0.5)
             #cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)

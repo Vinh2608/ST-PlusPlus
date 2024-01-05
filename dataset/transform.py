@@ -23,6 +23,7 @@ def crop(img, mask, size):
 
     return img, mask
 
+
 def crop_img(img, size):
     # padding height or width if smaller than cropping size
     w, h = img.size
@@ -38,11 +39,13 @@ def crop_img(img, size):
 
     return img
 
+
 def hflip(img, mask, p=0.5):
     if random.random() < p:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
         mask = mask.transpose(Image.FLIP_LEFT_RIGHT)
     return img, mask
+
 
 def hflip_img(img, p=0.5):
     if random.random() < p:
@@ -68,7 +71,8 @@ def normalize(img, mask=None):
 
 def resize(img, mask, base_size, ratio_range):
     w, h = img.size
-    long_side = random.randint(int(base_size * ratio_range[0]), int(base_size * ratio_range[1]))
+    long_side = random.randint(
+        int(base_size * ratio_range[0]), int(base_size * ratio_range[1]))
 
     if h > w:
         oh = long_side
@@ -81,9 +85,11 @@ def resize(img, mask, base_size, ratio_range):
     mask = mask.resize((ow, oh), Image.NEAREST)
     return img, mask
 
+
 def resize_img(img, base_size, ratio_range):
     w, h = img.size
-    long_side = random.randint(int(base_size * ratio_range[0]), int(base_size * ratio_range[1]))
+    long_side = random.randint(
+        int(base_size * ratio_range[0]), int(base_size * ratio_range[1]))
 
     if h > w:
         oh = long_side
@@ -123,7 +129,8 @@ def cutout(img, mask, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
                 break
 
         if pixel_level:
-            value = np.random.uniform(value_min, value_max, (erase_h, erase_w, img_c))
+            value = np.random.uniform(
+                value_min, value_max, (erase_h, erase_w, img_c))
         else:
             value = np.random.uniform(value_min, value_max)
 
@@ -135,8 +142,9 @@ def cutout(img, mask, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
 
     return img, mask
 
+
 def cutout_img(img, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
-           ratio_2=1/0.3, value_min=0, value_max=255, pixel_level=True):
+               ratio_2=1/0.3, value_min=0, value_max=255, pixel_level=True):
     if random.random() < p:
         img = np.array(img)
 
@@ -154,7 +162,8 @@ def cutout_img(img, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
                 break
 
         if pixel_level:
-            value = np.random.uniform(value_min, value_max, (erase_h, erase_w, img_c))
+            value = np.random.uniform(
+                value_min, value_max, (erase_h, erase_w, img_c))
         else:
             value = np.random.uniform(value_min, value_max)
 
@@ -163,6 +172,7 @@ def cutout_img(img, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
         img = Image.fromarray(img.astype(np.uint8))
 
     return img
+
 
 def obtain_cutmix_box(img_size, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3, ratio_2=1/0.3):
     mask = torch.zeros(img_size, img_size)
