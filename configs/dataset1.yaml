@@ -1,4 +1,2 @@
 conf_thres: 0.9
 rand_thres: 0.8
-consistency_training: True
-time: 1
