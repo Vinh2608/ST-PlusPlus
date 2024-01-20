@@ -172,14 +172,13 @@ def cutout_circular_region(image, msk, radius, p, center=None, pixel_level=True,
 
         cv2.circle(mask, (x, y), radius, (255), thickness=-1)
 
-        # Apply the mask to the image
-        image_with_cutout = image.copy()
-        msk_with_cutout = msk.copy()
         # Assuming you want to cut out to black; change as needed
-        image_with_cutout[mask == 255] = 0
-        msk_with_cutout[mask == 255] = 0
+        image[mask == 255] = np.random.uniform(0, 255)
+        msk[mask == 255] = 0
 
-        return image_with_cutout, msk_with_cutout
+        return image, msk
+        
+    return image, msk
 
 
 def cutout_img(img, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
