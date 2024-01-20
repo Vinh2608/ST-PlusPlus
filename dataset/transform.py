@@ -121,7 +121,7 @@ def cutout(img, mask, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
             size = np.random.uniform(size_min, size_max) * img_h * img_w
             ratio = np.random.uniform(ratio_1, ratio_2)
             erase_w = int(np.sqrt(size / ratio))
-            erase_h = int(np.sqrt(size * ratio))
+            erase_h = int(np.sqrt(size * ratio))    
             x = np.random.randint(0, img_w)
             y = np.random.randint(0, img_h)
 
