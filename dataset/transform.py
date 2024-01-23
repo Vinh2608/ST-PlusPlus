@@ -6,13 +6,13 @@ from torchvision import transforms
 import cv2
 
 
-def crop(img, mask, size):
+def crop(img, mask, size, fill_value):
     # padding height or width if smaller than cropping size
     w, h = img.size
     padw = size - w if w < size else 0
     padh = size - h if h < size else 0
     img = ImageOps.expand(img, border=(0, 0, padw, padh), fill=0)
-    mask = ImageOps.expand(mask, border=(0, 0, padw, padh), fill=255)
+    mask = ImageOps.expand(mask, border=(0, 0, padw, padh), fill=fill_value)
 
     # cropping
     w, h = img.size

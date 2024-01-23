@@ -40,9 +40,9 @@ class SemiDataset(Dataset):
 
         if mode == 'semi_train':
             with open(labeled_id_path, 'r') as f:
-                self.labeled_ids = f.read().splitlines()
+                self.ids = f.read().splitlines()
             with open(unlabeled_id_path, 'r') as f:
-                self.unlabeled_ids = f.read().splitlines()
+                    self.ids = f.read().splitlines()
             self.ids = \
                 self.labeled_ids * \
                 math.ceil(len(self.unlabeled_ids) /
@@ -54,8 +54,6 @@ class SemiDataset(Dataset):
             elif mode == 'label' or mode == 'consistency_training':
                 id_path = unlabeled_id_path
             elif mode == 'train':
-                id_path = labeled_id_path
-            elif mode == 'warm_up':
                 id_path = labeled_id_path
 
             with open(id_path, 'r') as f:
@@ -89,7 +87,7 @@ class SemiDataset(Dataset):
             img, mask = normalize(img, mask)
             return img, mask, id
 
-        if self.mode == 'train' or self.mode == 'warm_up' or self.mode == 'consistency_training' or (self.mode == 'semi_train' and id in self.labeled_ids):
+        if self.mode == 'train' or self.mode == 'consistency_training' or (self.mode == 'semi_train' and id in self.labeled_ids):
             mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
         else:
             # mode == 'semi_train' and the id corresponds to unlabeled image
@@ -129,11 +127,11 @@ class SemiDataset(Dataset):
             base_size = 320
 
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
-        img, mask = crop(img, mask, self.size)
+        img, mask = crop(img, mask, self.size, fill_value = 254)
         img, mask = hflip(img, mask, p=0.5)
         # img, mask = cutout_circular_region(img, mask, radius = 20, p = 0.5)
 
-        if self.mode == 'train' or self.mode == 'warm_up':
+        if self.mode == 'train':
             return normalize(img, mask)
 
         if not isinstance(img, Image.Image):
@@ -141,6 +139,7 @@ class SemiDataset(Dataset):
 
         img_weak, img_strong = deepcopy(img), deepcopy(img)
 
+        cutmix_box1 = []
         # strong augmentation on unlabeled images
         if (self.mode == 'semi_train' and id in self.unlabeled_ids) or self.mode == 'consistency_training':
             if random.random() < self.cfg['rand_thres']:
@@ -155,20 +154,21 @@ class SemiDataset(Dataset):
 
             img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
             img_strong = blur(img_strong, p=0.5)
-            if self.name == 'lisc':
-                img_strong, mask = cutout_circular_region(
-                    img_strong, mask, p=0.5)
-            else:
-                img_strong, mask = cutout(img_strong, mask)
+            cutmix_box1 = obtain_cutmix_box(img_strong.size[0], p=0.5)
 
-            # cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)
+        # cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)
+        ignore_mask = Image.fromarray(np.zeros((mask.size[1], mask.size[0])))
+        img_strong, ignore_mask = normalize(img_strong, ignore_mask)
+        
+        mask = torch.from_numpy(np.array(mask)).long()
+        ignore_mask[mask == 254] = 255
+        
+        #img_strong, mask = normalize(img_strong, mask)
 
-        img_strong, mask = normalize(img_strong, mask)
-
-        if self.mode == 'semi_train':
+        if self.mode == 'semi_train' and id in self.labeled_ids:
             return img_strong, mask
         else:
-            return normalize(img_weak), img_strong  # , cutmix_box
+            return normalize(img_weak), img_strong , cutmix_box1, ignore_mask
 
     def __len__(self):
         return len(self.ids)
