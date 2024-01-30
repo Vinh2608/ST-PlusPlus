@@ -148,7 +148,8 @@ class SemiDataset(Dataset):
             img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
             img_strong = blur(img_strong, p=0.5)
             #cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)
-            img_strong, mask = cutout_circular_region(img_strong, mask, p=0.5)
+            #img_strong, mask = cutout_circular_region(img_strong, mask, p=0.5)
+            img_strong, mask = cutout(img_strong, mask, p = 0.5)
         
         img_strong, mask = normalize(img_strong, mask)
         
