@@ -116,9 +116,14 @@ class SemiDataset(Dataset):
             mask[mask == 50] = 0
             mask[mask == 24] = 0
 
-        mask[mask == 0] = 0
-        mask[mask == 255] = 1
-        mask[mask == 128] = 2
+        if self.name != 'raabin':
+            mask[mask == 0] = 0
+            mask[mask == 255] = 1
+            mask[mask == 128] = 2
+        elif self.name == 'raabin':
+            mask[mask == 0] = 0
+            mask[mask == 255] = 2
+            mask[mask == 100] = 1
 
         mask = Image.fromarray(mask)
         # basic augmentation on all training images
@@ -127,17 +132,15 @@ class SemiDataset(Dataset):
             base_size = 128
         elif self.name == 'dataset2':
             base_size = 320
+        elif self.name == 'raabin':
+            base_size = 480
 
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
         img, mask = crop(img, mask, self.size)
         img, mask = hflip(img, mask, p=0.5)
-        # img, mask = cutout_circular_region(img, mask, radius = 20, p = 0.5)
 
         if self.mode == 'train' or self.mode == 'warm_up':
             return normalize(img, mask)
-
-        if not isinstance(img, Image.Image):
-            img, mask = Image.fromarray(img), Image.fromarray(mask)
 
         img_weak, img_strong = deepcopy(img), deepcopy(img)
 
@@ -155,13 +158,9 @@ class SemiDataset(Dataset):
 
             img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
             img_strong = blur(img_strong, p=0.5)
-            if self.name == 'lisc':
-                img_strong, mask = cutout_circular_region(
-                    img_strong, mask, p=0.5)
-            else:
-                img_strong, mask = cutout(img_strong, mask)
-
             # cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)
+            # img_strong, mask = cutout_circular_region(img_strong, mask, p=0.5)
+            img_strong, mask = cutout(img_strong, mask, p=0.5)
 
         img_strong, mask = normalize(img_strong, mask)
 

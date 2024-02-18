@@ -143,7 +143,7 @@ def cutout(img, mask, p=0.5, size_min=0.02, size_max=0.4, ratio_1=0.3,
     return img, mask
 
 
-def cutout_circular_region(image, msk, p, size_min=0.02, size_max=0.4, center=None, pixel_level=True, value_min=0, value_max=255,):
+def cutout_circular_region(image, msk, radius, p, center=None, pixel_level=True, value_min=0, value_max=255,):
     """
     Applies CutOut augmentation by cutting out a circular region from the image.
 
@@ -160,14 +160,6 @@ def cutout_circular_region(image, msk, p, size_min=0.02, size_max=0.4, center=No
     if random.random() < p:
         image = np.array(image)
         msk = np.array(msk)
-        img_h, img_w, img_c = image.shape
-
-        while True:
-            area = np.random.uniform(size_min, size_max) * img_h * img_w
-            radius = int(np.sqrt(area) / np.pi)
-
-            if radius < img_h and radius < img_w:
-                break
 
         if center is None:
             x = np.random.randint(radius, image.shape[1] - radius)
@@ -180,13 +172,8 @@ def cutout_circular_region(image, msk, p, size_min=0.02, size_max=0.4, center=No
 
         cv2.circle(mask, (x, y), radius, (255), thickness=-1)
 
-        random_values = np.random.uniform(
-            value_min, value_max, image.shape).astype(image.dtype)
-
-        # Apply random values to the image where the mask is
-        for i in range(image.shape[2]):  # iterate over channels
-            image[:, :, i][mask == 255] = random_values[:, :, i][mask == 255]
-
+        # Assuming you want to cut out to black; change as needed
+        image[mask == 255] = np.random.uniform(0, 255)
         msk[mask == 255] = 0
 
         return image, msk
