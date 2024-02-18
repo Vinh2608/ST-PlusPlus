@@ -39,7 +39,7 @@ def parse_args():
     parser.add_argument('--data-root', type=str, required=True)
 
     parser.add_argument('--dataset', type=str, choices=[
-                        'pascal', 'cityscapes', 'dataset1', 'dataset2', 'lisc'], default='pascal')
+                        'pascal', 'cityscapes', 'dataset1', 'dataset2', 'lisc', 'raabin'], default='pascal')
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--batch-size-consistency', type=int, default=16)
     parser.add_argument('--lr', type=float, default=None)
@@ -128,7 +128,7 @@ def main(args):
                 filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st++log', level=logging.INFO)
         else:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st.log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st_extra_nang.log', level=logging.INFO)
 
     trainloader_labeled_loader = DataLoader(trainset_labeled, batch_size=args.batch_size, shuffle=True,
                                             pin_memory=True, num_workers=16, drop_last=True)
@@ -317,7 +317,7 @@ def init_basic_elems(args):
     # This is old code
     # model = model_zoo[args.model](args.backbone, 21 if args.dataset == 'pascal' else 19)
 
-    # This is for dataset1 and dataset2
+    # This is for dataset1 and dataset2, lisc, raabin
     model = model_zoo[args.model](args.backbone, 3)
 
     head_lr_multiple = 10.0
@@ -568,13 +568,13 @@ if __name__ == '__main__':
 
     if args.epochs is None:
         args.epochs = {'pascal': 80, 'cityscapes': 240,
-                       'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
+                       'dataset1': 100, 'dataset2': 100, 'lisc': 100, 'raabin': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009,
-                   'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
+                   'dataset2': 0.0009, 'lisc': 0.0009, 'raabin': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.warm_up is None:
         args.warm_up = {'pascal': 20, 'cityscapes': 20,
-                        'dataset1': 20, 'dataset2': 30, 'lisc': 30}[args.dataset]
+                        'dataset1': 20, 'dataset2': 30, 'lisc': 30, 'raabin': 30}[args.dataset]
 
     if args.crop_size is None:
         if args.dataset == 'dataset1':
@@ -586,6 +586,10 @@ if __name__ == '__main__':
         elif args.dataset == 'lisc':
             args.crop_size = {'pascal': 321, 'cityscapes': 721,
                               'dataset2': 320, 'lisc': 128}[args.dataset]
+        elif args.dataset == 'raabin':
+            args.crop_size = {'pascal': 321, 'cityscapes': 721,
+                              'dataset2': 320, 'lisc': 128, 'raabin': 480}[args.dataset]
+
 
     print()
     print(args)

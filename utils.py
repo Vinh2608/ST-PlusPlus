@@ -1,7 +1,6 @@
 import numpy as np
 from PIL import Image
 import torch
-import ramps
 
 def count_params(model):
     param_num = sum(p.numel() for p in model.parameters())
@@ -73,14 +72,16 @@ def color_map(dataset='pascal'):
         cmap[17] = np.array([0,  0, 230])
         cmap[18] = np.array([119, 11, 32])
     
-    else:
+    elif dataset == 'dataset1' or dataset == 'dataset2' or dataset == 'lisc':
         cmap[0] = np.array([0, 0, 0])
         cmap[1] = np.array([255, 255, 255])
         cmap[2] = np.array([128, 128, 128])
     
+    elif dataset == 'raabin':
+        cmap[0] = np.array([0, 0, 0])
+        cmap[1] = np.array([100, 100, 100])
+        cmap[2] = np.array([255, 255, 255])
         
-
-
     return cmap
 
 class consistency_weight(object):

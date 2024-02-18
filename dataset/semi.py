@@ -113,9 +113,15 @@ class SemiDataset(Dataset):
             mask [mask == 50] = 0
             mask [mask == 24] = 0
 
-        mask[mask == 0] = 0
-        mask[mask == 255] = 1
-        mask[mask == 128] = 2
+        if self.name != 'raabin':
+            mask[mask == 0] = 0
+            mask[mask == 255] = 1
+            mask[mask == 128] = 2
+        elif self.name == 'raabin':
+            mask[mask == 0] = 0
+            mask[mask == 255] = 2
+            mask[mask == 100] = 1
+
 
         mask = Image.fromarray(mask)
         # basic augmentation on all training images
@@ -124,6 +130,8 @@ class SemiDataset(Dataset):
             base_size = 128
         elif self.name == 'dataset2':
             base_size = 320
+        elif self.name == 'raabin':
+            base_size = 480
         
         img, mask = resize(img, mask, base_size, (0.5, 2.0))
         img, mask = crop(img, mask, self.size)
