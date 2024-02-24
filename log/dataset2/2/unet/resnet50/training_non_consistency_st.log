@@ -1,0 +1,32 @@
+INFO:root:{'backbone': 'resnet50',
+ 'batch_size': 16,
+ 'batch_size_consistency': 16,
+ 'conf_thres': 0.95,
+ 'config': 'configs/dataset2.yaml',
+ 'consistency_training': False,
+ 'crop_size': 320,
+ 'data_root': './',
+ 'dataset': 'dataset2',
+ 'epochs': 100,
+ 'labeled_id_path': 'dataset/splits/dataset2/1_4/split_random/labeled.txt',
+ 'lr': 0.0009,
+ 'model': 'unet',
+ 'ngpus': 1,
+ 'plus': False,
+ 'pseudo_consistency_mask_path': None,
+ 'pseudo_mask_path': 'outdir/pseudo_masks/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/second_time',
+ 'rand_thres': 0.8,
+ 'reliable_id_path': None,
+ 'save_path': 'outdir/models/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/second_time',
+ 'time': 2,
+ 'unlabeled_id_path': 'dataset/splits/dataset2/1_4/split_random/unlabeled.txt',
+ 'warm_up': 30}
+
+INFO:root:Training supervised with consistency on unlabeled images
+INFO:root:Epoch: 0, Iteration: 1, Loss: 1.1295816898345947
+INFO:root:Epoch: 0, Iteration: 2, Loss: 1.0742650032043457
+INFO:root:Validation set mIOU: 8.759212088249118
+INFO:root:Epoch: 1, Iteration: 3, Loss: 0.9466351270675659
+INFO:root:Epoch: 1, Iteration: 4, Loss: 0.8780537247657776
+INFO:root:Validation set mIOU: 12.00049597034883
+INFO:root:Epoch: 2, Iteration: 5, Loss: 0.815504252910614

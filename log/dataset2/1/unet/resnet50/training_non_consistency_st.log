@@ -1,0 +1,2252 @@
+INFO:root:{'backbone': 'resnet50',
+ 'batch_size': 16,
+ 'batch_size_consistency': 16,
+ 'conf_thres': 0.95,
+ 'config': 'configs/dataset2.yaml',
+ 'consistency_training': False,
+ 'crop_size': 320,
+ 'data_root': './',
+ 'dataset': 'dataset2',
+ 'epochs': 100,
+ 'labeled_id_path': 'dataset/splits/dataset2/1_4/split_random/labeled.txt',
+ 'lr': 0.0009,
+ 'model': 'unet',
+ 'ngpus': 1,
+ 'plus': False,
+ 'pseudo_consistency_mask_path': None,
+ 'pseudo_mask_path': 'outdir/pseudo_masks/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/first_time',
+ 'rand_thres': 0.8,
+ 'reliable_id_path': None,
+ 'save_path': 'outdir/models/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/first_time',
+ 'time': 1,
+ 'unlabeled_id_path': 'dataset/splits/dataset2/1_4/split_random/unlabeled.txt',
+ 'warm_up': 30}
+
+INFO:root:Training supervised with consistency on unlabeled images
+INFO:root:Epoch: 0, Iteration: 1, Loss: 1.051630973815918
+INFO:root:Epoch: 0, Iteration: 2, Loss: 0.9906447529792786
+INFO:root:Validation set mIOU: 17.0611958588485
+INFO:root:Epoch: 1, Iteration: 3, Loss: 0.9272826313972473
+INFO:root:Epoch: 1, Iteration: 4, Loss: 0.857645571231842
+INFO:root:Validation set mIOU: 45.60557252970215
+INFO:root:Epoch: 2, Iteration: 5, Loss: 0.7890926003456116
+INFO:root:Epoch: 2, Iteration: 6, Loss: 0.7646510601043701
+INFO:root:Validation set mIOU: 46.77247852373942
+INFO:root:Epoch: 3, Iteration: 7, Loss: 0.7679120898246765
+INFO:root:Epoch: 3, Iteration: 8, Loss: 0.726693332195282
+INFO:root:Validation set mIOU: 50.359347374489005
+INFO:root:Epoch: 4, Iteration: 9, Loss: 0.7105110883712769
+INFO:root:Epoch: 4, Iteration: 10, Loss: 0.710114598274231
+INFO:root:Validation set mIOU: 49.82510351445218
+INFO:root:Epoch: 5, Iteration: 11, Loss: 0.7082061767578125
+INFO:root:Epoch: 5, Iteration: 12, Loss: 0.6801616549491882
+INFO:root:Validation set mIOU: 51.99613636674316
+INFO:root:Epoch: 6, Iteration: 13, Loss: 0.6659948229789734
+INFO:root:Epoch: 6, Iteration: 14, Loss: 0.6534597277641296
+INFO:root:Validation set mIOU: 52.66827950452261
+INFO:root:Epoch: 7, Iteration: 15, Loss: 0.6530991196632385
+INFO:root:Epoch: 7, Iteration: 16, Loss: 0.638694167137146
+INFO:root:Validation set mIOU: 54.20429016626021
+INFO:root:Epoch: 8, Iteration: 17, Loss: 0.6435542702674866
+INFO:root:Epoch: 8, Iteration: 18, Loss: 0.6553487777709961
+INFO:root:Validation set mIOU: 47.31391524891871
+INFO:root:Epoch: 9, Iteration: 19, Loss: 0.6321631073951721
+INFO:root:Epoch: 9, Iteration: 20, Loss: 0.6327088475227356
+INFO:root:Validation set mIOU: 49.849869864467315
+INFO:root:Epoch: 10, Iteration: 21, Loss: 0.6215474605560303
+INFO:root:Epoch: 10, Iteration: 22, Loss: 0.6201327443122864
+INFO:root:Validation set mIOU: 55.4478064627079
+INFO:root:Epoch: 11, Iteration: 23, Loss: 0.6233635544776917
+INFO:root:Epoch: 11, Iteration: 24, Loss: 0.6195825338363647
+INFO:root:Validation set mIOU: 55.353738506564675
+INFO:root:Epoch: 12, Iteration: 25, Loss: 0.6239991784095764
+INFO:root:Epoch: 12, Iteration: 26, Loss: 0.6049551367759705
+INFO:root:Validation set mIOU: 53.72473361867821
+INFO:root:Epoch: 13, Iteration: 27, Loss: 0.6173067092895508
+INFO:root:Epoch: 13, Iteration: 28, Loss: 0.5943456292152405
+INFO:root:Validation set mIOU: 55.30571124035381
+INFO:root:Epoch: 14, Iteration: 29, Loss: 0.5927531719207764
+INFO:root:Epoch: 14, Iteration: 30, Loss: 0.6005355715751648
+INFO:root:Validation set mIOU: 59.133964410998054
+INFO:root:Epoch: 15, Iteration: 31, Loss: 0.6229634284973145
+INFO:root:Epoch: 15, Iteration: 32, Loss: 0.611619770526886
+INFO:root:Validation set mIOU: 61.785610426379236
+INFO:root:Epoch: 16, Iteration: 33, Loss: 0.6005707383155823
+INFO:root:Epoch: 16, Iteration: 34, Loss: 0.6259299516677856
+INFO:root:Validation set mIOU: 64.24273775273531
+INFO:root:Epoch: 17, Iteration: 35, Loss: 0.6045703291893005
+INFO:root:Epoch: 17, Iteration: 36, Loss: 0.5995883941650391
+INFO:root:Validation set mIOU: 67.34121328479968
+INFO:root:Epoch: 18, Iteration: 37, Loss: 0.5995324850082397
+INFO:root:Epoch: 18, Iteration: 38, Loss: 0.6165257096290588
+INFO:root:Validation set mIOU: 68.0623098277208
+INFO:root:Epoch: 19, Iteration: 39, Loss: 0.5909329652786255
+INFO:root:Epoch: 19, Iteration: 40, Loss: 0.6194149851799011
+INFO:root:Validation set mIOU: 66.66062025463415
+INFO:root:Epoch: 20, Iteration: 41, Loss: 0.5983563661575317
+INFO:root:Epoch: 20, Iteration: 42, Loss: 0.5948758721351624
+INFO:root:Validation set mIOU: 68.2748196032628
+INFO:root:Epoch: 21, Iteration: 43, Loss: 0.6054888367652893
+INFO:root:Epoch: 21, Iteration: 44, Loss: 0.6073769330978394
+INFO:root:Validation set mIOU: 65.12630022235378
+INFO:root:Epoch: 22, Iteration: 45, Loss: 0.6045256853103638
+INFO:root:Epoch: 22, Iteration: 46, Loss: 0.6149188876152039
+INFO:root:Validation set mIOU: 61.33349727691307
+INFO:root:Epoch: 23, Iteration: 47, Loss: 0.593021035194397
+INFO:root:Epoch: 23, Iteration: 48, Loss: 0.6161239147186279
+INFO:root:Validation set mIOU: 61.52200137535407
+INFO:root:Epoch: 24, Iteration: 49, Loss: 0.5842742919921875
+INFO:root:Epoch: 24, Iteration: 50, Loss: 0.578216552734375
+INFO:root:Validation set mIOU: 67.25112374625371
+INFO:root:Epoch: 25, Iteration: 51, Loss: 0.585154116153717
+INFO:root:Epoch: 25, Iteration: 52, Loss: 0.5853471755981445
+INFO:root:Validation set mIOU: 74.14514436120156
+INFO:root:Epoch: 26, Iteration: 53, Loss: 0.5853771567344666
+INFO:root:Epoch: 26, Iteration: 54, Loss: 0.5967524647712708
+INFO:root:Validation set mIOU: 75.26618280397722
+INFO:root:Epoch: 27, Iteration: 55, Loss: 0.5850698351860046
+INFO:root:Epoch: 27, Iteration: 56, Loss: 0.5987206101417542
+INFO:root:Validation set mIOU: 73.86339217821582
+INFO:root:Epoch: 28, Iteration: 57, Loss: 0.6085078120231628
+INFO:root:Epoch: 28, Iteration: 58, Loss: 0.5826330184936523
+INFO:root:Validation set mIOU: 74.81340342674395
+INFO:root:Epoch: 29, Iteration: 59, Loss: 0.58351731300354
+INFO:root:Epoch: 29, Iteration: 60, Loss: 0.5950208902359009
+INFO:root:Validation set mIOU: 74.54865887212932
+INFO:root:Epoch: 30, Iteration: 61, Loss: 0.5836944580078125
+INFO:root:Epoch: 30, Iteration: 62, Loss: 0.5796965956687927
+INFO:root:Validation set mIOU: 75.92637470640415
+INFO:root:Epoch: 31, Iteration: 63, Loss: 0.5787596106529236
+INFO:root:Epoch: 31, Iteration: 64, Loss: 0.5779323577880859
+INFO:root:Validation set mIOU: 78.19552696875203
+INFO:root:Epoch: 32, Iteration: 65, Loss: 0.5751991868019104
+INFO:root:Epoch: 32, Iteration: 66, Loss: 0.5881721377372742
+INFO:root:Validation set mIOU: 75.69121289010774
+INFO:root:Epoch: 33, Iteration: 67, Loss: 0.5891671776771545
+INFO:root:Epoch: 33, Iteration: 68, Loss: 0.5875825881958008
+INFO:root:Validation set mIOU: 75.6812472346967
+INFO:root:Epoch: 34, Iteration: 69, Loss: 0.594609260559082
+INFO:root:Epoch: 34, Iteration: 70, Loss: 0.5785937905311584
+INFO:root:Validation set mIOU: 76.2690141436016
+INFO:root:Epoch: 35, Iteration: 71, Loss: 0.5792261958122253
+INFO:root:Epoch: 35, Iteration: 72, Loss: 0.5880078077316284
+INFO:root:Validation set mIOU: 72.30623772839432
+INFO:root:Epoch: 36, Iteration: 73, Loss: 0.5822240114212036
+INFO:root:Epoch: 36, Iteration: 74, Loss: 0.5812698006629944
+INFO:root:Validation set mIOU: 73.11035175325203
+INFO:root:Epoch: 37, Iteration: 75, Loss: 0.5796828866004944
+INFO:root:Epoch: 37, Iteration: 76, Loss: 0.5956223607063293
+INFO:root:Validation set mIOU: 69.60220980247884
+INFO:root:Epoch: 38, Iteration: 77, Loss: 0.5847941637039185
+INFO:root:Epoch: 38, Iteration: 78, Loss: 0.5802616477012634
+INFO:root:Validation set mIOU: 64.93032236721702
+INFO:root:Epoch: 39, Iteration: 79, Loss: 0.5856084823608398
+INFO:root:Epoch: 39, Iteration: 80, Loss: 0.582335352897644
+INFO:root:Validation set mIOU: 65.84918032460135
+INFO:root:Epoch: 40, Iteration: 81, Loss: 0.5774860978126526
+INFO:root:Epoch: 40, Iteration: 82, Loss: 0.5959124565124512
+INFO:root:Validation set mIOU: 68.05281351993656
+INFO:root:Epoch: 41, Iteration: 83, Loss: 0.5816546678543091
+INFO:root:Epoch: 41, Iteration: 84, Loss: 0.5777543187141418
+INFO:root:Validation set mIOU: 77.63467285890901
+INFO:root:Epoch: 42, Iteration: 85, Loss: 0.5901913046836853
+INFO:root:Epoch: 42, Iteration: 86, Loss: 0.6121363043785095
+INFO:root:Validation set mIOU: 73.17522182797074
+INFO:root:Epoch: 43, Iteration: 87, Loss: 0.5765476226806641
+INFO:root:Epoch: 43, Iteration: 88, Loss: 0.625747799873352
+INFO:root:Validation set mIOU: 69.43792032497439
+INFO:root:Epoch: 44, Iteration: 89, Loss: 0.5781998038291931
+INFO:root:Epoch: 44, Iteration: 90, Loss: 0.5894298553466797
+INFO:root:Validation set mIOU: 65.34268305138376
+INFO:root:Epoch: 45, Iteration: 91, Loss: 0.5849788784980774
+INFO:root:Epoch: 45, Iteration: 92, Loss: 0.5887622833251953
+INFO:root:Validation set mIOU: 67.50864456519105
+INFO:root:Epoch: 46, Iteration: 93, Loss: 0.586014986038208
+INFO:root:Epoch: 46, Iteration: 94, Loss: 0.5798094272613525
+INFO:root:Validation set mIOU: 68.90149876124266
+INFO:root:Epoch: 47, Iteration: 95, Loss: 0.5873326063156128
+INFO:root:Epoch: 47, Iteration: 96, Loss: 0.5874012112617493
+INFO:root:Validation set mIOU: 66.34781795870882
+INFO:root:Epoch: 48, Iteration: 97, Loss: 0.5806460380554199
+INFO:root:Epoch: 48, Iteration: 98, Loss: 0.5845730900764465
+INFO:root:Validation set mIOU: 76.02104526963757
+INFO:root:Epoch: 49, Iteration: 99, Loss: 0.5761125087738037
+INFO:root:Epoch: 49, Iteration: 100, Loss: 0.5866780877113342
+INFO:root:Validation set mIOU: 79.19736042812508
+INFO:root:Epoch: 50, Iteration: 101, Loss: 0.579161524772644
+INFO:root:Epoch: 50, Iteration: 102, Loss: 0.5911888480186462
+INFO:root:Validation set mIOU: 79.08321293751595
+INFO:root:Epoch: 51, Iteration: 103, Loss: 0.5837152600288391
+INFO:root:Epoch: 51, Iteration: 104, Loss: 0.5838978886604309
+INFO:root:Validation set mIOU: 76.91957588174219
+INFO:root:Epoch: 52, Iteration: 105, Loss: 0.5864765644073486
+INFO:root:Epoch: 52, Iteration: 106, Loss: 0.6281196475028992
+INFO:root:Validation set mIOU: 76.12761968300697
+INFO:root:Epoch: 53, Iteration: 107, Loss: 0.5819116830825806
+INFO:root:Epoch: 53, Iteration: 108, Loss: 0.5833932161331177
+INFO:root:Validation set mIOU: 76.23579311597219
+INFO:root:Epoch: 54, Iteration: 109, Loss: 0.5925729870796204
+INFO:root:Epoch: 54, Iteration: 110, Loss: 0.5787897109985352
+INFO:root:Validation set mIOU: 73.18543718242655
+INFO:root:Epoch: 55, Iteration: 111, Loss: 0.5833740830421448
+INFO:root:Epoch: 55, Iteration: 112, Loss: 0.5796529650688171
+INFO:root:Validation set mIOU: 74.21413552204537
+INFO:root:Epoch: 56, Iteration: 113, Loss: 0.582311749458313
+INFO:root:Epoch: 56, Iteration: 114, Loss: 0.5912010073661804
+INFO:root:Validation set mIOU: 76.811207325902
+INFO:root:Epoch: 57, Iteration: 115, Loss: 0.580237865447998
+INFO:root:Epoch: 57, Iteration: 116, Loss: 0.5766668319702148
+INFO:root:Validation set mIOU: 78.55122071170203
+INFO:root:Epoch: 58, Iteration: 117, Loss: 0.5950835347175598
+INFO:root:Epoch: 58, Iteration: 118, Loss: 0.5781238675117493
+INFO:root:Validation set mIOU: 80.11196299147768
+INFO:root:Epoch: 59, Iteration: 119, Loss: 0.5789933204650879
+INFO:root:Epoch: 59, Iteration: 120, Loss: 0.5782213807106018
+INFO:root:Validation set mIOU: 79.69033418732651
+INFO:root:Epoch: 60, Iteration: 121, Loss: 0.5806273818016052
+INFO:root:Epoch: 60, Iteration: 122, Loss: 0.5739849805831909
+INFO:root:Validation set mIOU: 79.60356939430649
+INFO:root:Epoch: 61, Iteration: 123, Loss: 0.5781606435775757
+INFO:root:Epoch: 61, Iteration: 124, Loss: 0.5786417126655579
+INFO:root:Validation set mIOU: 78.43590057772244
+INFO:root:Epoch: 62, Iteration: 125, Loss: 0.5847001075744629
+INFO:root:Epoch: 62, Iteration: 126, Loss: 0.570099413394928
+INFO:root:Validation set mIOU: 77.04740001237441
+INFO:root:Epoch: 63, Iteration: 127, Loss: 0.6049399971961975
+INFO:root:Epoch: 63, Iteration: 128, Loss: 0.5704924464225769
+INFO:root:Validation set mIOU: 75.57964804611736
+INFO:root:Epoch: 64, Iteration: 129, Loss: 0.5753921866416931
+INFO:root:Epoch: 64, Iteration: 130, Loss: 0.5736172795295715
+INFO:root:Validation set mIOU: 75.18860151556326
+INFO:root:Epoch: 65, Iteration: 131, Loss: 0.5733035802841187
+INFO:root:Epoch: 65, Iteration: 132, Loss: 0.5734487175941467
+INFO:root:Validation set mIOU: 74.44645517070452
+INFO:root:Epoch: 66, Iteration: 133, Loss: 0.5749222040176392
+INFO:root:Epoch: 66, Iteration: 134, Loss: 0.5736671090126038
+INFO:root:Validation set mIOU: 70.84267369654512
+INFO:root:Epoch: 67, Iteration: 135, Loss: 0.5729681253433228
+INFO:root:Epoch: 67, Iteration: 136, Loss: 0.5694277286529541
+INFO:root:Validation set mIOU: 65.0624212039031
+INFO:root:Epoch: 68, Iteration: 137, Loss: 0.5689783096313477
+INFO:root:Epoch: 68, Iteration: 138, Loss: 0.5832880735397339
+INFO:root:Validation set mIOU: 67.26773989170502
+INFO:root:Epoch: 69, Iteration: 139, Loss: 0.5746067762374878
+INFO:root:Epoch: 69, Iteration: 140, Loss: 0.5708868503570557
+INFO:root:Validation set mIOU: 73.04882451490768
+INFO:root:Epoch: 70, Iteration: 141, Loss: 0.5751907825469971
+INFO:root:Epoch: 70, Iteration: 142, Loss: 0.5748633742332458
+INFO:root:Validation set mIOU: 74.10370610639747
+INFO:root:Epoch: 71, Iteration: 143, Loss: 0.5683735013008118
+INFO:root:Epoch: 71, Iteration: 144, Loss: 0.5804354548454285
+INFO:root:Validation set mIOU: 75.58827080290098
+INFO:root:Epoch: 72, Iteration: 145, Loss: 0.570042073726654
+INFO:root:Epoch: 72, Iteration: 146, Loss: 0.5722568035125732
+INFO:root:Validation set mIOU: 80.16656408191464
+INFO:root:Epoch: 73, Iteration: 147, Loss: 0.5736531615257263
+INFO:root:Epoch: 73, Iteration: 148, Loss: 0.5726644992828369
+INFO:root:Validation set mIOU: 82.0323635466616
+INFO:root:Epoch: 74, Iteration: 149, Loss: 0.5751323103904724
+INFO:root:Epoch: 74, Iteration: 150, Loss: 0.5701949596405029
+INFO:root:Validation set mIOU: 81.8562180157716
+INFO:root:Epoch: 75, Iteration: 151, Loss: 0.5692613124847412
+INFO:root:Epoch: 75, Iteration: 152, Loss: 0.5932400226593018
+INFO:root:Validation set mIOU: 79.40191621110887
+INFO:root:Epoch: 76, Iteration: 153, Loss: 0.5720672607421875
+INFO:root:Epoch: 76, Iteration: 154, Loss: 0.5815777778625488
+INFO:root:Validation set mIOU: 71.8703156229184
+INFO:root:Epoch: 77, Iteration: 155, Loss: 0.5694131255149841
+INFO:root:Epoch: 77, Iteration: 156, Loss: 0.5774245262145996
+INFO:root:Validation set mIOU: 70.4149785411457
+INFO:root:Epoch: 78, Iteration: 157, Loss: 0.5793305039405823
+INFO:root:Epoch: 78, Iteration: 158, Loss: 0.572178304195404
+INFO:root:Validation set mIOU: 69.76284649154898
+INFO:root:Epoch: 79, Iteration: 159, Loss: 0.5722808241844177
+INFO:root:Epoch: 79, Iteration: 160, Loss: 0.5671055316925049
+INFO:root:Validation set mIOU: 73.32030450158746
+INFO:root:Epoch: 80, Iteration: 161, Loss: 0.5681646466255188
+INFO:root:Epoch: 80, Iteration: 162, Loss: 0.570303201675415
+INFO:root:Validation set mIOU: 78.2159252980113
+INFO:root:Epoch: 81, Iteration: 163, Loss: 0.5845745801925659
+INFO:root:Epoch: 81, Iteration: 164, Loss: 0.5688189268112183
+INFO:root:Validation set mIOU: 80.60174202207011
+INFO:root:Epoch: 82, Iteration: 165, Loss: 0.5695914626121521
+INFO:root:Epoch: 82, Iteration: 166, Loss: 0.5722606778144836
+INFO:root:Validation set mIOU: 80.91160842272382
+INFO:root:Epoch: 83, Iteration: 167, Loss: 0.5705435872077942
+INFO:root:Epoch: 83, Iteration: 168, Loss: 0.5685573220252991
+INFO:root:Validation set mIOU: 81.45465863095663
+INFO:root:Epoch: 84, Iteration: 169, Loss: 0.5716944932937622
+INFO:root:Epoch: 84, Iteration: 170, Loss: 0.5642929673194885
+INFO:root:Validation set mIOU: 77.68859393034225
+INFO:root:Epoch: 85, Iteration: 171, Loss: 0.5684974193572998
+INFO:root:Epoch: 85, Iteration: 172, Loss: 0.5718047618865967
+INFO:root:Validation set mIOU: 77.83517900599564
+INFO:root:Epoch: 86, Iteration: 173, Loss: 0.5684854984283447
+INFO:root:Epoch: 86, Iteration: 174, Loss: 0.5688835978507996
+INFO:root:Validation set mIOU: 79.84101039285987
+INFO:root:Epoch: 87, Iteration: 175, Loss: 0.5700560808181763
+INFO:root:Epoch: 87, Iteration: 176, Loss: 0.567146360874176
+INFO:root:Validation set mIOU: 80.09569922253027
+INFO:root:Epoch: 88, Iteration: 177, Loss: 0.5728268623352051
+INFO:root:Epoch: 88, Iteration: 178, Loss: 0.5684711933135986
+INFO:root:Validation set mIOU: 78.81054096414951
+INFO:root:Epoch: 89, Iteration: 179, Loss: 0.5691978335380554
+INFO:root:Epoch: 89, Iteration: 180, Loss: 0.5684131383895874
+INFO:root:Validation set mIOU: 77.76265286696517
+INFO:root:Epoch: 90, Iteration: 181, Loss: 0.5721784234046936
+INFO:root:Epoch: 90, Iteration: 182, Loss: 0.565803587436676
+INFO:root:Validation set mIOU: 80.21156384674383
+INFO:root:Epoch: 91, Iteration: 183, Loss: 0.5687013268470764
+INFO:root:Epoch: 91, Iteration: 184, Loss: 0.5685873031616211
+INFO:root:Validation set mIOU: 81.45850785335642
+INFO:root:Epoch: 92, Iteration: 185, Loss: 0.5683679580688477
+INFO:root:Epoch: 92, Iteration: 186, Loss: 0.5704638957977295
+INFO:root:Validation set mIOU: 81.39978496524574
+INFO:root:Epoch: 93, Iteration: 187, Loss: 0.5714049339294434
+INFO:root:Epoch: 93, Iteration: 188, Loss: 0.5682042241096497
+INFO:root:Validation set mIOU: 81.15032485001329
+INFO:root:Epoch: 94, Iteration: 189, Loss: 0.5753604173660278
+INFO:root:Epoch: 94, Iteration: 190, Loss: 0.5681276917457581
+INFO:root:Validation set mIOU: 80.57686852407576
+INFO:root:Epoch: 95, Iteration: 191, Loss: 0.5675640106201172
+INFO:root:Epoch: 95, Iteration: 192, Loss: 0.5717170834541321
+INFO:root:Validation set mIOU: 80.22050739262743
+INFO:root:Epoch: 96, Iteration: 193, Loss: 0.5687231421470642
+INFO:root:Epoch: 96, Iteration: 194, Loss: 0.5664070844650269
+INFO:root:Validation set mIOU: 78.77812423038492
+INFO:root:Epoch: 97, Iteration: 195, Loss: 0.5717159509658813
+INFO:root:Epoch: 97, Iteration: 196, Loss: 0.5687649250030518
+INFO:root:Validation set mIOU: 78.13644684025812
+INFO:root:Epoch: 98, Iteration: 197, Loss: 0.5721975564956665
+INFO:root:Epoch: 98, Iteration: 198, Loss: 0.5674523115158081
+INFO:root:Validation set mIOU: 78.80590140113591
+INFO:root:Epoch: 99, Iteration: 199, Loss: 0.5659875273704529
+INFO:root:Epoch: 99, Iteration: 200, Loss: 0.5689885020256042
+INFO:root:Validation set mIOU: 79.67405853099658
+INFO:root:Semi-training
+INFO:root:Epoch: 0, Iteration: 1, Loss: 1.0909640789031982
+INFO:root:Epoch: 0, Iteration: 2, Loss: 1.0523786544799805
+INFO:root:Epoch: 0, Iteration: 3, Loss: 0.9337587952613831
+INFO:root:Epoch: 0, Iteration: 4, Loss: 0.8917261958122253
+INFO:root:Epoch: 0, Iteration: 5, Loss: 0.8784849047660828
+INFO:root:Epoch: 0, Iteration: 6, Loss: 0.8409490585327148
+INFO:root:Epoch: 0, Iteration: 7, Loss: 0.7624475955963135
+INFO:root:Validation set mIOU: 44.06914798449229
+INFO:root:Epoch: 1, Iteration: 8, Loss: 0.7684859037399292
+INFO:root:Epoch: 1, Iteration: 9, Loss: 0.7801770567893982
+INFO:root:Epoch: 1, Iteration: 10, Loss: 0.7359626889228821
+INFO:root:Epoch: 1, Iteration: 11, Loss: 0.7242005467414856
+INFO:root:Epoch: 1, Iteration: 12, Loss: 0.7151972651481628
+INFO:root:Epoch: 1, Iteration: 13, Loss: 0.7264230847358704
+INFO:root:Epoch: 1, Iteration: 14, Loss: 0.7116188406944275
+INFO:root:Validation set mIOU: 46.0407875908919
+INFO:root:Epoch: 2, Iteration: 15, Loss: 0.6967385411262512
+INFO:root:Epoch: 2, Iteration: 16, Loss: 0.7187368869781494
+INFO:root:Epoch: 2, Iteration: 17, Loss: 0.6525757312774658
+INFO:root:Epoch: 2, Iteration: 18, Loss: 0.753082275390625
+INFO:root:Epoch: 2, Iteration: 19, Loss: 0.6614013910293579
+INFO:root:Epoch: 2, Iteration: 20, Loss: 0.7230408191680908
+INFO:root:Epoch: 2, Iteration: 21, Loss: 0.7156088948249817
+INFO:root:Validation set mIOU: 32.925542231647036
+INFO:root:Epoch: 3, Iteration: 22, Loss: 0.7340353727340698
+INFO:root:Epoch: 3, Iteration: 23, Loss: 0.6540769934654236
+INFO:root:Epoch: 3, Iteration: 24, Loss: 0.6400737166404724
+INFO:root:Epoch: 3, Iteration: 25, Loss: 0.6624408960342407
+INFO:root:Epoch: 3, Iteration: 26, Loss: 0.6571642756462097
+INFO:root:Epoch: 3, Iteration: 27, Loss: 0.7092035412788391
+INFO:root:Epoch: 3, Iteration: 28, Loss: 0.6485705375671387
+INFO:root:Validation set mIOU: 32.2742813125693
+INFO:root:Epoch: 4, Iteration: 29, Loss: 0.6798421740531921
+INFO:root:Epoch: 4, Iteration: 30, Loss: 0.6397803425788879
+INFO:root:Epoch: 4, Iteration: 31, Loss: 0.6732773780822754
+INFO:root:Epoch: 4, Iteration: 32, Loss: 0.6917973756790161
+INFO:root:Epoch: 4, Iteration: 33, Loss: 0.6698737740516663
+INFO:root:Epoch: 4, Iteration: 34, Loss: 0.6531122922897339
+INFO:root:Epoch: 4, Iteration: 35, Loss: 0.6590949892997742
+INFO:root:Validation set mIOU: 49.91073749304373
+INFO:root:Epoch: 5, Iteration: 36, Loss: 0.6719116568565369
+INFO:root:Epoch: 5, Iteration: 37, Loss: 0.6384448409080505
+INFO:root:Epoch: 5, Iteration: 38, Loss: 0.6377410888671875
+INFO:root:Epoch: 5, Iteration: 39, Loss: 0.635447084903717
+INFO:root:Epoch: 5, Iteration: 40, Loss: 0.6387103199958801
+INFO:root:Epoch: 5, Iteration: 41, Loss: 0.6564249992370605
+INFO:root:Epoch: 5, Iteration: 42, Loss: 0.6281539797782898
+INFO:root:Validation set mIOU: 62.93168857780464
+INFO:root:Epoch: 6, Iteration: 43, Loss: 0.6489935517311096
+INFO:root:Epoch: 6, Iteration: 44, Loss: 0.6545286178588867
+INFO:root:Epoch: 6, Iteration: 45, Loss: 0.6635652184486389
+INFO:root:Epoch: 6, Iteration: 46, Loss: 0.6756491661071777
+INFO:root:Epoch: 6, Iteration: 47, Loss: 0.6465273499488831
+INFO:root:Epoch: 6, Iteration: 48, Loss: 0.6253810524940491
+INFO:root:Epoch: 6, Iteration: 49, Loss: 0.6370053887367249
+INFO:root:Validation set mIOU: 42.49716743197713
+INFO:root:Epoch: 7, Iteration: 50, Loss: 0.6670656204223633
+INFO:root:Epoch: 7, Iteration: 51, Loss: 0.6621569395065308
+INFO:root:Epoch: 7, Iteration: 52, Loss: 0.7382982969284058
+INFO:root:Epoch: 7, Iteration: 53, Loss: 0.6785671710968018
+INFO:root:Epoch: 7, Iteration: 54, Loss: 0.6367839574813843
+INFO:root:Epoch: 7, Iteration: 55, Loss: 0.6371016502380371
+INFO:root:Epoch: 7, Iteration: 56, Loss: 0.6026968955993652
+INFO:root:Validation set mIOU: 47.23997726765484
+INFO:root:Epoch: 8, Iteration: 57, Loss: 0.6728640794754028
+INFO:root:Epoch: 8, Iteration: 58, Loss: 0.6647962927818298
+INFO:root:Epoch: 8, Iteration: 59, Loss: 0.6620467305183411
+INFO:root:Epoch: 8, Iteration: 60, Loss: 0.652411937713623
+INFO:root:Epoch: 8, Iteration: 61, Loss: 0.6530154347419739
+INFO:root:Epoch: 8, Iteration: 62, Loss: 0.642958402633667
+INFO:root:Epoch: 8, Iteration: 63, Loss: 0.6831650137901306
+INFO:root:Validation set mIOU: 51.426418193798305
+INFO:root:Epoch: 9, Iteration: 64, Loss: 0.6782692670822144
+INFO:root:Epoch: 9, Iteration: 65, Loss: 0.7011804580688477
+INFO:root:Epoch: 9, Iteration: 66, Loss: 0.6769317388534546
+INFO:root:Epoch: 9, Iteration: 67, Loss: 0.6501976847648621
+INFO:root:Epoch: 9, Iteration: 68, Loss: 0.6477505564689636
+INFO:root:Epoch: 9, Iteration: 69, Loss: 0.6329528093338013
+INFO:root:Epoch: 9, Iteration: 70, Loss: 0.6370030641555786
+INFO:root:Validation set mIOU: 59.37952414103842
+INFO:root:Epoch: 10, Iteration: 71, Loss: 0.6028662323951721
+INFO:root:Epoch: 10, Iteration: 72, Loss: 0.6583050489425659
+INFO:root:Epoch: 10, Iteration: 73, Loss: 0.6657162308692932
+INFO:root:Epoch: 10, Iteration: 74, Loss: 0.6723984479904175
+INFO:root:Epoch: 10, Iteration: 75, Loss: 0.6632936596870422
+INFO:root:Epoch: 10, Iteration: 76, Loss: 0.6451612114906311
+INFO:root:Epoch: 10, Iteration: 77, Loss: 0.6465180516242981
+INFO:root:Validation set mIOU: 45.45066586082596
+INFO:root:Epoch: 11, Iteration: 78, Loss: 0.6512357592582703
+INFO:root:Epoch: 11, Iteration: 79, Loss: 0.6509459018707275
+INFO:root:Epoch: 11, Iteration: 80, Loss: 0.6676218509674072
+INFO:root:Epoch: 11, Iteration: 81, Loss: 0.6667773723602295
+INFO:root:Epoch: 11, Iteration: 82, Loss: 0.6377860307693481
+INFO:root:Epoch: 11, Iteration: 83, Loss: 0.6309762001037598
+INFO:root:Epoch: 11, Iteration: 84, Loss: 0.6187319159507751
+INFO:root:Validation set mIOU: 45.661334806620246
+INFO:root:Epoch: 12, Iteration: 85, Loss: 0.6843382120132446
+INFO:root:Epoch: 12, Iteration: 86, Loss: 0.6151431202888489
+INFO:root:Epoch: 12, Iteration: 87, Loss: 0.614106297492981
+INFO:root:Epoch: 12, Iteration: 88, Loss: 0.6248310804367065
+INFO:root:Epoch: 12, Iteration: 89, Loss: 0.672572672367096
+INFO:root:Epoch: 12, Iteration: 90, Loss: 0.6377336978912354
+INFO:root:Epoch: 12, Iteration: 91, Loss: 0.6897239089012146
+INFO:root:Validation set mIOU: 46.516066857002826
+INFO:root:Epoch: 13, Iteration: 92, Loss: 0.6754454970359802
+INFO:root:Epoch: 13, Iteration: 93, Loss: 0.6107399463653564
+INFO:root:Epoch: 13, Iteration: 94, Loss: 0.6827252507209778
+INFO:root:Epoch: 13, Iteration: 95, Loss: 0.6303437352180481
+INFO:root:Epoch: 13, Iteration: 96, Loss: 0.6353835463523865
+INFO:root:Epoch: 13, Iteration: 97, Loss: 0.664142370223999
+INFO:root:Epoch: 13, Iteration: 98, Loss: 0.7154895067214966
+INFO:root:Validation set mIOU: 52.038366489520506
+INFO:root:Epoch: 14, Iteration: 99, Loss: 0.6299373507499695
+INFO:root:Epoch: 14, Iteration: 100, Loss: 0.6699204444885254
+INFO:root:Epoch: 14, Iteration: 101, Loss: 0.6863104701042175
+INFO:root:Epoch: 14, Iteration: 102, Loss: 0.6451095342636108
+INFO:root:Epoch: 14, Iteration: 103, Loss: 0.6685076355934143
+INFO:root:Epoch: 14, Iteration: 104, Loss: 0.6388729810714722
+INFO:root:Epoch: 14, Iteration: 105, Loss: 0.6668113470077515
+INFO:root:Validation set mIOU: 59.756627769716786
+INFO:root:Epoch: 15, Iteration: 106, Loss: 0.6747018694877625
+INFO:root:Epoch: 15, Iteration: 107, Loss: 0.6300092339515686
+INFO:root:Epoch: 15, Iteration: 108, Loss: 0.6310340166091919
+INFO:root:Epoch: 15, Iteration: 109, Loss: 0.6868934035301208
+INFO:root:Epoch: 15, Iteration: 110, Loss: 0.6563709378242493
+INFO:root:Epoch: 15, Iteration: 111, Loss: 0.6098606586456299
+INFO:root:Epoch: 15, Iteration: 112, Loss: 0.6423290371894836
+INFO:root:Validation set mIOU: 61.179131931119514
+INFO:root:Epoch: 16, Iteration: 113, Loss: 0.7118260264396667
+INFO:root:Epoch: 16, Iteration: 114, Loss: 0.6595514416694641
+INFO:root:Epoch: 16, Iteration: 115, Loss: 0.6377392411231995
+INFO:root:Epoch: 16, Iteration: 116, Loss: 0.6424136757850647
+INFO:root:Epoch: 16, Iteration: 117, Loss: 0.6342177987098694
+INFO:root:Epoch: 16, Iteration: 118, Loss: 0.6186734437942505
+INFO:root:Epoch: 16, Iteration: 119, Loss: 0.6736046075820923
+INFO:root:Validation set mIOU: 60.049221187842626
+INFO:root:Epoch: 17, Iteration: 120, Loss: 0.6382131576538086
+INFO:root:Epoch: 17, Iteration: 121, Loss: 0.6268666982650757
+INFO:root:Epoch: 17, Iteration: 122, Loss: 0.690018355846405
+INFO:root:Epoch: 17, Iteration: 123, Loss: 0.6154665946960449
+INFO:root:Epoch: 17, Iteration: 124, Loss: 0.6311051845550537
+INFO:root:Epoch: 17, Iteration: 125, Loss: 0.6352701187133789
+INFO:root:Epoch: 17, Iteration: 126, Loss: 0.6597990989685059
+INFO:root:Validation set mIOU: 54.45824793531527
+INFO:root:Epoch: 18, Iteration: 127, Loss: 0.6362357139587402
+INFO:root:Epoch: 18, Iteration: 128, Loss: 0.6332789063453674
+INFO:root:Epoch: 18, Iteration: 129, Loss: 0.6271617412567139
+INFO:root:Epoch: 18, Iteration: 130, Loss: 0.6347633600234985
+INFO:root:Epoch: 18, Iteration: 131, Loss: 0.6782608032226562
+INFO:root:Epoch: 18, Iteration: 132, Loss: 0.6291492581367493
+INFO:root:Epoch: 18, Iteration: 133, Loss: 0.7227494716644287
+INFO:root:Validation set mIOU: 64.05605778311069
+INFO:root:Epoch: 19, Iteration: 134, Loss: 0.6408483386039734
+INFO:root:Epoch: 19, Iteration: 135, Loss: 0.6527291536331177
+INFO:root:Epoch: 19, Iteration: 136, Loss: 0.6411663889884949
+INFO:root:Epoch: 19, Iteration: 137, Loss: 0.6332998871803284
+INFO:root:Epoch: 19, Iteration: 138, Loss: 0.6409145593643188
+INFO:root:Epoch: 19, Iteration: 139, Loss: 0.6512030959129333
+INFO:root:Epoch: 19, Iteration: 140, Loss: 0.631038248538971
+INFO:root:Validation set mIOU: 35.58390817801308
+INFO:root:Epoch: 20, Iteration: 141, Loss: 0.6315286755561829
+INFO:root:Epoch: 20, Iteration: 142, Loss: 0.6593288779258728
+INFO:root:Epoch: 20, Iteration: 143, Loss: 0.7086015939712524
+INFO:root:Epoch: 20, Iteration: 144, Loss: 0.6279226541519165
+INFO:root:Epoch: 20, Iteration: 145, Loss: 0.6975746154785156
+INFO:root:Epoch: 20, Iteration: 146, Loss: 0.6494359374046326
+INFO:root:Epoch: 20, Iteration: 147, Loss: 0.6565839052200317
+INFO:root:Validation set mIOU: 50.62261140037835
+INFO:root:Epoch: 21, Iteration: 148, Loss: 0.6364904642105103
+INFO:root:Epoch: 21, Iteration: 149, Loss: 0.6588571667671204
+INFO:root:Epoch: 21, Iteration: 150, Loss: 0.6708071231842041
+INFO:root:Epoch: 21, Iteration: 151, Loss: 0.6203761696815491
+INFO:root:Epoch: 21, Iteration: 152, Loss: 0.618927538394928
+INFO:root:Epoch: 21, Iteration: 153, Loss: 0.6236115097999573
+INFO:root:Epoch: 21, Iteration: 154, Loss: 0.6241492629051208
+INFO:root:Validation set mIOU: 51.839883762827476
+INFO:root:Epoch: 22, Iteration: 155, Loss: 0.6250995993614197
+INFO:root:Epoch: 22, Iteration: 156, Loss: 0.6434369683265686
+INFO:root:Epoch: 22, Iteration: 157, Loss: 0.684410572052002
+INFO:root:Epoch: 22, Iteration: 158, Loss: 0.6480370759963989
+INFO:root:Epoch: 22, Iteration: 159, Loss: 0.6549074053764343
+INFO:root:Epoch: 22, Iteration: 160, Loss: 0.6361950635910034
+INFO:root:Epoch: 22, Iteration: 161, Loss: 0.6438876986503601
+INFO:root:Validation set mIOU: 62.80247835682076
+INFO:root:Epoch: 23, Iteration: 162, Loss: 0.6482145190238953
+INFO:root:Epoch: 23, Iteration: 163, Loss: 0.6681484580039978
+INFO:root:Epoch: 23, Iteration: 164, Loss: 0.6227291226387024
+INFO:root:Epoch: 23, Iteration: 165, Loss: 0.658283531665802
+INFO:root:Epoch: 23, Iteration: 166, Loss: 0.6158592700958252
+INFO:root:Epoch: 23, Iteration: 167, Loss: 0.673084557056427
+INFO:root:Epoch: 23, Iteration: 168, Loss: 0.6896216869354248
+INFO:root:Validation set mIOU: 65.81357758902325
+INFO:root:Epoch: 24, Iteration: 169, Loss: 0.6275565028190613
+INFO:root:Epoch: 24, Iteration: 170, Loss: 0.6667318940162659
+INFO:root:Epoch: 24, Iteration: 171, Loss: 0.6658549308776855
+INFO:root:Epoch: 24, Iteration: 172, Loss: 0.6483234167098999
+INFO:root:Epoch: 24, Iteration: 173, Loss: 0.6598990559577942
+INFO:root:Epoch: 24, Iteration: 174, Loss: 0.6231455206871033
+INFO:root:Epoch: 24, Iteration: 175, Loss: 0.6745854616165161
+INFO:root:Validation set mIOU: 55.24844542426014
+INFO:root:Epoch: 25, Iteration: 176, Loss: 0.61773681640625
+INFO:root:Epoch: 25, Iteration: 177, Loss: 0.6207101345062256
+INFO:root:Epoch: 25, Iteration: 178, Loss: 0.6322416663169861
+INFO:root:Epoch: 25, Iteration: 179, Loss: 0.6218897700309753
+INFO:root:Epoch: 25, Iteration: 180, Loss: 0.6766436696052551
+INFO:root:Epoch: 25, Iteration: 181, Loss: 0.6980987191200256
+INFO:root:Epoch: 25, Iteration: 182, Loss: 0.6250090599060059
+INFO:root:Validation set mIOU: 68.64270617250709
+INFO:root:Epoch: 26, Iteration: 183, Loss: 0.6439411640167236
+INFO:root:Epoch: 26, Iteration: 184, Loss: 0.605056881904602
+INFO:root:Epoch: 26, Iteration: 185, Loss: 0.606124222278595
+INFO:root:Epoch: 26, Iteration: 186, Loss: 0.6417492628097534
+INFO:root:Epoch: 26, Iteration: 187, Loss: 0.6546695828437805
+INFO:root:Epoch: 26, Iteration: 188, Loss: 0.6296113133430481
+INFO:root:Epoch: 26, Iteration: 189, Loss: 0.6594175696372986
+INFO:root:Validation set mIOU: 63.4264657978351
+INFO:root:Epoch: 27, Iteration: 190, Loss: 0.6289060711860657
+INFO:root:Epoch: 27, Iteration: 191, Loss: 0.6489547491073608
+INFO:root:Epoch: 27, Iteration: 192, Loss: 0.634016215801239
+INFO:root:Epoch: 27, Iteration: 193, Loss: 0.6086084246635437
+INFO:root:Epoch: 27, Iteration: 194, Loss: 0.6162557601928711
+INFO:root:Epoch: 27, Iteration: 195, Loss: 0.6437726616859436
+INFO:root:Epoch: 27, Iteration: 196, Loss: 0.6025118827819824
+INFO:root:Validation set mIOU: 69.23075826991622
+INFO:root:Epoch: 28, Iteration: 197, Loss: 0.6676801443099976
+INFO:root:Epoch: 28, Iteration: 198, Loss: 0.6302522420883179
+INFO:root:Epoch: 28, Iteration: 199, Loss: 0.6148707866668701
+INFO:root:Epoch: 28, Iteration: 200, Loss: 0.6428073644638062
+INFO:root:Epoch: 28, Iteration: 201, Loss: 0.6109296679496765
+INFO:root:Epoch: 28, Iteration: 202, Loss: 0.6232460141181946
+INFO:root:Epoch: 28, Iteration: 203, Loss: 0.6740533709526062
+INFO:root:Validation set mIOU: 57.6022393631814
+INFO:root:Epoch: 29, Iteration: 204, Loss: 0.648350715637207
+INFO:root:Epoch: 29, Iteration: 205, Loss: 0.5994846224784851
+INFO:root:Epoch: 29, Iteration: 206, Loss: 0.6434933543205261
+INFO:root:Epoch: 29, Iteration: 207, Loss: 0.670313835144043
+INFO:root:Epoch: 29, Iteration: 208, Loss: 0.6298635005950928
+INFO:root:Epoch: 29, Iteration: 209, Loss: 0.6554390788078308
+INFO:root:Epoch: 29, Iteration: 210, Loss: 0.6250191926956177
+INFO:root:Validation set mIOU: 59.59054549138575
+INFO:root:Epoch: 30, Iteration: 211, Loss: 0.6312955617904663
+INFO:root:Epoch: 30, Iteration: 212, Loss: 0.6335188746452332
+INFO:root:Epoch: 30, Iteration: 213, Loss: 0.6983796954154968
+INFO:root:Epoch: 30, Iteration: 214, Loss: 0.6558186411857605
+INFO:root:Epoch: 30, Iteration: 215, Loss: 0.6415134072303772
+INFO:root:Epoch: 30, Iteration: 216, Loss: 0.6205353736877441
+INFO:root:Epoch: 30, Iteration: 217, Loss: 0.6223875880241394
+INFO:root:Validation set mIOU: 47.487101740482835
+INFO:root:Epoch: 31, Iteration: 218, Loss: 0.6211956739425659
+INFO:root:Epoch: 31, Iteration: 219, Loss: 0.637938916683197
+INFO:root:Epoch: 31, Iteration: 220, Loss: 0.6428169012069702
+INFO:root:Epoch: 31, Iteration: 221, Loss: 0.6276518106460571
+INFO:root:Epoch: 31, Iteration: 222, Loss: 0.6443871855735779
+INFO:root:Epoch: 31, Iteration: 223, Loss: 0.6669455766677856
+INFO:root:Epoch: 31, Iteration: 224, Loss: 0.676887571811676
+INFO:root:Validation set mIOU: 50.69372500084
+INFO:root:Epoch: 32, Iteration: 225, Loss: 0.6374157667160034
+INFO:root:Epoch: 32, Iteration: 226, Loss: 0.656847357749939
+INFO:root:Epoch: 32, Iteration: 227, Loss: 0.6659240126609802
+INFO:root:Epoch: 32, Iteration: 228, Loss: 0.6213770508766174
+INFO:root:Epoch: 32, Iteration: 229, Loss: 0.616701602935791
+INFO:root:Epoch: 32, Iteration: 230, Loss: 0.6305047869682312
+INFO:root:Epoch: 32, Iteration: 231, Loss: 0.6839284300804138
+INFO:root:Validation set mIOU: 57.28902070820329
+INFO:root:Epoch: 33, Iteration: 232, Loss: 0.6265029311180115
+INFO:root:Epoch: 33, Iteration: 233, Loss: 0.6661175489425659
+INFO:root:Epoch: 33, Iteration: 234, Loss: 0.6259353160858154
+INFO:root:Epoch: 33, Iteration: 235, Loss: 0.6395912170410156
+INFO:root:Epoch: 33, Iteration: 236, Loss: 0.6625350713729858
+INFO:root:Epoch: 33, Iteration: 237, Loss: 0.6659642457962036
+INFO:root:Epoch: 33, Iteration: 238, Loss: 0.6186496019363403
+INFO:root:Validation set mIOU: 59.13049046182189
+INFO:root:Epoch: 34, Iteration: 239, Loss: 0.6745748519897461
+INFO:root:Epoch: 34, Iteration: 240, Loss: 0.6829823851585388
+INFO:root:Epoch: 34, Iteration: 241, Loss: 0.6297558546066284
+INFO:root:Epoch: 34, Iteration: 242, Loss: 0.6339526176452637
+INFO:root:Epoch: 34, Iteration: 243, Loss: 0.6774736046791077
+INFO:root:Epoch: 34, Iteration: 244, Loss: 0.6406249403953552
+INFO:root:Epoch: 34, Iteration: 245, Loss: 0.604327917098999
+INFO:root:Validation set mIOU: 58.4984928738723
+INFO:root:Epoch: 35, Iteration: 246, Loss: 0.6195800304412842
+INFO:root:Epoch: 35, Iteration: 247, Loss: 0.635128378868103
+INFO:root:Epoch: 35, Iteration: 248, Loss: 0.699835479259491
+INFO:root:Epoch: 35, Iteration: 249, Loss: 0.6367729306221008
+INFO:root:Epoch: 35, Iteration: 250, Loss: 0.6359475255012512
+INFO:root:Epoch: 35, Iteration: 251, Loss: 0.6290287375450134
+INFO:root:Epoch: 35, Iteration: 252, Loss: 0.6133584976196289
+INFO:root:Validation set mIOU: 54.75390618145202
+INFO:root:Epoch: 36, Iteration: 253, Loss: 0.6704033613204956
+INFO:root:Epoch: 36, Iteration: 254, Loss: 0.6289418935775757
+INFO:root:Epoch: 36, Iteration: 255, Loss: 0.5903311371803284
+INFO:root:Epoch: 36, Iteration: 256, Loss: 0.664239227771759
+INFO:root:Epoch: 36, Iteration: 257, Loss: 0.6500451564788818
+INFO:root:Epoch: 36, Iteration: 258, Loss: 0.6084421277046204
+INFO:root:Epoch: 36, Iteration: 259, Loss: 0.6109344363212585
+INFO:root:Validation set mIOU: 63.70574511746292
+INFO:root:Epoch: 37, Iteration: 260, Loss: 0.6393516659736633
+INFO:root:Epoch: 37, Iteration: 261, Loss: 0.7018970847129822
+INFO:root:Epoch: 37, Iteration: 262, Loss: 0.6348931193351746
+INFO:root:Epoch: 37, Iteration: 263, Loss: 0.6228154897689819
+INFO:root:Epoch: 37, Iteration: 264, Loss: 0.5902345180511475
+INFO:root:Epoch: 37, Iteration: 265, Loss: 0.631859540939331
+INFO:root:Epoch: 37, Iteration: 266, Loss: 0.6555371284484863
+INFO:root:Validation set mIOU: 65.764534006235
+INFO:root:Epoch: 38, Iteration: 267, Loss: 0.6102296710014343
+INFO:root:Epoch: 38, Iteration: 268, Loss: 0.6482443809509277
+INFO:root:Epoch: 38, Iteration: 269, Loss: 0.6130560636520386
+INFO:root:Epoch: 38, Iteration: 270, Loss: 0.623825192451477
+INFO:root:Epoch: 38, Iteration: 271, Loss: 0.6200882792472839
+INFO:root:Epoch: 38, Iteration: 272, Loss: 0.6647141575813293
+INFO:root:Epoch: 38, Iteration: 273, Loss: 0.6408876776695251
+INFO:root:Validation set mIOU: 61.087057629788866
+INFO:root:Epoch: 39, Iteration: 274, Loss: 0.6447724103927612
+INFO:root:Epoch: 39, Iteration: 275, Loss: 0.6354235410690308
+INFO:root:Epoch: 39, Iteration: 276, Loss: 0.6681760549545288
+INFO:root:Epoch: 39, Iteration: 277, Loss: 0.6431360840797424
+INFO:root:Epoch: 39, Iteration: 278, Loss: 0.6464234590530396
+INFO:root:Epoch: 39, Iteration: 279, Loss: 0.6082021594047546
+INFO:root:Epoch: 39, Iteration: 280, Loss: 0.6373723745346069
+INFO:root:Validation set mIOU: 63.73930412532184
+INFO:root:Epoch: 40, Iteration: 281, Loss: 0.6098974347114563
+INFO:root:Epoch: 40, Iteration: 282, Loss: 0.6626611351966858
+INFO:root:Epoch: 40, Iteration: 283, Loss: 0.6352521777153015
+INFO:root:Epoch: 40, Iteration: 284, Loss: 0.6493912935256958
+INFO:root:Epoch: 40, Iteration: 285, Loss: 0.6446501016616821
+INFO:root:Epoch: 40, Iteration: 286, Loss: 0.6492224931716919
+INFO:root:Epoch: 40, Iteration: 287, Loss: 0.6311321258544922
+INFO:root:Validation set mIOU: 63.4370563005287
+INFO:root:Epoch: 41, Iteration: 288, Loss: 0.6599084734916687
+INFO:root:Epoch: 41, Iteration: 289, Loss: 0.6139169931411743
+INFO:root:Epoch: 41, Iteration: 290, Loss: 0.6219947338104248
+INFO:root:Epoch: 41, Iteration: 291, Loss: 0.6539482474327087
+INFO:root:Epoch: 41, Iteration: 292, Loss: 0.6423599720001221
+INFO:root:Epoch: 41, Iteration: 293, Loss: 0.6051732897758484
+INFO:root:Epoch: 41, Iteration: 294, Loss: 0.6135868430137634
+INFO:root:Validation set mIOU: 62.02930724359984
+INFO:root:Epoch: 42, Iteration: 295, Loss: 0.6346167922019958
+INFO:root:Epoch: 42, Iteration: 296, Loss: 0.5976359248161316
+INFO:root:Epoch: 42, Iteration: 297, Loss: 0.6289098858833313
+INFO:root:Epoch: 42, Iteration: 298, Loss: 0.632228434085846
+INFO:root:Epoch: 42, Iteration: 299, Loss: 0.6441880464553833
+INFO:root:Epoch: 42, Iteration: 300, Loss: 0.6292757391929626
+INFO:root:Epoch: 42, Iteration: 301, Loss: 0.6769944429397583
+INFO:root:Validation set mIOU: 58.074340773857195
+INFO:root:Epoch: 43, Iteration: 302, Loss: 0.6539961695671082
+INFO:root:Epoch: 43, Iteration: 303, Loss: 0.6253219842910767
+INFO:root:Epoch: 43, Iteration: 304, Loss: 0.6446371078491211
+INFO:root:Epoch: 43, Iteration: 305, Loss: 0.6647998690605164
+INFO:root:Epoch: 43, Iteration: 306, Loss: 0.6215465068817139
+INFO:root:Epoch: 43, Iteration: 307, Loss: 0.5971980690956116
+INFO:root:Epoch: 43, Iteration: 308, Loss: 0.5995420217514038
+INFO:root:Validation set mIOU: 66.66359978256928
+INFO:root:Epoch: 44, Iteration: 309, Loss: 0.6327773928642273
+INFO:root:Epoch: 44, Iteration: 310, Loss: 0.6176109313964844
+INFO:root:Epoch: 44, Iteration: 311, Loss: 0.6547266244888306
+INFO:root:Epoch: 44, Iteration: 312, Loss: 0.615574061870575
+INFO:root:Epoch: 44, Iteration: 313, Loss: 0.6208286285400391
+INFO:root:Epoch: 44, Iteration: 314, Loss: 0.6319410800933838
+INFO:root:Epoch: 44, Iteration: 315, Loss: 0.6631413102149963
+INFO:root:Validation set mIOU: 68.44023968845048
+INFO:root:Epoch: 45, Iteration: 316, Loss: 0.6082219481468201
+INFO:root:Epoch: 45, Iteration: 317, Loss: 0.5974540114402771
+INFO:root:Epoch: 45, Iteration: 318, Loss: 0.638617753982544
+INFO:root:Epoch: 45, Iteration: 319, Loss: 0.6397385597229004
+INFO:root:Epoch: 45, Iteration: 320, Loss: 0.621922492980957
+INFO:root:Epoch: 45, Iteration: 321, Loss: 0.6453536748886108
+INFO:root:Epoch: 45, Iteration: 322, Loss: 0.6272661089897156
+INFO:root:Validation set mIOU: 67.33013117504491
+INFO:root:Epoch: 46, Iteration: 323, Loss: 0.6033392548561096
+INFO:root:Epoch: 46, Iteration: 324, Loss: 0.6190556287765503
+INFO:root:Epoch: 46, Iteration: 325, Loss: 0.7186300158500671
+INFO:root:Epoch: 46, Iteration: 326, Loss: 0.62273770570755
+INFO:root:Epoch: 46, Iteration: 327, Loss: 0.6362683773040771
+INFO:root:Epoch: 46, Iteration: 328, Loss: 0.6132574677467346
+INFO:root:Epoch: 46, Iteration: 329, Loss: 0.6262505650520325
+INFO:root:Validation set mIOU: 53.62470646780998
+INFO:root:Epoch: 47, Iteration: 330, Loss: 0.665490984916687
+INFO:root:Epoch: 47, Iteration: 331, Loss: 0.6392564177513123
+INFO:root:Epoch: 47, Iteration: 332, Loss: 0.6634138822555542
+INFO:root:Epoch: 47, Iteration: 333, Loss: 0.6401858329772949
+INFO:root:Epoch: 47, Iteration: 334, Loss: 0.6237042546272278
+INFO:root:Epoch: 47, Iteration: 335, Loss: 0.6561912894248962
+INFO:root:Epoch: 47, Iteration: 336, Loss: 0.645359456539154
+INFO:root:Validation set mIOU: 53.64450142772961
+INFO:root:Epoch: 48, Iteration: 337, Loss: 0.5956149101257324
+INFO:root:Epoch: 48, Iteration: 338, Loss: 0.6346750855445862
+INFO:root:Epoch: 48, Iteration: 339, Loss: 0.6292505860328674
+INFO:root:Epoch: 48, Iteration: 340, Loss: 0.6387898921966553
+INFO:root:Epoch: 48, Iteration: 341, Loss: 0.6100196838378906
+INFO:root:Epoch: 48, Iteration: 342, Loss: 0.6391728520393372
+INFO:root:Epoch: 48, Iteration: 343, Loss: 0.6256759166717529
+INFO:root:Validation set mIOU: 56.82447955031997
+INFO:root:Epoch: 49, Iteration: 344, Loss: 0.6871553659439087
+INFO:root:Epoch: 49, Iteration: 345, Loss: 0.6093453168869019
+INFO:root:Epoch: 49, Iteration: 346, Loss: 0.6273139119148254
+INFO:root:Epoch: 49, Iteration: 347, Loss: 0.6260177493095398
+INFO:root:Epoch: 49, Iteration: 348, Loss: 0.6061956286430359
+INFO:root:Epoch: 49, Iteration: 349, Loss: 0.6260362863540649
+INFO:root:Epoch: 49, Iteration: 350, Loss: 0.6161987781524658
+INFO:root:Validation set mIOU: 64.55102238583686
+INFO:root:Epoch: 50, Iteration: 351, Loss: 0.6085997819900513
+INFO:root:Epoch: 50, Iteration: 352, Loss: 0.6261422634124756
+INFO:root:Epoch: 50, Iteration: 353, Loss: 0.619045078754425
+INFO:root:Epoch: 50, Iteration: 354, Loss: 0.6063520312309265
+INFO:root:Epoch: 50, Iteration: 355, Loss: 0.638922929763794
+INFO:root:Epoch: 50, Iteration: 356, Loss: 0.6341365575790405
+INFO:root:Epoch: 50, Iteration: 357, Loss: 0.6356700658798218
+INFO:root:Validation set mIOU: 63.44739382389278
+INFO:root:Epoch: 51, Iteration: 358, Loss: 0.625723123550415
+INFO:root:Epoch: 51, Iteration: 359, Loss: 0.6220768690109253
+INFO:root:Epoch: 51, Iteration: 360, Loss: 0.6448713541030884
+INFO:root:Epoch: 51, Iteration: 361, Loss: 0.6066349148750305
+INFO:root:Epoch: 51, Iteration: 362, Loss: 0.6459420919418335
+INFO:root:Epoch: 51, Iteration: 363, Loss: 0.6123716831207275
+INFO:root:Epoch: 51, Iteration: 364, Loss: 0.6542547345161438
+INFO:root:Validation set mIOU: 62.80635422640487
+INFO:root:Epoch: 52, Iteration: 365, Loss: 0.6077960729598999
+INFO:root:Epoch: 52, Iteration: 366, Loss: 0.6348753571510315
+INFO:root:Epoch: 52, Iteration: 367, Loss: 0.6548592448234558
+INFO:root:Epoch: 52, Iteration: 368, Loss: 0.6081438064575195
+INFO:root:Epoch: 52, Iteration: 369, Loss: 0.615325927734375
+INFO:root:Epoch: 52, Iteration: 370, Loss: 0.6309174299240112
+INFO:root:Epoch: 52, Iteration: 371, Loss: 0.6544511318206787
+INFO:root:Validation set mIOU: 56.54550086601681
+INFO:root:Epoch: 53, Iteration: 372, Loss: 0.6326935291290283
+INFO:root:Epoch: 53, Iteration: 373, Loss: 0.63689786195755
+INFO:root:Epoch: 53, Iteration: 374, Loss: 0.6528595089912415
+INFO:root:Epoch: 53, Iteration: 375, Loss: 0.5962353348731995
+INFO:root:Epoch: 53, Iteration: 376, Loss: 0.6255101561546326
+INFO:root:Epoch: 53, Iteration: 377, Loss: 0.6836444735527039
+INFO:root:Epoch: 53, Iteration: 378, Loss: 0.6392024755477905
+INFO:root:Validation set mIOU: 64.28785059722696
+INFO:root:Epoch: 54, Iteration: 379, Loss: 0.6279424428939819
+INFO:root:Epoch: 54, Iteration: 380, Loss: 0.6308318376541138
+INFO:root:Epoch: 54, Iteration: 381, Loss: 0.6439681649208069
+INFO:root:Epoch: 54, Iteration: 382, Loss: 0.6168501973152161
+INFO:root:Epoch: 54, Iteration: 383, Loss: 0.6364743113517761
+INFO:root:Epoch: 54, Iteration: 384, Loss: 0.6191284656524658
+INFO:root:Epoch: 54, Iteration: 385, Loss: 0.6136663556098938
+INFO:root:Validation set mIOU: 67.22217668908264
+INFO:root:Epoch: 55, Iteration: 386, Loss: 0.6154043674468994
+INFO:root:Epoch: 55, Iteration: 387, Loss: 0.6059166193008423
+INFO:root:Epoch: 55, Iteration: 388, Loss: 0.6491049528121948
+INFO:root:Epoch: 55, Iteration: 389, Loss: 0.6295344829559326
+INFO:root:Epoch: 55, Iteration: 390, Loss: 0.6095094680786133
+INFO:root:Epoch: 55, Iteration: 391, Loss: 0.6148889660835266
+INFO:root:Epoch: 55, Iteration: 392, Loss: 0.6196122765541077
+INFO:root:Validation set mIOU: 64.14137820878857
+INFO:root:Epoch: 56, Iteration: 393, Loss: 0.6209954619407654
+INFO:root:Epoch: 56, Iteration: 394, Loss: 0.653479278087616
+INFO:root:Epoch: 56, Iteration: 395, Loss: 0.682818591594696
+INFO:root:Epoch: 56, Iteration: 396, Loss: 0.6091454029083252
+INFO:root:Epoch: 56, Iteration: 397, Loss: 0.6370576024055481
+INFO:root:Epoch: 56, Iteration: 398, Loss: 0.613879382610321
+INFO:root:Epoch: 56, Iteration: 399, Loss: 0.6356958150863647
+INFO:root:Validation set mIOU: 67.56176839189875
+INFO:root:Epoch: 57, Iteration: 400, Loss: 0.6181586384773254
+INFO:root:Epoch: 57, Iteration: 401, Loss: 0.6089644432067871
+INFO:root:Epoch: 57, Iteration: 402, Loss: 0.6259745955467224
+INFO:root:Epoch: 57, Iteration: 403, Loss: 0.6140742301940918
+INFO:root:Epoch: 57, Iteration: 404, Loss: 0.631039023399353
+INFO:root:Epoch: 57, Iteration: 405, Loss: 0.6051968336105347
+INFO:root:Epoch: 57, Iteration: 406, Loss: 0.6463242173194885
+INFO:root:Validation set mIOU: 49.5758001696895
+INFO:root:Epoch: 58, Iteration: 407, Loss: 0.6311914324760437
+INFO:root:Epoch: 58, Iteration: 408, Loss: 0.6185926198959351
+INFO:root:Epoch: 58, Iteration: 409, Loss: 0.6275137066841125
+INFO:root:Epoch: 58, Iteration: 410, Loss: 0.6209734678268433
+INFO:root:Epoch: 58, Iteration: 411, Loss: 0.6314248442649841
+INFO:root:Epoch: 58, Iteration: 412, Loss: 0.6683428287506104
+INFO:root:Epoch: 58, Iteration: 413, Loss: 0.617641806602478
+INFO:root:Validation set mIOU: 56.74089926605612
+INFO:root:Epoch: 59, Iteration: 414, Loss: 0.624239981174469
+INFO:root:Epoch: 59, Iteration: 415, Loss: 0.6291565299034119
+INFO:root:Epoch: 59, Iteration: 416, Loss: 0.6535818576812744
+INFO:root:Epoch: 59, Iteration: 417, Loss: 0.6319394707679749
+INFO:root:Epoch: 59, Iteration: 418, Loss: 0.6127631664276123
+INFO:root:Epoch: 59, Iteration: 419, Loss: 0.6448954939842224
+INFO:root:Epoch: 59, Iteration: 420, Loss: 0.6164043545722961
+INFO:root:Validation set mIOU: 69.3114175797472
+INFO:root:Epoch: 60, Iteration: 421, Loss: 0.6379161477088928
+INFO:root:Epoch: 60, Iteration: 422, Loss: 0.6184728741645813
+INFO:root:Epoch: 60, Iteration: 423, Loss: 0.6096459031105042
+INFO:root:Epoch: 60, Iteration: 424, Loss: 0.6061642169952393
+INFO:root:Epoch: 60, Iteration: 425, Loss: 0.6369173526763916
+INFO:root:Epoch: 60, Iteration: 426, Loss: 0.6081361174583435
+INFO:root:Epoch: 60, Iteration: 427, Loss: 0.6302167177200317
+INFO:root:Validation set mIOU: 69.64327428205053
+INFO:root:Epoch: 61, Iteration: 428, Loss: 0.6402367949485779
+INFO:root:Epoch: 61, Iteration: 429, Loss: 0.6281769871711731
+INFO:root:Epoch: 61, Iteration: 430, Loss: 0.6216731071472168
+INFO:root:Epoch: 61, Iteration: 431, Loss: 0.6144942045211792
+INFO:root:Epoch: 61, Iteration: 432, Loss: 0.6356329917907715
+INFO:root:Epoch: 61, Iteration: 433, Loss: 0.612308919429779
+INFO:root:Epoch: 61, Iteration: 434, Loss: 0.6259816288948059
+INFO:root:Validation set mIOU: 67.82403375990093
+INFO:root:Epoch: 62, Iteration: 435, Loss: 0.6106210947036743
+INFO:root:Epoch: 62, Iteration: 436, Loss: 0.6664304733276367
+INFO:root:Epoch: 62, Iteration: 437, Loss: 0.6620073318481445
+INFO:root:Epoch: 62, Iteration: 438, Loss: 0.647197961807251
+INFO:root:Epoch: 62, Iteration: 439, Loss: 0.6087875962257385
+INFO:root:Epoch: 62, Iteration: 440, Loss: 0.6379820108413696
+INFO:root:Epoch: 62, Iteration: 441, Loss: 0.628994882106781
+INFO:root:Validation set mIOU: 65.29595789307342
+INFO:root:Epoch: 63, Iteration: 442, Loss: 0.6152094602584839
+INFO:root:Epoch: 63, Iteration: 443, Loss: 0.6064358353614807
+INFO:root:Epoch: 63, Iteration: 444, Loss: 0.6277766823768616
+INFO:root:Epoch: 63, Iteration: 445, Loss: 0.5822746157646179
+INFO:root:Epoch: 63, Iteration: 446, Loss: 0.6314147710800171
+INFO:root:Epoch: 63, Iteration: 447, Loss: 0.6498555541038513
+INFO:root:Epoch: 63, Iteration: 448, Loss: 0.6595708131790161
+INFO:root:Validation set mIOU: 52.83812164382107
+INFO:root:Epoch: 64, Iteration: 449, Loss: 0.6314948201179504
+INFO:root:Epoch: 64, Iteration: 450, Loss: 0.6142482757568359
+INFO:root:Epoch: 64, Iteration: 451, Loss: 0.6605536341667175
+INFO:root:Epoch: 64, Iteration: 452, Loss: 0.640375018119812
+INFO:root:Epoch: 64, Iteration: 453, Loss: 0.6110702753067017
+INFO:root:Epoch: 64, Iteration: 454, Loss: 0.5973719358444214
+INFO:root:Epoch: 64, Iteration: 455, Loss: 0.6080523729324341
+INFO:root:Validation set mIOU: 61.55162328385444
+INFO:root:Epoch: 65, Iteration: 456, Loss: 0.667827844619751
+INFO:root:Epoch: 65, Iteration: 457, Loss: 0.6294363141059875
+INFO:root:Epoch: 65, Iteration: 458, Loss: 0.6381337642669678
+INFO:root:Epoch: 65, Iteration: 459, Loss: 0.626728355884552
+INFO:root:Epoch: 65, Iteration: 460, Loss: 0.6357734203338623
+INFO:root:Epoch: 65, Iteration: 461, Loss: 0.6115682721138
+INFO:root:Epoch: 65, Iteration: 462, Loss: 0.6157336831092834
+INFO:root:Validation set mIOU: 66.42560622758516
+INFO:root:Epoch: 66, Iteration: 463, Loss: 0.5938736200332642
+INFO:root:Epoch: 66, Iteration: 464, Loss: 0.6567907929420471
+INFO:root:Epoch: 66, Iteration: 465, Loss: 0.6166467070579529
+INFO:root:Epoch: 66, Iteration: 466, Loss: 0.6610347628593445
+INFO:root:Epoch: 66, Iteration: 467, Loss: 0.6323279142379761
+INFO:root:Epoch: 66, Iteration: 468, Loss: 0.6242866516113281
+INFO:root:Epoch: 66, Iteration: 469, Loss: 0.6115148663520813
+INFO:root:Validation set mIOU: 61.033163941139
+INFO:root:Epoch: 67, Iteration: 470, Loss: 0.6426740288734436
+INFO:root:Epoch: 67, Iteration: 471, Loss: 0.6050070524215698
+INFO:root:Epoch: 67, Iteration: 472, Loss: 0.6092063188552856
+INFO:root:Epoch: 67, Iteration: 473, Loss: 0.6608877778053284
+INFO:root:Epoch: 67, Iteration: 474, Loss: 0.6402867436408997
+INFO:root:Epoch: 67, Iteration: 475, Loss: 0.6030098795890808
+INFO:root:Epoch: 67, Iteration: 476, Loss: 0.64915931224823
+INFO:root:Validation set mIOU: 64.67077607336378
+INFO:root:Epoch: 68, Iteration: 477, Loss: 0.6363889575004578
+INFO:root:Epoch: 68, Iteration: 478, Loss: 0.6403177380561829
+INFO:root:Epoch: 68, Iteration: 479, Loss: 0.6063274145126343
+INFO:root:Epoch: 68, Iteration: 480, Loss: 0.6041409373283386
+INFO:root:Epoch: 68, Iteration: 481, Loss: 0.643405556678772
+INFO:root:Epoch: 68, Iteration: 482, Loss: 0.6189495325088501
+INFO:root:Epoch: 68, Iteration: 483, Loss: 0.6187826991081238
+INFO:root:Validation set mIOU: 69.71861496114477
+INFO:root:Epoch: 69, Iteration: 484, Loss: 0.6076095104217529
+INFO:root:Epoch: 69, Iteration: 485, Loss: 0.6032154560089111
+INFO:root:Epoch: 69, Iteration: 486, Loss: 0.6516526937484741
+INFO:root:Epoch: 69, Iteration: 487, Loss: 0.6229744553565979
+INFO:root:Epoch: 69, Iteration: 488, Loss: 0.6020367741584778
+INFO:root:Epoch: 69, Iteration: 489, Loss: 0.6154642701148987
+INFO:root:Epoch: 69, Iteration: 490, Loss: 0.6098699569702148
+INFO:root:Validation set mIOU: 69.20679887215448
+INFO:root:Epoch: 70, Iteration: 491, Loss: 0.6477396488189697
+INFO:root:Epoch: 70, Iteration: 492, Loss: 0.6037604808807373
+INFO:root:Epoch: 70, Iteration: 493, Loss: 0.6225610375404358
+INFO:root:Epoch: 70, Iteration: 494, Loss: 0.5949128866195679
+INFO:root:Epoch: 70, Iteration: 495, Loss: 0.6241530776023865
+INFO:root:Epoch: 70, Iteration: 496, Loss: 0.609849750995636
+INFO:root:Epoch: 70, Iteration: 497, Loss: 0.639350175857544
+INFO:root:Validation set mIOU: 53.067010075725904
+INFO:root:Epoch: 71, Iteration: 498, Loss: 0.6051267981529236
+INFO:root:Epoch: 71, Iteration: 499, Loss: 0.6314531564712524
+INFO:root:Epoch: 71, Iteration: 500, Loss: 0.6266735196113586
+INFO:root:Epoch: 71, Iteration: 501, Loss: 0.6330984234809875
+INFO:root:Epoch: 71, Iteration: 502, Loss: 0.5907174348831177
+INFO:root:Epoch: 71, Iteration: 503, Loss: 0.6184916496276855
+INFO:root:Epoch: 71, Iteration: 504, Loss: 0.6181266903877258
+INFO:root:Validation set mIOU: 66.74507455710939
+INFO:root:Epoch: 72, Iteration: 505, Loss: 0.6423951983451843
+INFO:root:Epoch: 72, Iteration: 506, Loss: 0.5992516279220581
+INFO:root:Epoch: 72, Iteration: 507, Loss: 0.6277897953987122
+INFO:root:Epoch: 72, Iteration: 508, Loss: 0.6099441051483154
+INFO:root:Epoch: 72, Iteration: 509, Loss: 0.609951376914978
+INFO:root:Epoch: 72, Iteration: 510, Loss: 0.6167232394218445
+INFO:root:Epoch: 72, Iteration: 511, Loss: 0.6047962307929993
+INFO:root:Validation set mIOU: 64.59964268943595
+INFO:root:Epoch: 73, Iteration: 512, Loss: 0.6074318885803223
+INFO:root:Epoch: 73, Iteration: 513, Loss: 0.6017389297485352
+INFO:root:Epoch: 73, Iteration: 514, Loss: 0.5898706316947937
+INFO:root:Epoch: 73, Iteration: 515, Loss: 0.6312582492828369
+INFO:root:Epoch: 73, Iteration: 516, Loss: 0.6317156553268433
+INFO:root:Epoch: 73, Iteration: 517, Loss: 0.6092476844787598
+INFO:root:Epoch: 73, Iteration: 518, Loss: 0.6109267473220825
+INFO:root:Validation set mIOU: 71.04149776596124
+INFO:root:Epoch: 74, Iteration: 519, Loss: 0.6185389161109924
+INFO:root:Epoch: 74, Iteration: 520, Loss: 0.6016860604286194
+INFO:root:Epoch: 74, Iteration: 521, Loss: 0.6363040208816528
+INFO:root:Epoch: 74, Iteration: 522, Loss: 0.6127802729606628
+INFO:root:Epoch: 74, Iteration: 523, Loss: 0.6007747650146484
+INFO:root:Epoch: 74, Iteration: 524, Loss: 0.5948599576950073
+INFO:root:Epoch: 74, Iteration: 525, Loss: 0.6129713654518127
+INFO:root:Validation set mIOU: 72.56352485763514
+INFO:root:Epoch: 75, Iteration: 526, Loss: 0.6222777962684631
+INFO:root:Epoch: 75, Iteration: 527, Loss: 0.6276994943618774
+INFO:root:Epoch: 75, Iteration: 528, Loss: 0.6333370208740234
+INFO:root:Epoch: 75, Iteration: 529, Loss: 0.6563733220100403
+INFO:root:Epoch: 75, Iteration: 530, Loss: 0.6205094456672668
+INFO:root:Epoch: 75, Iteration: 531, Loss: 0.6072434186935425
+INFO:root:Epoch: 75, Iteration: 532, Loss: 0.6009511947631836
+INFO:root:Validation set mIOU: 70.23803853307177
+INFO:root:Epoch: 76, Iteration: 533, Loss: 0.6357518434524536
+INFO:root:Epoch: 76, Iteration: 534, Loss: 0.6172403693199158
+INFO:root:Epoch: 76, Iteration: 535, Loss: 0.6067773103713989
+INFO:root:Epoch: 76, Iteration: 536, Loss: 0.6370854377746582
+INFO:root:Epoch: 76, Iteration: 537, Loss: 0.6100285649299622
+INFO:root:Epoch: 76, Iteration: 538, Loss: 0.6202302575111389
+INFO:root:Epoch: 76, Iteration: 539, Loss: 0.6234921813011169
+INFO:root:Validation set mIOU: 66.67563390723069
+INFO:root:Epoch: 77, Iteration: 540, Loss: 0.6216756701469421
+INFO:root:Epoch: 77, Iteration: 541, Loss: 0.6097956895828247
+INFO:root:Epoch: 77, Iteration: 542, Loss: 0.620268702507019
+INFO:root:Epoch: 77, Iteration: 543, Loss: 0.6008691191673279
+INFO:root:Epoch: 77, Iteration: 544, Loss: 0.6181831359863281
+INFO:root:Epoch: 77, Iteration: 545, Loss: 0.5955201983451843
+INFO:root:Epoch: 77, Iteration: 546, Loss: 0.6339381337165833
+INFO:root:Validation set mIOU: 67.03428564605116
+INFO:root:Epoch: 78, Iteration: 547, Loss: 0.6093795895576477
+INFO:root:Epoch: 78, Iteration: 548, Loss: 0.6117637157440186
+INFO:root:Epoch: 78, Iteration: 549, Loss: 0.6184706687927246
+INFO:root:Epoch: 78, Iteration: 550, Loss: 0.6038104891777039
+INFO:root:Epoch: 78, Iteration: 551, Loss: 0.63381028175354
+INFO:root:Epoch: 78, Iteration: 552, Loss: 0.6159330010414124
+INFO:root:Epoch: 78, Iteration: 553, Loss: 0.6260556578636169
+INFO:root:Validation set mIOU: 36.00962349297775
+INFO:root:Epoch: 79, Iteration: 554, Loss: 0.623902440071106
+INFO:root:Epoch: 79, Iteration: 555, Loss: 0.613481879234314
+INFO:root:Epoch: 79, Iteration: 556, Loss: 0.6048098802566528
+INFO:root:Epoch: 79, Iteration: 557, Loss: 0.628776490688324
+INFO:root:Epoch: 79, Iteration: 558, Loss: 0.6080400943756104
+INFO:root:Epoch: 79, Iteration: 559, Loss: 0.625609278678894
+INFO:root:Epoch: 79, Iteration: 560, Loss: 0.6177610158920288
+INFO:root:Validation set mIOU: 66.14704912545675
+INFO:root:Epoch: 80, Iteration: 561, Loss: 0.6222142577171326
+INFO:root:Epoch: 80, Iteration: 562, Loss: 0.6598040461540222
+INFO:root:Epoch: 80, Iteration: 563, Loss: 0.6261658668518066
+INFO:root:Epoch: 80, Iteration: 564, Loss: 0.6128740310668945
+INFO:root:Epoch: 80, Iteration: 565, Loss: 0.6409042477607727
+INFO:root:Epoch: 80, Iteration: 566, Loss: 0.6063072681427002
+INFO:root:Epoch: 80, Iteration: 567, Loss: 0.6131851077079773
+INFO:root:Validation set mIOU: 68.10955256118547
+INFO:root:Epoch: 81, Iteration: 568, Loss: 0.5992678999900818
+INFO:root:Epoch: 81, Iteration: 569, Loss: 0.6339237689971924
+INFO:root:Epoch: 81, Iteration: 570, Loss: 0.6416764855384827
+INFO:root:Epoch: 81, Iteration: 571, Loss: 0.655504584312439
+INFO:root:Epoch: 81, Iteration: 572, Loss: 0.6232010126113892
+INFO:root:Epoch: 81, Iteration: 573, Loss: 0.5859783887863159
+INFO:root:Epoch: 81, Iteration: 574, Loss: 0.6197644472122192
+INFO:root:Validation set mIOU: 71.52147448878155
+INFO:root:Epoch: 82, Iteration: 575, Loss: 0.6024593710899353
+INFO:root:Epoch: 82, Iteration: 576, Loss: 0.6345440149307251
+INFO:root:Epoch: 82, Iteration: 577, Loss: 0.6136305332183838
+INFO:root:Epoch: 82, Iteration: 578, Loss: 0.6089942455291748
+INFO:root:Epoch: 82, Iteration: 579, Loss: 0.6057224869728088
+INFO:root:Epoch: 82, Iteration: 580, Loss: 0.6100678443908691
+INFO:root:Epoch: 82, Iteration: 581, Loss: 0.5996929407119751
+INFO:root:Validation set mIOU: 70.31572050446893
+INFO:root:Epoch: 83, Iteration: 582, Loss: 0.622738242149353
+INFO:root:Epoch: 83, Iteration: 583, Loss: 0.6009244918823242
+INFO:root:Epoch: 83, Iteration: 584, Loss: 0.6587172746658325
+INFO:root:Epoch: 83, Iteration: 585, Loss: 0.6171115040779114
+INFO:root:Epoch: 83, Iteration: 586, Loss: 0.6100842952728271
+INFO:root:Epoch: 83, Iteration: 587, Loss: 0.6219580173492432
+INFO:root:Epoch: 83, Iteration: 588, Loss: 0.6211884617805481
+INFO:root:Validation set mIOU: 71.80903025017173
+INFO:root:Epoch: 84, Iteration: 589, Loss: 0.6384810209274292
+INFO:root:Epoch: 84, Iteration: 590, Loss: 0.6165245771408081
+INFO:root:Epoch: 84, Iteration: 591, Loss: 0.6058740615844727
+INFO:root:Epoch: 84, Iteration: 592, Loss: 0.6395111083984375
+INFO:root:Epoch: 84, Iteration: 593, Loss: 0.5920161008834839
+INFO:root:Epoch: 84, Iteration: 594, Loss: 0.6384923458099365
+INFO:root:Epoch: 84, Iteration: 595, Loss: 0.608572781085968
+INFO:root:Validation set mIOU: 70.69939595821667
+INFO:root:Epoch: 85, Iteration: 596, Loss: 0.6154518127441406
+INFO:root:Epoch: 85, Iteration: 597, Loss: 0.6244885921478271
+INFO:root:Epoch: 85, Iteration: 598, Loss: 0.5995744466781616
+INFO:root:Epoch: 85, Iteration: 599, Loss: 0.6232982277870178
+INFO:root:Epoch: 85, Iteration: 600, Loss: 0.6082444190979004
+INFO:root:Epoch: 85, Iteration: 601, Loss: 0.587110698223114
+INFO:root:Epoch: 85, Iteration: 602, Loss: 0.5974684953689575
+INFO:root:Validation set mIOU: 68.6703137594494
+INFO:root:Epoch: 86, Iteration: 603, Loss: 0.6111922264099121
+INFO:root:Epoch: 86, Iteration: 604, Loss: 0.6257146000862122
+INFO:root:Epoch: 86, Iteration: 605, Loss: 0.6015405654907227
+INFO:root:Epoch: 86, Iteration: 606, Loss: 0.6095758080482483
+INFO:root:Epoch: 86, Iteration: 607, Loss: 0.6031160950660706
+INFO:root:Epoch: 86, Iteration: 608, Loss: 0.6567490696907043
+INFO:root:Epoch: 86, Iteration: 609, Loss: 0.5869548916816711
+INFO:root:Validation set mIOU: 62.69283719195874
+INFO:root:Epoch: 87, Iteration: 610, Loss: 0.5929134488105774
+INFO:root:Epoch: 87, Iteration: 611, Loss: 0.6130461692810059
+INFO:root:Epoch: 87, Iteration: 612, Loss: 0.6017645001411438
+INFO:root:Epoch: 87, Iteration: 613, Loss: 0.6043583750724792
+INFO:root:Epoch: 87, Iteration: 614, Loss: 0.5956861972808838
+INFO:root:Epoch: 87, Iteration: 615, Loss: 0.6420552730560303
+INFO:root:Epoch: 87, Iteration: 616, Loss: 0.6392549872398376
+INFO:root:Validation set mIOU: 56.90920647783979
+INFO:root:Epoch: 88, Iteration: 617, Loss: 0.6163693070411682
+INFO:root:Epoch: 88, Iteration: 618, Loss: 0.6255947351455688
+INFO:root:Epoch: 88, Iteration: 619, Loss: 0.6073163151741028
+INFO:root:Epoch: 88, Iteration: 620, Loss: 0.6118208169937134
+INFO:root:Epoch: 88, Iteration: 621, Loss: 0.6056277751922607
+INFO:root:Epoch: 88, Iteration: 622, Loss: 0.6296205520629883
+INFO:root:Epoch: 88, Iteration: 623, Loss: 0.621059775352478
+INFO:root:Validation set mIOU: 69.42254335074605
+INFO:root:Epoch: 89, Iteration: 624, Loss: 0.5956063866615295
+INFO:root:Epoch: 89, Iteration: 625, Loss: 0.6027053594589233
+INFO:root:Epoch: 89, Iteration: 626, Loss: 0.6146245002746582
+INFO:root:Epoch: 89, Iteration: 627, Loss: 0.6013728976249695
+INFO:root:Epoch: 89, Iteration: 628, Loss: 0.6314688324928284
+INFO:root:Epoch: 89, Iteration: 629, Loss: 0.6133752465248108
+INFO:root:Epoch: 89, Iteration: 630, Loss: 0.6062072515487671
+INFO:root:Validation set mIOU: 72.67699352223184
+INFO:root:Epoch: 90, Iteration: 631, Loss: 0.6032639145851135
+INFO:root:Epoch: 90, Iteration: 632, Loss: 0.6103114485740662
+INFO:root:Epoch: 90, Iteration: 633, Loss: 0.6191673874855042
+INFO:root:Epoch: 90, Iteration: 634, Loss: 0.5939011573791504
+INFO:root:Epoch: 90, Iteration: 635, Loss: 0.596493661403656
+INFO:root:Epoch: 90, Iteration: 636, Loss: 0.587030291557312
+INFO:root:Epoch: 90, Iteration: 637, Loss: 0.6210342645645142
+INFO:root:Validation set mIOU: 72.39204846356965
+INFO:root:Epoch: 91, Iteration: 638, Loss: 0.6163458824157715
+INFO:root:Epoch: 91, Iteration: 639, Loss: 0.6159546971321106
+INFO:root:Epoch: 91, Iteration: 640, Loss: 0.6294150948524475
+INFO:root:Epoch: 91, Iteration: 641, Loss: 0.6052173376083374
+INFO:root:Epoch: 91, Iteration: 642, Loss: 0.6082522869110107
+INFO:root:Epoch: 91, Iteration: 643, Loss: 0.607032299041748
+INFO:root:Epoch: 91, Iteration: 644, Loss: 0.6035014986991882
+INFO:root:Validation set mIOU: 71.06764114313457
+INFO:root:Epoch: 92, Iteration: 645, Loss: 0.6160513162612915
+INFO:root:Epoch: 92, Iteration: 646, Loss: 0.6134889721870422
+INFO:root:Epoch: 92, Iteration: 647, Loss: 0.606254518032074
+INFO:root:Epoch: 92, Iteration: 648, Loss: 0.5965941548347473
+INFO:root:Epoch: 92, Iteration: 649, Loss: 0.6056979894638062
+INFO:root:Epoch: 92, Iteration: 650, Loss: 0.6005794405937195
+INFO:root:Epoch: 92, Iteration: 651, Loss: 0.636115550994873
+INFO:root:Validation set mIOU: 70.13834482587181
+INFO:root:Epoch: 93, Iteration: 652, Loss: 0.6316928863525391
+INFO:root:Epoch: 93, Iteration: 653, Loss: 0.6107945442199707
+INFO:root:Epoch: 93, Iteration: 654, Loss: 0.6025168299674988
+INFO:root:Epoch: 93, Iteration: 655, Loss: 0.6163350343704224
+INFO:root:Epoch: 93, Iteration: 656, Loss: 0.5958577394485474
+INFO:root:Epoch: 93, Iteration: 657, Loss: 0.660101592540741
+INFO:root:Epoch: 93, Iteration: 658, Loss: 0.5864046812057495
+INFO:root:Validation set mIOU: 72.04089877320321
+INFO:root:Epoch: 94, Iteration: 659, Loss: 0.61075359582901
+INFO:root:Epoch: 94, Iteration: 660, Loss: 0.5877424478530884
+INFO:root:Epoch: 94, Iteration: 661, Loss: 0.6194120645523071
+INFO:root:Epoch: 94, Iteration: 662, Loss: 0.6018131375312805
+INFO:root:Epoch: 94, Iteration: 663, Loss: 0.6315134167671204
+INFO:root:Epoch: 94, Iteration: 664, Loss: 0.6005550622940063
+INFO:root:Epoch: 94, Iteration: 665, Loss: 0.6099470853805542
+INFO:root:Validation set mIOU: 71.37064325556562
+INFO:root:Epoch: 95, Iteration: 666, Loss: 0.6110674142837524
+INFO:root:Epoch: 95, Iteration: 667, Loss: 0.5904624462127686
+INFO:root:Epoch: 95, Iteration: 668, Loss: 0.6120947599411011
+INFO:root:Epoch: 95, Iteration: 669, Loss: 0.5897824764251709
+INFO:root:Epoch: 95, Iteration: 670, Loss: 0.602146565914154
+INFO:root:Epoch: 95, Iteration: 671, Loss: 0.5898892879486084
+INFO:root:Epoch: 95, Iteration: 672, Loss: 0.6213072538375854
+INFO:root:Validation set mIOU: 71.73607533666294
+INFO:root:Epoch: 96, Iteration: 673, Loss: 0.5987402200698853
+INFO:root:Epoch: 96, Iteration: 674, Loss: 0.6063653230667114
+INFO:root:Epoch: 96, Iteration: 675, Loss: 0.586622416973114
+INFO:root:Epoch: 96, Iteration: 676, Loss: 0.5867799520492554
+INFO:root:Epoch: 96, Iteration: 677, Loss: 0.6120398640632629
+INFO:root:Epoch: 96, Iteration: 678, Loss: 0.6069780588150024
+INFO:root:Epoch: 96, Iteration: 679, Loss: 0.6042522192001343
+INFO:root:Validation set mIOU: 72.46397416908628
+INFO:root:Epoch: 97, Iteration: 680, Loss: 0.5982626080513
+INFO:root:Epoch: 97, Iteration: 681, Loss: 0.5901011228561401
+INFO:root:Epoch: 97, Iteration: 682, Loss: 0.593909502029419
+INFO:root:Epoch: 97, Iteration: 683, Loss: 0.5959230065345764
+INFO:root:Epoch: 97, Iteration: 684, Loss: 0.6331084370613098
+INFO:root:Epoch: 97, Iteration: 685, Loss: 0.5931503772735596
+INFO:root:Epoch: 97, Iteration: 686, Loss: 0.6057486534118652
+INFO:root:Validation set mIOU: 72.00498248447333
+INFO:root:Epoch: 98, Iteration: 687, Loss: 0.6102628111839294
+INFO:root:Epoch: 98, Iteration: 688, Loss: 0.5895674824714661
+INFO:root:Epoch: 98, Iteration: 689, Loss: 0.6285374760627747
+INFO:root:Epoch: 98, Iteration: 690, Loss: 0.5984169244766235
+INFO:root:Epoch: 98, Iteration: 691, Loss: 0.6120251417160034
+INFO:root:Epoch: 98, Iteration: 692, Loss: 0.5980985760688782
+INFO:root:Epoch: 98, Iteration: 693, Loss: 0.6086965799331665
+INFO:root:Validation set mIOU: 71.73785489948905
+INFO:root:Epoch: 99, Iteration: 694, Loss: 0.5898338556289673
+INFO:root:Epoch: 99, Iteration: 695, Loss: 0.5918251872062683
+INFO:root:Epoch: 99, Iteration: 696, Loss: 0.5930639505386353
+INFO:root:Epoch: 99, Iteration: 697, Loss: 0.5979040265083313
+INFO:root:Epoch: 99, Iteration: 698, Loss: 0.6075800657272339
+INFO:root:Epoch: 99, Iteration: 699, Loss: 0.6141927242279053
+INFO:root:Epoch: 99, Iteration: 700, Loss: 0.6044667959213257
+INFO:root:Validation set mIOU: 71.62304715677102
+INFO:root:{'backbone': 'resnet50',
+ 'batch_size': 16,
+ 'batch_size_consistency': 16,
+ 'conf_thres': 0.95,
+ 'config': 'configs/dataset2.yaml',
+ 'consistency_training': False,
+ 'crop_size': 320,
+ 'data_root': './',
+ 'dataset': 'dataset2',
+ 'epochs': 100,
+ 'labeled_id_path': 'dataset/splits/dataset2/1_4/split_random/labeled.txt',
+ 'lr': 0.0009,
+ 'model': 'unet',
+ 'ngpus': 1,
+ 'plus': False,
+ 'pseudo_consistency_mask_path': None,
+ 'pseudo_mask_path': 'outdir/pseudo_masks/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/first_time',
+ 'rand_thres': 0.8,
+ 'reliable_id_path': None,
+ 'save_path': 'outdir/models/dataset2/1_4/split_random/unet/resnet50/self_training/non_consistency_training/first_time',
+ 'time': 1,
+ 'unlabeled_id_path': 'dataset/splits/dataset2/1_4/split_random/unlabeled.txt',
+ 'warm_up': 30}
+
+INFO:root:Training supervised with consistency on unlabeled images
+INFO:root:Epoch: 0, Iteration: 1, Loss: 1.1418870687484741
+INFO:root:Epoch: 0, Iteration: 2, Loss: 1.0958913564682007
+INFO:root:Validation set mIOU: 11.679482163757338
+INFO:root:Epoch: 1, Iteration: 3, Loss: 0.9955325722694397
+INFO:root:Epoch: 1, Iteration: 4, Loss: 0.9193540811538696
+INFO:root:Validation set mIOU: 4.544589605554339
+INFO:root:Epoch: 2, Iteration: 5, Loss: 0.8258673548698425
+INFO:root:Epoch: 2, Iteration: 6, Loss: 0.8011349439620972
+INFO:root:Validation set mIOU: 5.113983164123565
+INFO:root:Epoch: 3, Iteration: 7, Loss: 0.7758672833442688
+INFO:root:Epoch: 3, Iteration: 8, Loss: 0.7774772644042969
+INFO:root:Validation set mIOU: 10.087403622055419
+INFO:root:Epoch: 4, Iteration: 9, Loss: 0.7359269261360168
+INFO:root:Epoch: 4, Iteration: 10, Loss: 0.7253466844558716
+INFO:root:Validation set mIOU: 37.898361164517766
+INFO:root:Epoch: 5, Iteration: 11, Loss: 0.6937538385391235
+INFO:root:Epoch: 5, Iteration: 12, Loss: 0.6861805319786072
+INFO:root:Validation set mIOU: 59.576186463385795
+INFO:root:Epoch: 6, Iteration: 13, Loss: 0.662218451499939
+INFO:root:Epoch: 6, Iteration: 14, Loss: 0.6679767966270447
+INFO:root:Validation set mIOU: 65.78388720378555
+INFO:root:Epoch: 7, Iteration: 15, Loss: 0.6593798995018005
+INFO:root:Epoch: 7, Iteration: 16, Loss: 0.6542030572891235
+INFO:root:Validation set mIOU: 68.5394488159527
+INFO:root:Epoch: 8, Iteration: 17, Loss: 0.6327579021453857
+INFO:root:Epoch: 8, Iteration: 18, Loss: 0.6584498286247253
+INFO:root:Validation set mIOU: 70.82606278475879
+INFO:root:Epoch: 9, Iteration: 19, Loss: 0.6239752173423767
+INFO:root:Epoch: 9, Iteration: 20, Loss: 0.6387150287628174
+INFO:root:Validation set mIOU: 66.51298784222377
+INFO:root:Epoch: 10, Iteration: 21, Loss: 0.628082275390625
+INFO:root:Epoch: 10, Iteration: 22, Loss: 0.6318783164024353
+INFO:root:Validation set mIOU: 72.73961173116305
+INFO:root:Epoch: 11, Iteration: 23, Loss: 0.6169592142105103
+INFO:root:Epoch: 11, Iteration: 24, Loss: 0.6155741214752197
+INFO:root:Validation set mIOU: 73.13096189351951
+INFO:root:Epoch: 12, Iteration: 25, Loss: 0.618100643157959
+INFO:root:Epoch: 12, Iteration: 26, Loss: 0.6019343733787537
+INFO:root:Validation set mIOU: 69.35837582117509
+INFO:root:Epoch: 13, Iteration: 27, Loss: 0.6211585998535156
+INFO:root:Epoch: 13, Iteration: 28, Loss: 0.611270010471344
+INFO:root:Validation set mIOU: 63.83755895319069
+INFO:root:Epoch: 14, Iteration: 29, Loss: 0.6112368106842041
+INFO:root:Epoch: 14, Iteration: 30, Loss: 0.6060588955879211
+INFO:root:Validation set mIOU: 61.68300712724418
+INFO:root:Epoch: 15, Iteration: 31, Loss: 0.5979843139648438
+INFO:root:Epoch: 15, Iteration: 32, Loss: 0.6094542741775513
+INFO:root:Validation set mIOU: 61.96119439484703
+INFO:root:Epoch: 16, Iteration: 33, Loss: 0.6097135543823242
+INFO:root:Epoch: 16, Iteration: 34, Loss: 0.5940062403678894
+INFO:root:Validation set mIOU: 61.14695390182404
+INFO:root:Epoch: 17, Iteration: 35, Loss: 0.6195239424705505
+INFO:root:Epoch: 17, Iteration: 36, Loss: 0.5997698903083801
+INFO:root:Validation set mIOU: 71.94846167437164
+INFO:root:Epoch: 18, Iteration: 37, Loss: 0.6151931285858154
+INFO:root:Epoch: 18, Iteration: 38, Loss: 0.6172226071357727
+INFO:root:Validation set mIOU: 70.9998287871615
+INFO:root:Epoch: 19, Iteration: 39, Loss: 0.5911750197410583
+INFO:root:Epoch: 19, Iteration: 40, Loss: 0.5990802049636841
+INFO:root:Validation set mIOU: 71.101154792825
+INFO:root:Epoch: 20, Iteration: 41, Loss: 0.5903078317642212
+INFO:root:Epoch: 20, Iteration: 42, Loss: 0.5933583974838257
+INFO:root:Validation set mIOU: 70.5752008584565
+INFO:root:Epoch: 21, Iteration: 43, Loss: 0.5883994698524475
+INFO:root:Epoch: 21, Iteration: 44, Loss: 0.5865659713745117
+INFO:root:Validation set mIOU: 69.23839220630175
+INFO:root:Epoch: 22, Iteration: 45, Loss: 0.5986652970314026
+INFO:root:Epoch: 22, Iteration: 46, Loss: 0.5925370454788208
+INFO:root:Validation set mIOU: 66.07670720990966
+INFO:root:Epoch: 23, Iteration: 47, Loss: 0.592531144618988
+INFO:root:Epoch: 23, Iteration: 48, Loss: 0.6006812453269958
+INFO:root:Validation set mIOU: 60.499193342753564
+INFO:root:Epoch: 24, Iteration: 49, Loss: 0.5941973328590393
+INFO:root:Epoch: 24, Iteration: 50, Loss: 0.5984923243522644
+INFO:root:Validation set mIOU: 59.97298670854222
+INFO:root:Epoch: 25, Iteration: 51, Loss: 0.5886139273643494
+INFO:root:Epoch: 25, Iteration: 52, Loss: 0.5927301049232483
+INFO:root:Validation set mIOU: 59.528134277349466
+INFO:root:Epoch: 26, Iteration: 53, Loss: 0.5848886966705322
+INFO:root:Epoch: 26, Iteration: 54, Loss: 0.6170075535774231
+INFO:root:Validation set mIOU: 53.97223406784472
+INFO:root:Epoch: 27, Iteration: 55, Loss: 0.6003146171569824
+INFO:root:Epoch: 27, Iteration: 56, Loss: 0.6116461753845215
+INFO:root:Validation set mIOU: 50.875764686175984
+INFO:root:Epoch: 28, Iteration: 57, Loss: 0.6237764358520508
+INFO:root:Epoch: 28, Iteration: 58, Loss: 0.5871782898902893
+INFO:root:Validation set mIOU: 59.3066126118262
+INFO:root:Epoch: 29, Iteration: 59, Loss: 0.5995602607727051
+INFO:root:Epoch: 29, Iteration: 60, Loss: 0.6134531497955322
+INFO:root:Validation set mIOU: 60.27725989285493
+INFO:root:Epoch: 30, Iteration: 61, Loss: 0.5843090415000916
+INFO:root:Epoch: 30, Iteration: 62, Loss: 0.6064566969871521
+INFO:root:Validation set mIOU: 55.36462765620244
+INFO:root:Epoch: 31, Iteration: 63, Loss: 0.5966523289680481
+INFO:root:Epoch: 31, Iteration: 64, Loss: 0.6008297204971313
+INFO:root:Validation set mIOU: 57.22671583442739
+INFO:root:Epoch: 32, Iteration: 65, Loss: 0.5971550941467285
+INFO:root:Epoch: 32, Iteration: 66, Loss: 0.5999153852462769
+INFO:root:Validation set mIOU: 63.3469413202664
+INFO:root:Epoch: 33, Iteration: 67, Loss: 0.5922390222549438
+INFO:root:Epoch: 33, Iteration: 68, Loss: 0.5829277634620667
+INFO:root:Validation set mIOU: 66.15124304256848
+INFO:root:Epoch: 34, Iteration: 69, Loss: 0.5869302153587341
+INFO:root:Epoch: 34, Iteration: 70, Loss: 0.5831108689308167
+INFO:root:Validation set mIOU: 64.97802897513701
+INFO:root:Epoch: 35, Iteration: 71, Loss: 0.5978387594223022
+INFO:root:Epoch: 35, Iteration: 72, Loss: 0.5901831388473511
+INFO:root:Validation set mIOU: 65.91306910978616
+INFO:root:Epoch: 36, Iteration: 73, Loss: 0.5955111980438232
+INFO:root:Epoch: 36, Iteration: 74, Loss: 0.6072664856910706
+INFO:root:Validation set mIOU: 67.44668598372544
+INFO:root:Epoch: 37, Iteration: 75, Loss: 0.5814882516860962
+INFO:root:Epoch: 37, Iteration: 76, Loss: 0.5923652052879333
+INFO:root:Validation set mIOU: 64.15831617773222
+INFO:root:Epoch: 38, Iteration: 77, Loss: 0.6007498502731323
+INFO:root:Epoch: 38, Iteration: 78, Loss: 0.581436276435852
+INFO:root:Validation set mIOU: 64.67310070298146
+INFO:root:Epoch: 39, Iteration: 79, Loss: 0.5819327235221863
+INFO:root:Epoch: 39, Iteration: 80, Loss: 0.5909684300422668
+INFO:root:Validation set mIOU: 64.94565457093407
+INFO:root:Epoch: 40, Iteration: 81, Loss: 0.5868681073188782
+INFO:root:Epoch: 40, Iteration: 82, Loss: 0.5916350483894348
+INFO:root:Validation set mIOU: 67.86079592544554
+INFO:root:Epoch: 41, Iteration: 83, Loss: 0.5843280553817749
+INFO:root:Epoch: 41, Iteration: 84, Loss: 0.5769831538200378
+INFO:root:Validation set mIOU: 69.24198178684424
+INFO:root:Epoch: 42, Iteration: 85, Loss: 0.5926834940910339
+INFO:root:Epoch: 42, Iteration: 86, Loss: 0.5822644829750061
+INFO:root:Validation set mIOU: 68.08164729907267
+INFO:root:Epoch: 43, Iteration: 87, Loss: 0.592668890953064
+INFO:root:Epoch: 43, Iteration: 88, Loss: 0.5826261043548584
+INFO:root:Validation set mIOU: 69.58019792161298
+INFO:root:Epoch: 44, Iteration: 89, Loss: 0.573478639125824
+INFO:root:Epoch: 44, Iteration: 90, Loss: 0.5810757875442505
+INFO:root:Validation set mIOU: 73.08796413578455
+INFO:root:Epoch: 45, Iteration: 91, Loss: 0.5818387269973755
+INFO:root:Epoch: 45, Iteration: 92, Loss: 0.5858279466629028
+INFO:root:Validation set mIOU: 75.77472487030481
+INFO:root:Epoch: 46, Iteration: 93, Loss: 0.5827637314796448
+INFO:root:Epoch: 46, Iteration: 94, Loss: 0.6022331118583679
+INFO:root:Validation set mIOU: 75.8544468959269
+INFO:root:Epoch: 47, Iteration: 95, Loss: 0.589434027671814
+INFO:root:Epoch: 47, Iteration: 96, Loss: 0.5806583762168884
+INFO:root:Validation set mIOU: 76.06128108740164
+INFO:root:Epoch: 48, Iteration: 97, Loss: 0.5793086886405945
+INFO:root:Epoch: 48, Iteration: 98, Loss: 0.5847934484481812
+INFO:root:Validation set mIOU: 76.3376409454383
+INFO:root:Epoch: 49, Iteration: 99, Loss: 0.5811995267868042
+INFO:root:Epoch: 49, Iteration: 100, Loss: 0.5792703032493591
+INFO:root:Validation set mIOU: 76.17853071483313
+INFO:root:Epoch: 50, Iteration: 101, Loss: 0.5798134207725525
+INFO:root:Epoch: 50, Iteration: 102, Loss: 0.5789074301719666
+INFO:root:Validation set mIOU: 72.76074583121428
+INFO:root:Epoch: 51, Iteration: 103, Loss: 0.5765981674194336
+INFO:root:Epoch: 51, Iteration: 104, Loss: 0.5765117406845093
+INFO:root:Validation set mIOU: 76.02598129740534
+INFO:root:Epoch: 52, Iteration: 105, Loss: 0.5745502710342407
+INFO:root:Epoch: 52, Iteration: 106, Loss: 0.5764533877372742
+INFO:root:Validation set mIOU: 77.24786724334362
+INFO:root:Epoch: 53, Iteration: 107, Loss: 0.5886074304580688
+INFO:root:Epoch: 53, Iteration: 108, Loss: 0.583163857460022
+INFO:root:Validation set mIOU: 76.73784026646709
+INFO:root:Epoch: 54, Iteration: 109, Loss: 0.5752927660942078
+INFO:root:Epoch: 54, Iteration: 110, Loss: 0.5712751150131226
+INFO:root:Validation set mIOU: 75.46490263105264
+INFO:root:Epoch: 55, Iteration: 111, Loss: 0.5798304677009583
+INFO:root:Epoch: 55, Iteration: 112, Loss: 0.5788581967353821
+INFO:root:Validation set mIOU: 75.65155778428655
+INFO:root:Epoch: 56, Iteration: 113, Loss: 0.5713226795196533
+INFO:root:Epoch: 56, Iteration: 114, Loss: 0.5752918124198914
+INFO:root:Validation set mIOU: 75.98864340486836
+INFO:root:Epoch: 57, Iteration: 115, Loss: 0.5732641816139221
+INFO:root:Epoch: 57, Iteration: 116, Loss: 0.6046144366264343
+INFO:root:Validation set mIOU: 76.37621741110216
+INFO:root:Epoch: 58, Iteration: 117, Loss: 0.582646906375885
+INFO:root:Epoch: 58, Iteration: 118, Loss: 0.5905065536499023
+INFO:root:Validation set mIOU: 76.87850020703847
+INFO:root:Epoch: 59, Iteration: 119, Loss: 0.5729422569274902
+INFO:root:Epoch: 59, Iteration: 120, Loss: 0.5735765695571899
+INFO:root:Validation set mIOU: 73.22927996548178
+INFO:root:Epoch: 60, Iteration: 121, Loss: 0.5762160420417786
+INFO:root:Epoch: 60, Iteration: 122, Loss: 0.5842389464378357
+INFO:root:Validation set mIOU: 72.8967765087634
+INFO:root:Epoch: 61, Iteration: 123, Loss: 0.5814381837844849
+INFO:root:Epoch: 61, Iteration: 124, Loss: 0.5761667490005493
+INFO:root:Validation set mIOU: 77.03553301918538
+INFO:root:Epoch: 62, Iteration: 125, Loss: 0.5859547853469849
+INFO:root:Epoch: 62, Iteration: 126, Loss: 0.5840809941291809
+INFO:root:Validation set mIOU: 77.44634919790313
+INFO:root:Epoch: 63, Iteration: 127, Loss: 0.5748909115791321
+INFO:root:Epoch: 63, Iteration: 128, Loss: 0.5817567706108093
+INFO:root:Validation set mIOU: 75.96022107001885
+INFO:root:Epoch: 64, Iteration: 129, Loss: 0.5856557488441467
+INFO:root:Epoch: 64, Iteration: 130, Loss: 0.5819227695465088
+INFO:root:Validation set mIOU: 74.25151687861067
+INFO:root:Epoch: 65, Iteration: 131, Loss: 0.5871058106422424
+INFO:root:Epoch: 65, Iteration: 132, Loss: 0.5767990350723267
+INFO:root:Validation set mIOU: 71.40848455627449
+INFO:root:Epoch: 66, Iteration: 133, Loss: 0.5704026222229004
+INFO:root:Epoch: 66, Iteration: 134, Loss: 0.573948323726654
+INFO:root:Validation set mIOU: 71.9744774916626
+INFO:root:Epoch: 67, Iteration: 135, Loss: 0.5739267468452454
+INFO:root:Epoch: 67, Iteration: 136, Loss: 0.5828229188919067
+INFO:root:Validation set mIOU: 78.6142562701051
+INFO:root:Epoch: 68, Iteration: 137, Loss: 0.5801288485527039
+INFO:root:Epoch: 68, Iteration: 138, Loss: 0.5769233107566833
+INFO:root:Validation set mIOU: 79.29023655125026
+INFO:root:Epoch: 69, Iteration: 139, Loss: 0.5799850225448608
+INFO:root:Epoch: 69, Iteration: 140, Loss: 0.5805866122245789
+INFO:root:Validation set mIOU: 75.24529642713281
+INFO:root:Epoch: 70, Iteration: 141, Loss: 0.5785761475563049
+INFO:root:Epoch: 70, Iteration: 142, Loss: 0.5745576024055481
+INFO:root:Validation set mIOU: 74.82084093036711
+INFO:root:Epoch: 71, Iteration: 143, Loss: 0.5716847777366638
+INFO:root:Epoch: 71, Iteration: 144, Loss: 0.5781823992729187
+INFO:root:Validation set mIOU: 77.25205351085785
+INFO:root:Epoch: 72, Iteration: 145, Loss: 0.5742756724357605
+INFO:root:Epoch: 72, Iteration: 146, Loss: 0.5731549263000488
+INFO:root:Validation set mIOU: 78.94610893514732
+INFO:root:Epoch: 73, Iteration: 147, Loss: 0.574073851108551
+INFO:root:Epoch: 73, Iteration: 148, Loss: 0.5751338005065918
+INFO:root:Validation set mIOU: 80.20044727655132
+INFO:root:Epoch: 74, Iteration: 149, Loss: 0.5808991193771362
+INFO:root:Epoch: 74, Iteration: 150, Loss: 0.5823876261711121
+INFO:root:Validation set mIOU: 79.74790130836101
+INFO:root:Epoch: 75, Iteration: 151, Loss: 0.5729234218597412
+INFO:root:Epoch: 75, Iteration: 152, Loss: 0.5794963240623474
+INFO:root:Validation set mIOU: 81.6048521584956
+INFO:root:Epoch: 76, Iteration: 153, Loss: 0.5812560319900513
+INFO:root:Epoch: 76, Iteration: 154, Loss: 0.5750060677528381
+INFO:root:Validation set mIOU: 82.25782647279827
+INFO:root:Epoch: 77, Iteration: 155, Loss: 0.582659125328064
+INFO:root:Epoch: 77, Iteration: 156, Loss: 0.5774482488632202
+INFO:root:Validation set mIOU: 80.80887197269321
+INFO:root:Epoch: 78, Iteration: 157, Loss: 0.5804944038391113
+INFO:root:Epoch: 78, Iteration: 158, Loss: 0.5723515748977661
+INFO:root:Validation set mIOU: 77.26385683872591
+INFO:root:Epoch: 79, Iteration: 159, Loss: 0.5755151510238647
+INFO:root:Epoch: 79, Iteration: 160, Loss: 0.5833266973495483
+INFO:root:Validation set mIOU: 73.63737199072538
+INFO:root:Epoch: 80, Iteration: 161, Loss: 0.5760509371757507
+INFO:root:Epoch: 80, Iteration: 162, Loss: 0.5706486105918884
+INFO:root:Validation set mIOU: 73.21568328519801
+INFO:root:Epoch: 81, Iteration: 163, Loss: 0.5767539143562317
+INFO:root:Epoch: 81, Iteration: 164, Loss: 0.5750341415405273
+INFO:root:Validation set mIOU: 74.68888634555992
+INFO:root:Epoch: 82, Iteration: 165, Loss: 0.5761345624923706
+INFO:root:Epoch: 82, Iteration: 166, Loss: 0.5986493825912476
+INFO:root:Validation set mIOU: 74.85991496965472
+INFO:root:Epoch: 83, Iteration: 167, Loss: 0.5776138305664062
+INFO:root:Epoch: 83, Iteration: 168, Loss: 0.5712365508079529
+INFO:root:Validation set mIOU: 72.4221845220653
+INFO:root:Epoch: 84, Iteration: 169, Loss: 0.5715233087539673
+INFO:root:Epoch: 84, Iteration: 170, Loss: 0.5896701812744141
+INFO:root:Validation set mIOU: 70.2552852444939
+INFO:root:Epoch: 85, Iteration: 171, Loss: 0.5827975869178772
+INFO:root:Epoch: 85, Iteration: 172, Loss: 0.5742265582084656
+INFO:root:Validation set mIOU: 65.42571660625826
+INFO:root:Epoch: 86, Iteration: 173, Loss: 0.5759422779083252
+INFO:root:Epoch: 86, Iteration: 174, Loss: 0.5736753940582275
+INFO:root:Validation set mIOU: 61.78140408492738
+INFO:root:Epoch: 87, Iteration: 175, Loss: 0.5885633230209351
+INFO:root:Epoch: 87, Iteration: 176, Loss: 0.5747890472412109
+INFO:root:Validation set mIOU: 69.5353381224873
+INFO:root:Epoch: 88, Iteration: 177, Loss: 0.5772995352745056
+INFO:root:Epoch: 88, Iteration: 178, Loss: 0.5736125707626343
+INFO:root:Validation set mIOU: 77.29549008594533
+INFO:root:Epoch: 89, Iteration: 179, Loss: 0.5754707455635071
+INFO:root:Epoch: 89, Iteration: 180, Loss: 0.576919674873352
+INFO:root:Validation set mIOU: 79.55580471622916
+INFO:root:Epoch: 90, Iteration: 181, Loss: 0.6036462187767029
+INFO:root:Epoch: 90, Iteration: 182, Loss: 0.5739654898643494
+INFO:root:Validation set mIOU: 79.91779716125596
+INFO:root:Epoch: 91, Iteration: 183, Loss: 0.5734437108039856
+INFO:root:Epoch: 91, Iteration: 184, Loss: 0.5885241627693176
+INFO:root:Validation set mIOU: 80.35380025054226
+INFO:root:Epoch: 92, Iteration: 185, Loss: 0.5750362873077393
+INFO:root:Epoch: 92, Iteration: 186, Loss: 0.5902904868125916
+INFO:root:Validation set mIOU: 80.92198598271501
+INFO:root:Epoch: 93, Iteration: 187, Loss: 0.5738334655761719
+INFO:root:Epoch: 93, Iteration: 188, Loss: 0.570441722869873
+INFO:root:Validation set mIOU: 80.68694812956103
+INFO:root:Epoch: 94, Iteration: 189, Loss: 0.5772864818572998
+INFO:root:Epoch: 94, Iteration: 190, Loss: 0.5730584263801575
+INFO:root:Validation set mIOU: 80.45544979156048
+INFO:root:Epoch: 95, Iteration: 191, Loss: 0.574028730392456
+INFO:root:Epoch: 95, Iteration: 192, Loss: 0.5727981328964233
+INFO:root:Validation set mIOU: 80.57104765519547
+INFO:root:Epoch: 96, Iteration: 193, Loss: 0.5743787288665771
+INFO:root:Epoch: 96, Iteration: 194, Loss: 0.5749252438545227
+INFO:root:Validation set mIOU: 80.72821732970482
+INFO:root:Epoch: 97, Iteration: 195, Loss: 0.5708399415016174
+INFO:root:Epoch: 97, Iteration: 196, Loss: 0.5692853927612305
+INFO:root:Validation set mIOU: 81.01674381112683
+INFO:root:Epoch: 98, Iteration: 197, Loss: 0.5734038949012756
+INFO:root:Epoch: 98, Iteration: 198, Loss: 0.5725278258323669
+INFO:root:Validation set mIOU: 81.08264430801816
+INFO:root:Epoch: 99, Iteration: 199, Loss: 0.5671619772911072
+INFO:root:Epoch: 99, Iteration: 200, Loss: 0.5756077170372009
+INFO:root:Validation set mIOU: 81.79967129546174
+INFO:root:Semi-training
+INFO:root:Epoch: 0, Iteration: 1, Loss: 1.1627099514007568
+INFO:root:Epoch: 0, Iteration: 2, Loss: 1.1657758951187134
+INFO:root:Epoch: 0, Iteration: 3, Loss: 1.0867396593093872
+INFO:root:Epoch: 0, Iteration: 4, Loss: 0.9915210008621216
+INFO:root:Epoch: 0, Iteration: 5, Loss: 0.9110562801361084
+INFO:root:Epoch: 0, Iteration: 6, Loss: 0.8628057837486267
+INFO:root:Epoch: 0, Iteration: 7, Loss: 0.8637984395027161
+INFO:root:Validation set mIOU: 35.62567708021351
+INFO:root:Epoch: 1, Iteration: 8, Loss: 0.8015199899673462
+INFO:root:Epoch: 1, Iteration: 9, Loss: 0.7405542731285095
+INFO:root:Epoch: 1, Iteration: 10, Loss: 0.7787540555000305
+INFO:root:Epoch: 1, Iteration: 11, Loss: 0.7640168070793152
+INFO:root:Epoch: 1, Iteration: 12, Loss: 0.7564042210578918
+INFO:root:Epoch: 1, Iteration: 13, Loss: 0.703846275806427
+INFO:root:Epoch: 1, Iteration: 14, Loss: 0.7361782789230347
+INFO:root:Validation set mIOU: 56.373138307833756
+INFO:root:Epoch: 2, Iteration: 15, Loss: 0.735581636428833
+INFO:root:Epoch: 2, Iteration: 16, Loss: 0.702244222164154
+INFO:root:Epoch: 2, Iteration: 17, Loss: 0.6856264472007751
+INFO:root:Epoch: 2, Iteration: 18, Loss: 0.7029991149902344
+INFO:root:Epoch: 2, Iteration: 19, Loss: 0.6748256087303162
+INFO:root:Epoch: 2, Iteration: 20, Loss: 0.7031276226043701
+INFO:root:Epoch: 2, Iteration: 21, Loss: 0.6546576023101807
+INFO:root:Validation set mIOU: 57.45996111796884
+INFO:root:Epoch: 3, Iteration: 22, Loss: 0.664499819278717
+INFO:root:Epoch: 3, Iteration: 23, Loss: 0.6625826954841614
+INFO:root:Epoch: 3, Iteration: 24, Loss: 0.6640522480010986
+INFO:root:Epoch: 3, Iteration: 25, Loss: 0.7189508080482483
+INFO:root:Epoch: 3, Iteration: 26, Loss: 0.6552655696868896
+INFO:root:Epoch: 3, Iteration: 27, Loss: 0.6435737609863281
+INFO:root:Epoch: 3, Iteration: 28, Loss: 0.6660807728767395
+INFO:root:Validation set mIOU: 53.70418273333007
+INFO:root:Epoch: 4, Iteration: 29, Loss: 0.6511895656585693
+INFO:root:Epoch: 4, Iteration: 30, Loss: 0.6229615807533264
+INFO:root:Epoch: 4, Iteration: 31, Loss: 0.6780940294265747
+INFO:root:Epoch: 4, Iteration: 32, Loss: 0.6528152823448181
+INFO:root:Epoch: 4, Iteration: 33, Loss: 0.6646098494529724
+INFO:root:Epoch: 4, Iteration: 34, Loss: 0.6801486015319824
+INFO:root:Epoch: 4, Iteration: 35, Loss: 0.6394217014312744
+INFO:root:Validation set mIOU: 57.240223980456065
+INFO:root:Epoch: 5, Iteration: 36, Loss: 0.7104061245918274
+INFO:root:Epoch: 5, Iteration: 37, Loss: 0.656873345375061
+INFO:root:Epoch: 5, Iteration: 38, Loss: 0.6768171191215515
+INFO:root:Epoch: 5, Iteration: 39, Loss: 0.6526400446891785
+INFO:root:Epoch: 5, Iteration: 40, Loss: 0.6331336498260498
+INFO:root:Epoch: 5, Iteration: 41, Loss: 0.6536102890968323
+INFO:root:Epoch: 5, Iteration: 42, Loss: 0.667015552520752
+INFO:root:Validation set mIOU: 57.25086360477702
+INFO:root:Epoch: 6, Iteration: 43, Loss: 0.6243175864219666
+INFO:root:Epoch: 6, Iteration: 44, Loss: 0.6444852352142334
+INFO:root:Epoch: 6, Iteration: 45, Loss: 0.6322587728500366
+INFO:root:Epoch: 6, Iteration: 46, Loss: 0.6138578057289124
+INFO:root:Epoch: 6, Iteration: 47, Loss: 0.7008349895477295
+INFO:root:Epoch: 6, Iteration: 48, Loss: 0.6270146369934082
+INFO:root:Epoch: 6, Iteration: 49, Loss: 0.6361503601074219
+INFO:root:Validation set mIOU: 59.27507875901633
+INFO:root:Epoch: 7, Iteration: 50, Loss: 0.6873162388801575
+INFO:root:Epoch: 7, Iteration: 51, Loss: 0.6909551024436951
+INFO:root:Epoch: 7, Iteration: 52, Loss: 0.6785579323768616
+INFO:root:Epoch: 7, Iteration: 53, Loss: 0.6399886608123779
+INFO:root:Epoch: 7, Iteration: 54, Loss: 0.616965115070343
+INFO:root:Epoch: 7, Iteration: 55, Loss: 0.6368856430053711
+INFO:root:Epoch: 7, Iteration: 56, Loss: 0.631510317325592
+INFO:root:Validation set mIOU: 53.65162103014306
+INFO:root:Epoch: 8, Iteration: 57, Loss: 0.6253381371498108
+INFO:root:Epoch: 8, Iteration: 58, Loss: 0.6967973113059998
+INFO:root:Epoch: 8, Iteration: 59, Loss: 0.6665219664573669
+INFO:root:Epoch: 8, Iteration: 60, Loss: 0.6348562240600586
+INFO:root:Epoch: 8, Iteration: 61, Loss: 0.6176151633262634
+INFO:root:Epoch: 8, Iteration: 62, Loss: 0.6116272807121277
+INFO:root:Epoch: 8, Iteration: 63, Loss: 0.6284241676330566
+INFO:root:Validation set mIOU: 53.251596604246195
+INFO:root:Epoch: 9, Iteration: 64, Loss: 0.6574666500091553
+INFO:root:Epoch: 9, Iteration: 65, Loss: 0.6482258439064026
+INFO:root:Epoch: 9, Iteration: 66, Loss: 0.6264023780822754
+INFO:root:Epoch: 9, Iteration: 67, Loss: 0.6554826498031616
+INFO:root:Epoch: 9, Iteration: 68, Loss: 0.6194349527359009
+INFO:root:Epoch: 9, Iteration: 69, Loss: 0.6483693718910217
+INFO:root:Epoch: 9, Iteration: 70, Loss: 0.6340844035148621
+INFO:root:Validation set mIOU: 43.009300648423384
+INFO:root:Epoch: 10, Iteration: 71, Loss: 0.6408692598342896
+INFO:root:Epoch: 10, Iteration: 72, Loss: 0.6363638639450073
+INFO:root:Epoch: 10, Iteration: 73, Loss: 0.6463447213172913
+INFO:root:Epoch: 10, Iteration: 74, Loss: 0.6071047186851501
+INFO:root:Epoch: 10, Iteration: 75, Loss: 0.6214613914489746
+INFO:root:Epoch: 10, Iteration: 76, Loss: 0.6190216541290283
+INFO:root:Epoch: 10, Iteration: 77, Loss: 0.6256242394447327
+INFO:root:Validation set mIOU: 26.454527293633912
+INFO:root:Epoch: 11, Iteration: 78, Loss: 0.6138632297515869
+INFO:root:Epoch: 11, Iteration: 79, Loss: 0.6622510552406311
+INFO:root:Epoch: 11, Iteration: 80, Loss: 0.6558302640914917
+INFO:root:Epoch: 11, Iteration: 81, Loss: 0.66228187084198
+INFO:root:Epoch: 11, Iteration: 82, Loss: 0.7138221263885498
+INFO:root:Epoch: 11, Iteration: 83, Loss: 0.6206966638565063
+INFO:root:Epoch: 11, Iteration: 84, Loss: 0.6617012619972229
+INFO:root:Validation set mIOU: 7.082041794443278
+INFO:root:Epoch: 12, Iteration: 85, Loss: 0.6187182664871216
+INFO:root:Epoch: 12, Iteration: 86, Loss: 0.6549556851387024
+INFO:root:Epoch: 12, Iteration: 87, Loss: 0.6165212988853455
+INFO:root:Epoch: 12, Iteration: 88, Loss: 0.6467574238777161
+INFO:root:Epoch: 12, Iteration: 89, Loss: 0.6374256014823914
+INFO:root:Epoch: 12, Iteration: 90, Loss: 0.6850701570510864
+INFO:root:Epoch: 12, Iteration: 91, Loss: 0.6310598850250244
+INFO:root:Validation set mIOU: 46.292956381395165
+INFO:root:Epoch: 13, Iteration: 92, Loss: 0.6594991087913513
+INFO:root:Epoch: 13, Iteration: 93, Loss: 0.6259478330612183
+INFO:root:Epoch: 13, Iteration: 94, Loss: 0.6143890023231506
+INFO:root:Epoch: 13, Iteration: 95, Loss: 0.6147772073745728
+INFO:root:Epoch: 13, Iteration: 96, Loss: 0.6813633441925049
+INFO:root:Epoch: 13, Iteration: 97, Loss: 0.6214393377304077
+INFO:root:Epoch: 13, Iteration: 98, Loss: 0.6263731718063354
+INFO:root:Validation set mIOU: 60.0115372956293
+INFO:root:Epoch: 14, Iteration: 99, Loss: 0.6272752285003662
+INFO:root:Epoch: 14, Iteration: 100, Loss: 0.65582275390625
+INFO:root:Epoch: 14, Iteration: 101, Loss: 0.679872453212738
+INFO:root:Epoch: 14, Iteration: 102, Loss: 0.6120246052742004
+INFO:root:Epoch: 14, Iteration: 103, Loss: 0.639773428440094
+INFO:root:Epoch: 14, Iteration: 104, Loss: 0.6533998250961304
+INFO:root:Epoch: 14, Iteration: 105, Loss: 0.6217759251594543
+INFO:root:Validation set mIOU: 47.00166125064662
+INFO:root:Epoch: 15, Iteration: 106, Loss: 0.6420422196388245
+INFO:root:Epoch: 15, Iteration: 107, Loss: 0.6246386766433716
+INFO:root:Epoch: 15, Iteration: 108, Loss: 0.6166006326675415
+INFO:root:Epoch: 15, Iteration: 109, Loss: 0.6312108635902405
+INFO:root:Epoch: 15, Iteration: 110, Loss: 0.6479199528694153
+INFO:root:Epoch: 15, Iteration: 111, Loss: 0.651069700717926
+INFO:root:Epoch: 15, Iteration: 112, Loss: 0.6520209312438965
+INFO:root:Validation set mIOU: 47.22531621061456
+INFO:root:Epoch: 16, Iteration: 113, Loss: 0.6027842164039612
+INFO:root:Epoch: 16, Iteration: 114, Loss: 0.6285023093223572
+INFO:root:Epoch: 16, Iteration: 115, Loss: 0.6489285230636597
+INFO:root:Epoch: 16, Iteration: 116, Loss: 0.6534602642059326
+INFO:root:Epoch: 16, Iteration: 117, Loss: 0.6326398849487305
+INFO:root:Epoch: 16, Iteration: 118, Loss: 0.6393423676490784
+INFO:root:Epoch: 16, Iteration: 119, Loss: 0.6624137759208679
+INFO:root:Validation set mIOU: 37.342094934596
+INFO:root:Epoch: 17, Iteration: 120, Loss: 0.7052626609802246
+INFO:root:Epoch: 17, Iteration: 121, Loss: 0.6332686543464661
+INFO:root:Epoch: 17, Iteration: 122, Loss: 0.6513334512710571
+INFO:root:Epoch: 17, Iteration: 123, Loss: 0.627507746219635
+INFO:root:Epoch: 17, Iteration: 124, Loss: 0.6519404649734497
+INFO:root:Epoch: 17, Iteration: 125, Loss: 0.6237831711769104
+INFO:root:Epoch: 17, Iteration: 126, Loss: 0.6549609303474426
+INFO:root:Validation set mIOU: 45.475900056879695
+INFO:root:Epoch: 18, Iteration: 127, Loss: 0.6321130394935608
+INFO:root:Epoch: 18, Iteration: 128, Loss: 0.6087170243263245
+INFO:root:Epoch: 18, Iteration: 129, Loss: 0.6069738864898682
+INFO:root:Epoch: 18, Iteration: 130, Loss: 0.693630039691925
+INFO:root:Epoch: 18, Iteration: 131, Loss: 0.7307922840118408
+INFO:root:Epoch: 18, Iteration: 132, Loss: 0.63483065366745
+INFO:root:Epoch: 18, Iteration: 133, Loss: 0.6955108642578125
+INFO:root:Validation set mIOU: 43.39123386629011
+INFO:root:Epoch: 19, Iteration: 134, Loss: 0.6438636779785156
+INFO:root:Epoch: 19, Iteration: 135, Loss: 0.6447483897209167
+INFO:root:Epoch: 19, Iteration: 136, Loss: 0.6187636256217957
+INFO:root:Epoch: 19, Iteration: 137, Loss: 0.6141852140426636
+INFO:root:Epoch: 19, Iteration: 138, Loss: 0.6323490142822266
+INFO:root:Epoch: 19, Iteration: 139, Loss: 0.6443880796432495
+INFO:root:Epoch: 19, Iteration: 140, Loss: 0.6594823598861694
+INFO:root:Validation set mIOU: 45.69129382602712
+INFO:root:Epoch: 20, Iteration: 141, Loss: 0.6229016184806824
+INFO:root:Epoch: 20, Iteration: 142, Loss: 0.6760094165802002
+INFO:root:Epoch: 20, Iteration: 143, Loss: 0.603489875793457
+INFO:root:Epoch: 20, Iteration: 144, Loss: 0.6517646312713623
+INFO:root:Epoch: 20, Iteration: 145, Loss: 0.6581332683563232
+INFO:root:Epoch: 20, Iteration: 146, Loss: 0.6337860226631165
+INFO:root:Epoch: 20, Iteration: 147, Loss: 0.6647064089775085
+INFO:root:Validation set mIOU: 54.670226248296416
+INFO:root:Epoch: 21, Iteration: 148, Loss: 0.625816285610199
+INFO:root:Epoch: 21, Iteration: 149, Loss: 0.6068863272666931
+INFO:root:Epoch: 21, Iteration: 150, Loss: 0.645155131816864
+INFO:root:Epoch: 21, Iteration: 151, Loss: 0.6380602121353149
+INFO:root:Epoch: 21, Iteration: 152, Loss: 0.6147844195365906
+INFO:root:Epoch: 21, Iteration: 153, Loss: 0.6243227124214172
+INFO:root:Epoch: 21, Iteration: 154, Loss: 0.6461202502250671
+INFO:root:Validation set mIOU: 49.31636329432199
+INFO:root:Epoch: 22, Iteration: 155, Loss: 0.6516231298446655
+INFO:root:Epoch: 22, Iteration: 156, Loss: 0.6610720157623291
+INFO:root:Epoch: 22, Iteration: 157, Loss: 0.643387496471405
+INFO:root:Epoch: 22, Iteration: 158, Loss: 0.621971845626831
+INFO:root:Epoch: 22, Iteration: 159, Loss: 0.6229373216629028
+INFO:root:Epoch: 22, Iteration: 160, Loss: 0.6602588295936584
+INFO:root:Epoch: 22, Iteration: 161, Loss: 0.6485477685928345
+INFO:root:Validation set mIOU: 57.55172225053061
+INFO:root:Epoch: 23, Iteration: 162, Loss: 0.6426592469215393
+INFO:root:Epoch: 23, Iteration: 163, Loss: 0.6206601858139038
+INFO:root:Epoch: 23, Iteration: 164, Loss: 0.6427368521690369
+INFO:root:Epoch: 23, Iteration: 165, Loss: 0.6135146021842957
+INFO:root:Epoch: 23, Iteration: 166, Loss: 0.6467339396476746
+INFO:root:Epoch: 23, Iteration: 167, Loss: 0.6277052760124207
+INFO:root:Epoch: 23, Iteration: 168, Loss: 0.6365757584571838
+INFO:root:Validation set mIOU: 52.394922172966275
+INFO:root:Epoch: 24, Iteration: 169, Loss: 0.6400560140609741
+INFO:root:Epoch: 24, Iteration: 170, Loss: 0.633175790309906
+INFO:root:Epoch: 24, Iteration: 171, Loss: 0.7927880883216858
+INFO:root:Epoch: 24, Iteration: 172, Loss: 0.6543924808502197
+INFO:root:Epoch: 24, Iteration: 173, Loss: 0.6333720088005066
+INFO:root:Epoch: 24, Iteration: 174, Loss: 0.6184656023979187
+INFO:root:Epoch: 24, Iteration: 175, Loss: 0.6653018593788147
+INFO:root:Validation set mIOU: 25.442502408470492
+INFO:root:Epoch: 25, Iteration: 176, Loss: 0.6281127333641052
+INFO:root:Epoch: 25, Iteration: 177, Loss: 0.6298240423202515
+INFO:root:Epoch: 25, Iteration: 178, Loss: 0.6401404738426208
+INFO:root:Epoch: 25, Iteration: 179, Loss: 0.615837812423706
+INFO:root:Epoch: 25, Iteration: 180, Loss: 0.658734917640686
+INFO:root:Epoch: 25, Iteration: 181, Loss: 0.6638016700744629
+INFO:root:Epoch: 25, Iteration: 182, Loss: 0.6234649419784546
+INFO:root:Validation set mIOU: 62.330048182164575
+INFO:root:Epoch: 26, Iteration: 183, Loss: 0.6694813370704651
+INFO:root:Epoch: 26, Iteration: 184, Loss: 0.6653946042060852
+INFO:root:Epoch: 26, Iteration: 185, Loss: 0.6070647239685059
+INFO:root:Epoch: 26, Iteration: 186, Loss: 0.6610372066497803
+INFO:root:Epoch: 26, Iteration: 187, Loss: 0.6093831658363342
+INFO:root:Epoch: 26, Iteration: 188, Loss: 0.6653634309768677
+INFO:root:Epoch: 26, Iteration: 189, Loss: 0.6545951962471008
+INFO:root:Validation set mIOU: 61.04649351576734
+INFO:root:Epoch: 27, Iteration: 190, Loss: 0.6202678680419922
+INFO:root:Epoch: 27, Iteration: 191, Loss: 0.6267744898796082
+INFO:root:Epoch: 27, Iteration: 192, Loss: 0.6436534523963928
+INFO:root:Epoch: 27, Iteration: 193, Loss: 0.6554186940193176
+INFO:root:Epoch: 27, Iteration: 194, Loss: 0.6110445857048035
+INFO:root:Epoch: 27, Iteration: 195, Loss: 0.6760079264640808
+INFO:root:Epoch: 27, Iteration: 196, Loss: 0.6459448337554932
+INFO:root:Validation set mIOU: 47.1120037244448
+INFO:root:Epoch: 28, Iteration: 197, Loss: 0.7220383882522583
+INFO:root:Epoch: 28, Iteration: 198, Loss: 0.7598059773445129
+INFO:root:Epoch: 28, Iteration: 199, Loss: 0.6635245084762573
+INFO:root:Epoch: 28, Iteration: 200, Loss: 0.5991380214691162
+INFO:root:Epoch: 28, Iteration: 201, Loss: 0.6262791752815247
+INFO:root:Epoch: 28, Iteration: 202, Loss: 0.6095911860466003
+INFO:root:Epoch: 28, Iteration: 203, Loss: 0.6114434599876404
+INFO:root:Validation set mIOU: 62.18454495479335
+INFO:root:Epoch: 29, Iteration: 204, Loss: 0.6941825151443481
+INFO:root:Epoch: 29, Iteration: 205, Loss: 0.6244363188743591
+INFO:root:Epoch: 29, Iteration: 206, Loss: 0.6474922895431519
+INFO:root:Epoch: 29, Iteration: 207, Loss: 0.6714439392089844
+INFO:root:Epoch: 29, Iteration: 208, Loss: 0.6373617649078369
+INFO:root:Epoch: 29, Iteration: 209, Loss: 0.7130870223045349
+INFO:root:Epoch: 29, Iteration: 210, Loss: 0.645180881023407
+INFO:root:Validation set mIOU: 62.594040492813555
+INFO:root:Epoch: 30, Iteration: 211, Loss: 0.6531463861465454
+INFO:root:Epoch: 30, Iteration: 212, Loss: 0.6728323698043823
+INFO:root:Epoch: 30, Iteration: 213, Loss: 0.6133551597595215
+INFO:root:Epoch: 30, Iteration: 214, Loss: 0.658351480960846
+INFO:root:Epoch: 30, Iteration: 215, Loss: 0.6465041637420654
+INFO:root:Epoch: 30, Iteration: 216, Loss: 0.6252731680870056
+INFO:root:Epoch: 30, Iteration: 217, Loss: 0.6486243009567261
+INFO:root:Validation set mIOU: 47.060803003270365
+INFO:root:Epoch: 31, Iteration: 218, Loss: 0.6392934918403625
+INFO:root:Epoch: 31, Iteration: 219, Loss: 0.6338040232658386
+INFO:root:Epoch: 31, Iteration: 220, Loss: 0.6381668448448181
+INFO:root:Epoch: 31, Iteration: 221, Loss: 0.636580765247345
+INFO:root:Epoch: 31, Iteration: 222, Loss: 0.6077380180358887
+INFO:root:Epoch: 31, Iteration: 223, Loss: 0.635443389415741
+INFO:root:Epoch: 31, Iteration: 224, Loss: 0.638964056968689
+INFO:root:Validation set mIOU: 48.004672264138975
+INFO:root:Epoch: 32, Iteration: 225, Loss: 0.610277533531189
+INFO:root:Epoch: 32, Iteration: 226, Loss: 0.6315467953681946
+INFO:root:Epoch: 32, Iteration: 227, Loss: 0.6190558075904846
+INFO:root:Epoch: 32, Iteration: 228, Loss: 0.6208052635192871
+INFO:root:Epoch: 32, Iteration: 229, Loss: 0.624325156211853
+INFO:root:Epoch: 32, Iteration: 230, Loss: 0.6425026655197144
+INFO:root:Epoch: 32, Iteration: 231, Loss: 0.633801281452179
+INFO:root:Validation set mIOU: 54.05499294400277
+INFO:root:Epoch: 33, Iteration: 232, Loss: 0.64429771900177
+INFO:root:Epoch: 33, Iteration: 233, Loss: 0.6287176609039307
+INFO:root:Epoch: 33, Iteration: 234, Loss: 0.631776750087738
+INFO:root:Epoch: 33, Iteration: 235, Loss: 0.6207973957061768
+INFO:root:Epoch: 33, Iteration: 236, Loss: 0.6240386366844177
+INFO:root:Epoch: 33, Iteration: 237, Loss: 0.6407434940338135
+INFO:root:Epoch: 33, Iteration: 238, Loss: 0.646839439868927
+INFO:root:Validation set mIOU: 65.7500070750694
+INFO:root:Epoch: 34, Iteration: 239, Loss: 0.6188694834709167
+INFO:root:Epoch: 34, Iteration: 240, Loss: 0.6572192311286926
+INFO:root:Epoch: 34, Iteration: 241, Loss: 0.6168663501739502
+INFO:root:Epoch: 34, Iteration: 242, Loss: 0.6414747834205627
+INFO:root:Epoch: 34, Iteration: 243, Loss: 0.6712685227394104
+INFO:root:Epoch: 34, Iteration: 244, Loss: 0.6082456111907959
+INFO:root:Epoch: 34, Iteration: 245, Loss: 0.5958377122879028
+INFO:root:Validation set mIOU: 65.98188343874651
+INFO:root:Epoch: 35, Iteration: 246, Loss: 0.6286176443099976
+INFO:root:Epoch: 35, Iteration: 247, Loss: 0.6456449627876282
+INFO:root:Epoch: 35, Iteration: 248, Loss: 0.6237512230873108
+INFO:root:Epoch: 35, Iteration: 249, Loss: 0.7082922458648682
+INFO:root:Epoch: 35, Iteration: 250, Loss: 0.6247695684432983
+INFO:root:Epoch: 35, Iteration: 251, Loss: 0.6271277666091919
+INFO:root:Epoch: 35, Iteration: 252, Loss: 0.6211877465248108
+INFO:root:Validation set mIOU: 50.6646092598796
+INFO:root:Epoch: 36, Iteration: 253, Loss: 0.6309929490089417
+INFO:root:Epoch: 36, Iteration: 254, Loss: 0.6615508794784546
+INFO:root:Epoch: 36, Iteration: 255, Loss: 0.6411371827125549
+INFO:root:Epoch: 36, Iteration: 256, Loss: 0.6268551349639893
+INFO:root:Epoch: 36, Iteration: 257, Loss: 0.6157174110412598
+INFO:root:Epoch: 36, Iteration: 258, Loss: 0.6128754019737244
+INFO:root:Epoch: 36, Iteration: 259, Loss: 0.631905198097229
+INFO:root:Validation set mIOU: 71.62330110577396
+INFO:root:Epoch: 37, Iteration: 260, Loss: 0.6359977722167969
+INFO:root:Epoch: 37, Iteration: 261, Loss: 0.6300557255744934
+INFO:root:Epoch: 37, Iteration: 262, Loss: 0.6305875778198242
+INFO:root:Epoch: 37, Iteration: 263, Loss: 0.6390126943588257
+INFO:root:Epoch: 37, Iteration: 264, Loss: 0.6491677761077881
+INFO:root:Epoch: 37, Iteration: 265, Loss: 0.6106615662574768
+INFO:root:Epoch: 37, Iteration: 266, Loss: 0.6090007424354553
+INFO:root:Validation set mIOU: 72.37446756606842
+INFO:root:Epoch: 38, Iteration: 267, Loss: 0.6235363483428955
+INFO:root:Epoch: 38, Iteration: 268, Loss: 0.6179119348526001
+INFO:root:Epoch: 38, Iteration: 269, Loss: 0.598560094833374
+INFO:root:Epoch: 38, Iteration: 270, Loss: 0.6585776805877686
+INFO:root:Epoch: 38, Iteration: 271, Loss: 0.6128244400024414
+INFO:root:Epoch: 38, Iteration: 272, Loss: 0.6302527189254761
+INFO:root:Epoch: 38, Iteration: 273, Loss: 0.613716721534729
+INFO:root:Validation set mIOU: 65.26734222656867
+INFO:root:Epoch: 39, Iteration: 274, Loss: 0.611786961555481
+INFO:root:Epoch: 39, Iteration: 275, Loss: 0.6314429044723511
+INFO:root:Epoch: 39, Iteration: 276, Loss: 0.6388965845108032
+INFO:root:Epoch: 39, Iteration: 277, Loss: 0.6400706171989441
+INFO:root:Epoch: 39, Iteration: 278, Loss: 0.6103193163871765
+INFO:root:Epoch: 39, Iteration: 279, Loss: 0.6102809906005859
+INFO:root:Epoch: 39, Iteration: 280, Loss: 0.6125695705413818
+INFO:root:Validation set mIOU: 66.26944081685048
+INFO:root:Epoch: 40, Iteration: 281, Loss: 0.6533806324005127
+INFO:root:Epoch: 40, Iteration: 282, Loss: 0.6008092164993286
+INFO:root:Epoch: 40, Iteration: 283, Loss: 0.6169610619544983
+INFO:root:Epoch: 40, Iteration: 284, Loss: 0.6174128651618958
+INFO:root:Epoch: 40, Iteration: 285, Loss: 0.6272594332695007
+INFO:root:Epoch: 40, Iteration: 286, Loss: 0.6186913847923279
+INFO:root:Epoch: 40, Iteration: 287, Loss: 0.6034235954284668
+INFO:root:Validation set mIOU: 63.049332902718135
+INFO:root:Epoch: 41, Iteration: 288, Loss: 0.6362431049346924
+INFO:root:Epoch: 41, Iteration: 289, Loss: 0.6092174649238586
+INFO:root:Epoch: 41, Iteration: 290, Loss: 0.6098765730857849
+INFO:root:Epoch: 41, Iteration: 291, Loss: 0.6340135931968689
+INFO:root:Epoch: 41, Iteration: 292, Loss: 0.665440022945404
+INFO:root:Epoch: 41, Iteration: 293, Loss: 0.6191255450248718
+INFO:root:Epoch: 41, Iteration: 294, Loss: 0.6316323280334473
+INFO:root:Validation set mIOU: 50.94963403080701
+INFO:root:Epoch: 42, Iteration: 295, Loss: 0.6524037718772888
+INFO:root:Epoch: 42, Iteration: 296, Loss: 0.6078205108642578
+INFO:root:Epoch: 42, Iteration: 297, Loss: 0.6685755848884583
+INFO:root:Epoch: 42, Iteration: 298, Loss: 0.6214242577552795
+INFO:root:Epoch: 42, Iteration: 299, Loss: 0.6157500743865967
+INFO:root:Epoch: 42, Iteration: 300, Loss: 0.6566442847251892
+INFO:root:Epoch: 42, Iteration: 301, Loss: 0.6225599050521851
+INFO:root:Validation set mIOU: 53.831568945388064
+INFO:root:Epoch: 43, Iteration: 302, Loss: 0.6393401026725769
+INFO:root:Epoch: 43, Iteration: 303, Loss: 0.6245267987251282
+INFO:root:Epoch: 43, Iteration: 304, Loss: 0.649013340473175
+INFO:root:Epoch: 43, Iteration: 305, Loss: 0.6150116324424744
+INFO:root:Epoch: 43, Iteration: 306, Loss: 0.6155398488044739
+INFO:root:Epoch: 43, Iteration: 307, Loss: 0.6495871543884277
+INFO:root:Epoch: 43, Iteration: 308, Loss: 0.6370117664337158
+INFO:root:Validation set mIOU: 62.8620815424479
+INFO:root:Epoch: 44, Iteration: 309, Loss: 0.6618520021438599
+INFO:root:Epoch: 44, Iteration: 310, Loss: 0.6239384412765503
+INFO:root:Epoch: 44, Iteration: 311, Loss: 0.6094599366188049
+INFO:root:Epoch: 44, Iteration: 312, Loss: 0.6046937704086304
+INFO:root:Epoch: 44, Iteration: 313, Loss: 0.642194926738739
+INFO:root:Epoch: 44, Iteration: 314, Loss: 0.610527515411377
+INFO:root:Epoch: 44, Iteration: 315, Loss: 0.6195054650306702
+INFO:root:Validation set mIOU: 61.0188009438871
+INFO:root:Epoch: 45, Iteration: 316, Loss: 0.6458620429039001
+INFO:root:Epoch: 45, Iteration: 317, Loss: 0.6300674080848694
+INFO:root:Epoch: 45, Iteration: 318, Loss: 0.6051326990127563
+INFO:root:Epoch: 45, Iteration: 319, Loss: 0.6220375895500183
+INFO:root:Epoch: 45, Iteration: 320, Loss: 0.6477720737457275
+INFO:root:Epoch: 45, Iteration: 321, Loss: 0.6188239455223083
+INFO:root:Epoch: 45, Iteration: 322, Loss: 0.6078734993934631
+INFO:root:Validation set mIOU: 70.90669902081169
+INFO:root:Epoch: 46, Iteration: 323, Loss: 0.6230891346931458
+INFO:root:Epoch: 46, Iteration: 324, Loss: 0.621928334236145
+INFO:root:Epoch: 46, Iteration: 325, Loss: 0.598936140537262
+INFO:root:Epoch: 46, Iteration: 326, Loss: 0.6045368313789368
+INFO:root:Epoch: 46, Iteration: 327, Loss: 0.6116482019424438
+INFO:root:Epoch: 46, Iteration: 328, Loss: 0.6068278551101685
+INFO:root:Epoch: 46, Iteration: 329, Loss: 0.6066308617591858
+INFO:root:Validation set mIOU: 62.54554863926063
+INFO:root:Epoch: 47, Iteration: 330, Loss: 0.6125954389572144
+INFO:root:Epoch: 47, Iteration: 331, Loss: 0.620795488357544
+INFO:root:Epoch: 47, Iteration: 332, Loss: 0.6185278296470642
+INFO:root:Epoch: 47, Iteration: 333, Loss: 0.6262737512588501
+INFO:root:Epoch: 47, Iteration: 334, Loss: 0.6500499248504639
+INFO:root:Epoch: 47, Iteration: 335, Loss: 0.624143123626709
+INFO:root:Epoch: 47, Iteration: 336, Loss: 0.6050823926925659
+INFO:root:Validation set mIOU: 67.74207831417239
+INFO:root:Epoch: 48, Iteration: 337, Loss: 0.6126539707183838
+INFO:root:Epoch: 48, Iteration: 338, Loss: 0.6622835397720337
+INFO:root:Epoch: 48, Iteration: 339, Loss: 0.6153642535209656
+INFO:root:Epoch: 48, Iteration: 340, Loss: 0.6061258912086487
+INFO:root:Epoch: 48, Iteration: 341, Loss: 0.6085520386695862
+INFO:root:Epoch: 48, Iteration: 342, Loss: 0.644507884979248
+INFO:root:Epoch: 48, Iteration: 343, Loss: 0.612341582775116
+INFO:root:Validation set mIOU: 61.571624369582835
+INFO:root:Epoch: 49, Iteration: 344, Loss: 0.6229695081710815
+INFO:root:Epoch: 49, Iteration: 345, Loss: 0.6129053235054016
+INFO:root:Epoch: 49, Iteration: 346, Loss: 0.6146354079246521
+INFO:root:Epoch: 49, Iteration: 347, Loss: 0.6714815497398376
+INFO:root:Epoch: 49, Iteration: 348, Loss: 0.6465528607368469
+INFO:root:Epoch: 49, Iteration: 349, Loss: 0.6445055603981018
+INFO:root:Epoch: 49, Iteration: 350, Loss: 0.6317093372344971
+INFO:root:Validation set mIOU: 55.57607127702321
+INFO:root:Epoch: 50, Iteration: 351, Loss: 0.612033486366272
+INFO:root:Epoch: 50, Iteration: 352, Loss: 0.6409326195716858
+INFO:root:Epoch: 50, Iteration: 353, Loss: 0.6313497424125671
+INFO:root:Epoch: 50, Iteration: 354, Loss: 0.6267540454864502
+INFO:root:Epoch: 50, Iteration: 355, Loss: 0.6228474974632263
+INFO:root:Epoch: 50, Iteration: 356, Loss: 0.6584951877593994
+INFO:root:Epoch: 50, Iteration: 357, Loss: 0.6292833685874939
+INFO:root:Validation set mIOU: 54.35901554088568
+INFO:root:Epoch: 51, Iteration: 358, Loss: 0.6709049344062805
+INFO:root:Epoch: 51, Iteration: 359, Loss: 0.6362471580505371
+INFO:root:Epoch: 51, Iteration: 360, Loss: 0.6009404063224792
+INFO:root:Epoch: 51, Iteration: 361, Loss: 0.6126872897148132
+INFO:root:Epoch: 51, Iteration: 362, Loss: 0.6154725551605225
+INFO:root:Epoch: 51, Iteration: 363, Loss: 0.6060105562210083
+INFO:root:Epoch: 51, Iteration: 364, Loss: 0.6003016233444214
+INFO:root:Validation set mIOU: 70.34514923368539
+INFO:root:Epoch: 52, Iteration: 365, Loss: 0.6245899796485901
+INFO:root:Epoch: 52, Iteration: 366, Loss: 0.5884444117546082
+INFO:root:Epoch: 52, Iteration: 367, Loss: 0.6159040927886963
+INFO:root:Epoch: 52, Iteration: 368, Loss: 0.6055898666381836
+INFO:root:Epoch: 52, Iteration: 369, Loss: 0.6436694264411926
+INFO:root:Epoch: 52, Iteration: 370, Loss: 0.6517711877822876
+INFO:root:Epoch: 52, Iteration: 371, Loss: 0.5871056914329529
+INFO:root:Validation set mIOU: 68.47247348124611
+INFO:root:Epoch: 53, Iteration: 372, Loss: 0.599342405796051
+INFO:root:Epoch: 53, Iteration: 373, Loss: 0.6130173206329346
+INFO:root:Epoch: 53, Iteration: 374, Loss: 0.6002841591835022
+INFO:root:Epoch: 53, Iteration: 375, Loss: 0.6262248158454895
+INFO:root:Epoch: 53, Iteration: 376, Loss: 0.6411391496658325
+INFO:root:Epoch: 53, Iteration: 377, Loss: 0.6110837459564209
+INFO:root:Epoch: 53, Iteration: 378, Loss: 0.6064580082893372
+INFO:root:Validation set mIOU: 39.84590332718552
+INFO:root:Epoch: 54, Iteration: 379, Loss: 0.6407769322395325
+INFO:root:Epoch: 54, Iteration: 380, Loss: 0.6339824795722961
+INFO:root:Epoch: 54, Iteration: 381, Loss: 0.631531834602356
+INFO:root:Epoch: 54, Iteration: 382, Loss: 0.5817866325378418
+INFO:root:Epoch: 54, Iteration: 383, Loss: 0.6643862128257751
+INFO:root:Epoch: 54, Iteration: 384, Loss: 0.6100746393203735
+INFO:root:Epoch: 54, Iteration: 385, Loss: 0.6184396743774414
+INFO:root:Validation set mIOU: 56.87830477095153
+INFO:root:Epoch: 55, Iteration: 386, Loss: 0.6168108582496643
+INFO:root:Epoch: 55, Iteration: 387, Loss: 0.6177152991294861
+INFO:root:Epoch: 55, Iteration: 388, Loss: 0.6130546927452087
+INFO:root:Epoch: 55, Iteration: 389, Loss: 0.6242185235023499
+INFO:root:Epoch: 55, Iteration: 390, Loss: 0.6319912075996399
+INFO:root:Epoch: 55, Iteration: 391, Loss: 0.6299885511398315
+INFO:root:Epoch: 55, Iteration: 392, Loss: 0.6407267451286316
+INFO:root:Validation set mIOU: 66.09541199170276
+INFO:root:Epoch: 56, Iteration: 393, Loss: 0.6572878956794739
+INFO:root:Epoch: 56, Iteration: 394, Loss: 0.6335984468460083
+INFO:root:Epoch: 56, Iteration: 395, Loss: 0.6381886601448059
+INFO:root:Epoch: 56, Iteration: 396, Loss: 0.5984878540039062
+INFO:root:Epoch: 56, Iteration: 397, Loss: 0.6374777555465698
+INFO:root:Epoch: 56, Iteration: 398, Loss: 0.623942494392395
+INFO:root:Epoch: 56, Iteration: 399, Loss: 0.6305826902389526
+INFO:root:Validation set mIOU: 68.55904535842492
+INFO:root:Epoch: 57, Iteration: 400, Loss: 0.5917689800262451
+INFO:root:Epoch: 57, Iteration: 401, Loss: 0.7006306052207947
+INFO:root:Epoch: 57, Iteration: 402, Loss: 0.6290194988250732
+INFO:root:Epoch: 57, Iteration: 403, Loss: 0.6200310587882996
+INFO:root:Epoch: 57, Iteration: 404, Loss: 0.6104302406311035
+INFO:root:Epoch: 57, Iteration: 405, Loss: 0.6178522109985352
+INFO:root:Epoch: 57, Iteration: 406, Loss: 0.5863457918167114
+INFO:root:Validation set mIOU: 71.39183740399318
+INFO:root:Epoch: 58, Iteration: 407, Loss: 0.6168321967124939
+INFO:root:Epoch: 58, Iteration: 408, Loss: 0.6265581846237183
+INFO:root:Epoch: 58, Iteration: 409, Loss: 0.6023667454719543
+INFO:root:Epoch: 58, Iteration: 410, Loss: 0.6331556439399719
+INFO:root:Epoch: 58, Iteration: 411, Loss: 0.6086695194244385
+INFO:root:Epoch: 58, Iteration: 412, Loss: 0.5909766554832458
+INFO:root:Epoch: 58, Iteration: 413, Loss: 0.6546645760536194
+INFO:root:Validation set mIOU: 67.10676362168549
+INFO:root:Epoch: 59, Iteration: 414, Loss: 0.6121923327445984
+INFO:root:Epoch: 59, Iteration: 415, Loss: 0.6247498393058777
+INFO:root:Epoch: 59, Iteration: 416, Loss: 0.6571232676506042
+INFO:root:Epoch: 59, Iteration: 417, Loss: 0.6410411596298218
+INFO:root:Epoch: 59, Iteration: 418, Loss: 0.6305464506149292
+INFO:root:Epoch: 59, Iteration: 419, Loss: 0.6130033731460571
+INFO:root:Epoch: 59, Iteration: 420, Loss: 0.5934510827064514
+INFO:root:Validation set mIOU: 67.1868854602239
+INFO:root:Epoch: 60, Iteration: 421, Loss: 0.6187869310379028
+INFO:root:Epoch: 60, Iteration: 422, Loss: 0.6467257738113403
+INFO:root:Epoch: 60, Iteration: 423, Loss: 0.6211565732955933
+INFO:root:Epoch: 60, Iteration: 424, Loss: 0.6106187105178833
+INFO:root:Epoch: 60, Iteration: 425, Loss: 0.5959547162055969
+INFO:root:Epoch: 60, Iteration: 426, Loss: 0.6290242075920105
+INFO:root:Epoch: 60, Iteration: 427, Loss: 0.6273148655891418
+INFO:root:Validation set mIOU: 68.98987923184943
+INFO:root:Epoch: 61, Iteration: 428, Loss: 0.6082804203033447
+INFO:root:Epoch: 61, Iteration: 429, Loss: 0.6588847637176514
+INFO:root:Epoch: 61, Iteration: 430, Loss: 0.6274647116661072
+INFO:root:Epoch: 61, Iteration: 431, Loss: 0.6042196154594421
+INFO:root:Epoch: 61, Iteration: 432, Loss: 0.639690637588501
+INFO:root:Epoch: 61, Iteration: 433, Loss: 0.5968635678291321
+INFO:root:Epoch: 61, Iteration: 434, Loss: 0.6175332069396973
+INFO:root:Validation set mIOU: 66.70812818297547
+INFO:root:Epoch: 62, Iteration: 435, Loss: 0.6028863787651062
+INFO:root:Epoch: 62, Iteration: 436, Loss: 0.6436288952827454
+INFO:root:Epoch: 62, Iteration: 437, Loss: 0.6076011061668396
+INFO:root:Epoch: 62, Iteration: 438, Loss: 0.6018754243850708
+INFO:root:Epoch: 62, Iteration: 439, Loss: 0.6261687278747559
+INFO:root:Epoch: 62, Iteration: 440, Loss: 0.5900139212608337
+INFO:root:Epoch: 62, Iteration: 441, Loss: 0.6274558901786804
+INFO:root:Validation set mIOU: 65.700960114236
+INFO:root:Epoch: 63, Iteration: 442, Loss: 0.6159194707870483
+INFO:root:Epoch: 63, Iteration: 443, Loss: 0.602084219455719
+INFO:root:Epoch: 63, Iteration: 444, Loss: 0.597701370716095
+INFO:root:Epoch: 63, Iteration: 445, Loss: 0.6268622279167175
+INFO:root:Epoch: 63, Iteration: 446, Loss: 0.6395231485366821
+INFO:root:Epoch: 63, Iteration: 447, Loss: 0.5846827626228333
+INFO:root:Epoch: 63, Iteration: 448, Loss: 0.6310895681381226
+INFO:root:Validation set mIOU: 70.05003189772734
+INFO:root:Epoch: 64, Iteration: 449, Loss: 0.6026642322540283
+INFO:root:Epoch: 64, Iteration: 450, Loss: 0.6184461116790771
+INFO:root:Epoch: 64, Iteration: 451, Loss: 0.5964434742927551
+INFO:root:Epoch: 64, Iteration: 452, Loss: 0.5956792235374451
+INFO:root:Epoch: 64, Iteration: 453, Loss: 0.5996714234352112
+INFO:root:Epoch: 64, Iteration: 454, Loss: 0.6168492436408997
+INFO:root:Epoch: 64, Iteration: 455, Loss: 0.6176159381866455
+INFO:root:Validation set mIOU: 70.50885996781521
+INFO:root:Epoch: 65, Iteration: 456, Loss: 0.6389541029930115
+INFO:root:Epoch: 65, Iteration: 457, Loss: 0.6167709827423096
+INFO:root:Epoch: 65, Iteration: 458, Loss: 0.6298471689224243
+INFO:root:Epoch: 65, Iteration: 459, Loss: 0.6235978007316589
+INFO:root:Epoch: 65, Iteration: 460, Loss: 0.6029853224754333
+INFO:root:Epoch: 65, Iteration: 461, Loss: 0.6209654211997986
+INFO:root:Epoch: 65, Iteration: 462, Loss: 0.5952447652816772
+INFO:root:Validation set mIOU: 69.56161345695199
+INFO:root:Epoch: 66, Iteration: 463, Loss: 0.6237494349479675
+INFO:root:Epoch: 66, Iteration: 464, Loss: 0.6175949573516846
+INFO:root:Epoch: 66, Iteration: 465, Loss: 0.6168352961540222
+INFO:root:Epoch: 66, Iteration: 466, Loss: 0.604802668094635
+INFO:root:Epoch: 66, Iteration: 467, Loss: 0.6080789566040039
+INFO:root:Epoch: 66, Iteration: 468, Loss: 0.6093860864639282
+INFO:root:Epoch: 66, Iteration: 469, Loss: 0.6309996843338013
+INFO:root:Validation set mIOU: 62.35128047490183
+INFO:root:Epoch: 67, Iteration: 470, Loss: 0.6265964508056641
+INFO:root:Epoch: 67, Iteration: 471, Loss: 0.6402371525764465
+INFO:root:Epoch: 67, Iteration: 472, Loss: 0.6011566519737244
+INFO:root:Epoch: 67, Iteration: 473, Loss: 0.607806921005249
+INFO:root:Epoch: 67, Iteration: 474, Loss: 0.604013979434967
+INFO:root:Epoch: 67, Iteration: 475, Loss: 0.6173169016838074
+INFO:root:Epoch: 67, Iteration: 476, Loss: 0.6577266454696655
+INFO:root:Validation set mIOU: 68.39259719035446
+INFO:root:Epoch: 68, Iteration: 477, Loss: 0.6399789452552795
+INFO:root:Epoch: 68, Iteration: 478, Loss: 0.6207919716835022
+INFO:root:Epoch: 68, Iteration: 479, Loss: 0.6350361108779907
+INFO:root:Epoch: 68, Iteration: 480, Loss: 0.6180201768875122
+INFO:root:Epoch: 68, Iteration: 481, Loss: 0.6045628786087036
+INFO:root:Epoch: 68, Iteration: 482, Loss: 0.6562066078186035
+INFO:root:Epoch: 68, Iteration: 483, Loss: 0.6433632373809814
+INFO:root:Validation set mIOU: 62.76872034129644
+INFO:root:Epoch: 69, Iteration: 484, Loss: 0.6516618728637695
+INFO:root:Epoch: 69, Iteration: 485, Loss: 0.6294313073158264
+INFO:root:Epoch: 69, Iteration: 486, Loss: 0.6105931401252747
+INFO:root:Epoch: 69, Iteration: 487, Loss: 0.6225380897521973
+INFO:root:Epoch: 69, Iteration: 488, Loss: 0.610770046710968
+INFO:root:Epoch: 69, Iteration: 489, Loss: 0.6103919744491577
+INFO:root:Epoch: 69, Iteration: 490, Loss: 0.609526515007019
+INFO:root:Validation set mIOU: 67.95003518792973
+INFO:root:Epoch: 70, Iteration: 491, Loss: 0.5949975848197937
+INFO:root:Epoch: 70, Iteration: 492, Loss: 0.6133694052696228
+INFO:root:Epoch: 70, Iteration: 493, Loss: 0.6073228716850281
+INFO:root:Epoch: 70, Iteration: 494, Loss: 0.6199554800987244
+INFO:root:Epoch: 70, Iteration: 495, Loss: 0.6157116293907166
+INFO:root:Epoch: 70, Iteration: 496, Loss: 0.6185451149940491
+INFO:root:Epoch: 70, Iteration: 497, Loss: 0.6214994192123413
+INFO:root:Validation set mIOU: 70.0113196951683
+INFO:root:Epoch: 71, Iteration: 498, Loss: 0.6442273855209351
+INFO:root:Epoch: 71, Iteration: 499, Loss: 0.6039574146270752
+INFO:root:Epoch: 71, Iteration: 500, Loss: 0.6260913610458374
+INFO:root:Epoch: 71, Iteration: 501, Loss: 0.680538535118103
+INFO:root:Epoch: 71, Iteration: 502, Loss: 0.5996494293212891
+INFO:root:Epoch: 71, Iteration: 503, Loss: 0.6014865040779114
+INFO:root:Epoch: 71, Iteration: 504, Loss: 0.6203916072845459
+INFO:root:Validation set mIOU: 63.86700120265319
+INFO:root:Epoch: 72, Iteration: 505, Loss: 0.6286154985427856
+INFO:root:Epoch: 72, Iteration: 506, Loss: 0.6433207392692566
+INFO:root:Epoch: 72, Iteration: 507, Loss: 0.599719226360321
+INFO:root:Epoch: 72, Iteration: 508, Loss: 0.6131100654602051
+INFO:root:Epoch: 72, Iteration: 509, Loss: 0.6150966286659241
+INFO:root:Epoch: 72, Iteration: 510, Loss: 0.6056585311889648
+INFO:root:Epoch: 72, Iteration: 511, Loss: 0.6005457043647766
+INFO:root:Validation set mIOU: 66.78584104745431
+INFO:root:Epoch: 73, Iteration: 512, Loss: 0.6068899631500244
+INFO:root:Epoch: 73, Iteration: 513, Loss: 0.5972561240196228
+INFO:root:Epoch: 73, Iteration: 514, Loss: 0.6046619415283203
+INFO:root:Epoch: 73, Iteration: 515, Loss: 0.6052308678627014
+INFO:root:Epoch: 73, Iteration: 516, Loss: 0.6026836037635803
+INFO:root:Epoch: 73, Iteration: 517, Loss: 0.6883716583251953
+INFO:root:Epoch: 73, Iteration: 518, Loss: 0.6347845792770386
+INFO:root:Validation set mIOU: 62.17561660351151
+INFO:root:Epoch: 74, Iteration: 519, Loss: 0.6499970555305481
+INFO:root:Epoch: 74, Iteration: 520, Loss: 0.6072213649749756
+INFO:root:Epoch: 74, Iteration: 521, Loss: 0.608772873878479
+INFO:root:Epoch: 74, Iteration: 522, Loss: 0.6192000508308411
+INFO:root:Epoch: 74, Iteration: 523, Loss: 0.6473539471626282
+INFO:root:Epoch: 74, Iteration: 524, Loss: 0.6173264384269714
+INFO:root:Epoch: 74, Iteration: 525, Loss: 0.6077950596809387
+INFO:root:Validation set mIOU: 68.53386548128789
+INFO:root:Epoch: 75, Iteration: 526, Loss: 0.6367429494857788
+INFO:root:Epoch: 75, Iteration: 527, Loss: 0.6091146469116211
+INFO:root:Epoch: 75, Iteration: 528, Loss: 0.6302000880241394
+INFO:root:Epoch: 75, Iteration: 529, Loss: 0.6387167572975159
+INFO:root:Epoch: 75, Iteration: 530, Loss: 0.6238346099853516
+INFO:root:Epoch: 75, Iteration: 531, Loss: 0.6191779375076294
+INFO:root:Epoch: 75, Iteration: 532, Loss: 0.6300398707389832
+INFO:root:Validation set mIOU: 71.56432683585892
+INFO:root:Epoch: 76, Iteration: 533, Loss: 0.6431722640991211
+INFO:root:Epoch: 76, Iteration: 534, Loss: 0.5945901274681091
+INFO:root:Epoch: 76, Iteration: 535, Loss: 0.624511182308197
+INFO:root:Epoch: 76, Iteration: 536, Loss: 0.6551819443702698
+INFO:root:Epoch: 76, Iteration: 537, Loss: 0.6092091202735901
+INFO:root:Epoch: 76, Iteration: 538, Loss: 0.6130229234695435
+INFO:root:Epoch: 76, Iteration: 539, Loss: 0.604277491569519
+INFO:root:Validation set mIOU: 63.87704085148192
+INFO:root:Epoch: 77, Iteration: 540, Loss: 0.5910055637359619
+INFO:root:Epoch: 77, Iteration: 541, Loss: 0.6279866695404053
+INFO:root:Epoch: 77, Iteration: 542, Loss: 0.6048891544342041
+INFO:root:Epoch: 77, Iteration: 543, Loss: 0.6233251690864563
+INFO:root:Epoch: 77, Iteration: 544, Loss: 0.6446741819381714
+INFO:root:Epoch: 77, Iteration: 545, Loss: 0.6127671003341675
+INFO:root:Epoch: 77, Iteration: 546, Loss: 0.6432501077651978
+INFO:root:Validation set mIOU: 34.345299084673684
+INFO:root:Epoch: 78, Iteration: 547, Loss: 0.6210247874259949
+INFO:root:Epoch: 78, Iteration: 548, Loss: 0.6288410425186157
+INFO:root:Epoch: 78, Iteration: 549, Loss: 0.6300315260887146
+INFO:root:Epoch: 78, Iteration: 550, Loss: 0.6272395253181458
+INFO:root:Epoch: 78, Iteration: 551, Loss: 0.6262301802635193
+INFO:root:Epoch: 78, Iteration: 552, Loss: 0.6458081603050232
+INFO:root:Epoch: 78, Iteration: 553, Loss: 0.6068404316902161
+INFO:root:Validation set mIOU: 46.01680913804585
+INFO:root:Epoch: 79, Iteration: 554, Loss: 0.6408358216285706
+INFO:root:Epoch: 79, Iteration: 555, Loss: 0.6092631816864014
+INFO:root:Epoch: 79, Iteration: 556, Loss: 0.6478369832038879
+INFO:root:Epoch: 79, Iteration: 557, Loss: 0.6084240078926086
+INFO:root:Epoch: 79, Iteration: 558, Loss: 0.6183923482894897
+INFO:root:Epoch: 79, Iteration: 559, Loss: 0.6376769542694092
+INFO:root:Epoch: 79, Iteration: 560, Loss: 0.6574979424476624
+INFO:root:Validation set mIOU: 58.0871587016765
+INFO:root:Epoch: 80, Iteration: 561, Loss: 0.6036686301231384
+INFO:root:Epoch: 80, Iteration: 562, Loss: 0.6246597170829773
+INFO:root:Epoch: 80, Iteration: 563, Loss: 0.6383557915687561
+INFO:root:Epoch: 80, Iteration: 564, Loss: 0.6197110414505005
+INFO:root:Epoch: 80, Iteration: 565, Loss: 0.6138370037078857
+INFO:root:Epoch: 80, Iteration: 566, Loss: 0.6424735188484192
+INFO:root:Epoch: 80, Iteration: 567, Loss: 0.6082371473312378
+INFO:root:Validation set mIOU: 64.9098275592778
+INFO:root:Epoch: 81, Iteration: 568, Loss: 0.5947081446647644
+INFO:root:Epoch: 81, Iteration: 569, Loss: 0.6224097609519958
+INFO:root:Epoch: 81, Iteration: 570, Loss: 0.6199136972427368
+INFO:root:Epoch: 81, Iteration: 571, Loss: 0.649502694606781
+INFO:root:Epoch: 81, Iteration: 572, Loss: 0.5970187783241272
+INFO:root:Epoch: 81, Iteration: 573, Loss: 0.6002472043037415
+INFO:root:Epoch: 81, Iteration: 574, Loss: 0.5890707969665527
+INFO:root:Validation set mIOU: 67.3940370515091
+INFO:root:Epoch: 82, Iteration: 575, Loss: 0.5987350344657898
+INFO:root:Epoch: 82, Iteration: 576, Loss: 0.5799077153205872
+INFO:root:Epoch: 82, Iteration: 577, Loss: 0.609662652015686
+INFO:root:Epoch: 82, Iteration: 578, Loss: 0.5922068953514099
+INFO:root:Epoch: 82, Iteration: 579, Loss: 0.6181726455688477
+INFO:root:Epoch: 82, Iteration: 580, Loss: 0.6711623072624207
+INFO:root:Epoch: 82, Iteration: 581, Loss: 0.6158742904663086
+INFO:root:Validation set mIOU: 66.63542474355233
+INFO:root:Epoch: 83, Iteration: 582, Loss: 0.5999864935874939
+INFO:root:Epoch: 83, Iteration: 583, Loss: 0.6360395550727844
+INFO:root:Epoch: 83, Iteration: 584, Loss: 0.6282463669776917
+INFO:root:Epoch: 83, Iteration: 585, Loss: 0.605545699596405
+INFO:root:Epoch: 83, Iteration: 586, Loss: 0.5871688723564148
+INFO:root:Epoch: 83, Iteration: 587, Loss: 0.615340530872345
+INFO:root:Epoch: 83, Iteration: 588, Loss: 0.6179810762405396
+INFO:root:Validation set mIOU: 70.5180088229581
+INFO:root:Epoch: 84, Iteration: 589, Loss: 0.5891016721725464
+INFO:root:Epoch: 84, Iteration: 590, Loss: 0.5972222089767456
+INFO:root:Epoch: 84, Iteration: 591, Loss: 0.6154282689094543
+INFO:root:Epoch: 84, Iteration: 592, Loss: 0.6057277917861938
+INFO:root:Epoch: 84, Iteration: 593, Loss: 0.6034767627716064
+INFO:root:Epoch: 84, Iteration: 594, Loss: 0.5902268290519714
+INFO:root:Epoch: 84, Iteration: 595, Loss: 0.6081854701042175
+INFO:root:Validation set mIOU: 71.22794514482352
+INFO:root:Epoch: 85, Iteration: 596, Loss: 0.5914038419723511
+INFO:root:Epoch: 85, Iteration: 597, Loss: 0.5941946506500244
+INFO:root:Epoch: 85, Iteration: 598, Loss: 0.6277247071266174
+INFO:root:Epoch: 85, Iteration: 599, Loss: 0.6225665807723999
+INFO:root:Epoch: 85, Iteration: 600, Loss: 0.6052539348602295
+INFO:root:Epoch: 85, Iteration: 601, Loss: 0.610770583152771
+INFO:root:Epoch: 85, Iteration: 602, Loss: 0.602253794670105
+INFO:root:Validation set mIOU: 72.83178481496351
+INFO:root:Epoch: 86, Iteration: 603, Loss: 0.5928817987442017
+INFO:root:Epoch: 86, Iteration: 604, Loss: 0.6013988256454468
+INFO:root:Epoch: 86, Iteration: 605, Loss: 0.6215626001358032
+INFO:root:Epoch: 86, Iteration: 606, Loss: 0.5962026119232178
+INFO:root:Epoch: 86, Iteration: 607, Loss: 0.5987681746482849
+INFO:root:Epoch: 86, Iteration: 608, Loss: 0.6042072176933289
+INFO:root:Epoch: 86, Iteration: 609, Loss: 0.6120102405548096
+INFO:root:Validation set mIOU: 73.61324390989662
+INFO:root:Epoch: 87, Iteration: 610, Loss: 0.6185530424118042
+INFO:root:Epoch: 87, Iteration: 611, Loss: 0.5915735363960266
+INFO:root:Epoch: 87, Iteration: 612, Loss: 0.5908788442611694
+INFO:root:Epoch: 87, Iteration: 613, Loss: 0.6168211102485657
+INFO:root:Epoch: 87, Iteration: 614, Loss: 0.62945157289505
+INFO:root:Epoch: 87, Iteration: 615, Loss: 0.6270214915275574
+INFO:root:Epoch: 87, Iteration: 616, Loss: 0.6058521270751953
+INFO:root:Validation set mIOU: 73.46297789263406
+INFO:root:Epoch: 88, Iteration: 617, Loss: 0.606232225894928
+INFO:root:Epoch: 88, Iteration: 618, Loss: 0.6078147292137146
+INFO:root:Epoch: 88, Iteration: 619, Loss: 0.6029749512672424
+INFO:root:Epoch: 88, Iteration: 620, Loss: 0.6256787180900574
+INFO:root:Epoch: 88, Iteration: 621, Loss: 0.6088460683822632
+INFO:root:Epoch: 88, Iteration: 622, Loss: 0.6177311539649963
+INFO:root:Epoch: 88, Iteration: 623, Loss: 0.658072292804718
+INFO:root:Validation set mIOU: 68.8681441159073
+INFO:root:Epoch: 89, Iteration: 624, Loss: 0.6439003348350525
+INFO:root:Epoch: 89, Iteration: 625, Loss: 0.5910292267799377
+INFO:root:Epoch: 89, Iteration: 626, Loss: 0.5998567938804626
+INFO:root:Epoch: 89, Iteration: 627, Loss: 0.5943629741668701
+INFO:root:Epoch: 89, Iteration: 628, Loss: 0.6113245487213135
+INFO:root:Epoch: 89, Iteration: 629, Loss: 0.6090036034584045
+INFO:root:Epoch: 89, Iteration: 630, Loss: 0.6265923976898193
+INFO:root:Validation set mIOU: 70.09315055786955
+INFO:root:Epoch: 90, Iteration: 631, Loss: 0.5998257398605347
+INFO:root:Epoch: 90, Iteration: 632, Loss: 0.6199302077293396
+INFO:root:Epoch: 90, Iteration: 633, Loss: 0.5828615427017212
+INFO:root:Epoch: 90, Iteration: 634, Loss: 0.6227020621299744
+INFO:root:Epoch: 90, Iteration: 635, Loss: 0.6140573620796204
+INFO:root:Epoch: 90, Iteration: 636, Loss: 0.619182288646698
+INFO:root:Epoch: 90, Iteration: 637, Loss: 0.5813507437705994
+INFO:root:Validation set mIOU: 73.99335435752799
+INFO:root:Epoch: 91, Iteration: 638, Loss: 0.5861169695854187
+INFO:root:Epoch: 91, Iteration: 639, Loss: 0.5883777737617493
+INFO:root:Epoch: 91, Iteration: 640, Loss: 0.6109198927879333
+INFO:root:Epoch: 91, Iteration: 641, Loss: 0.609585165977478
+INFO:root:Epoch: 91, Iteration: 642, Loss: 0.6025573015213013
+INFO:root:Epoch: 91, Iteration: 643, Loss: 0.5965620875358582
+INFO:root:Epoch: 91, Iteration: 644, Loss: 0.6049336791038513
+INFO:root:Validation set mIOU: 75.38031713686641
+INFO:root:Epoch: 92, Iteration: 645, Loss: 0.5945886969566345
+INFO:root:Epoch: 92, Iteration: 646, Loss: 0.6177557110786438
+INFO:root:Epoch: 92, Iteration: 647, Loss: 0.591090738773346
+INFO:root:Epoch: 92, Iteration: 648, Loss: 0.6103395819664001
+INFO:root:Epoch: 92, Iteration: 649, Loss: 0.5816516876220703
+INFO:root:Epoch: 92, Iteration: 650, Loss: 0.5981149673461914
+INFO:root:Epoch: 92, Iteration: 651, Loss: 0.6031286120414734
+INFO:root:Validation set mIOU: 75.2374026965654
+INFO:root:Epoch: 93, Iteration: 652, Loss: 0.6400302648544312
+INFO:root:Epoch: 93, Iteration: 653, Loss: 0.5961293578147888
+INFO:root:Epoch: 93, Iteration: 654, Loss: 0.6025241613388062
+INFO:root:Epoch: 93, Iteration: 655, Loss: 0.591622531414032
+INFO:root:Epoch: 93, Iteration: 656, Loss: 0.5951288342475891
+INFO:root:Epoch: 93, Iteration: 657, Loss: 0.6299886107444763
+INFO:root:Epoch: 93, Iteration: 658, Loss: 0.6093233227729797
+INFO:root:Validation set mIOU: 75.5014721656592
+INFO:root:Epoch: 94, Iteration: 659, Loss: 0.596233606338501
+INFO:root:Epoch: 94, Iteration: 660, Loss: 0.6023043990135193
+INFO:root:Epoch: 94, Iteration: 661, Loss: 0.5949084758758545
+INFO:root:Epoch: 94, Iteration: 662, Loss: 0.6372077465057373
+INFO:root:Epoch: 94, Iteration: 663, Loss: 0.6053026914596558
+INFO:root:Epoch: 94, Iteration: 664, Loss: 0.6156919002532959
+INFO:root:Epoch: 94, Iteration: 665, Loss: 0.610917866230011
+INFO:root:Validation set mIOU: 72.74717940146246
+INFO:root:Epoch: 95, Iteration: 666, Loss: 0.597050666809082
+INFO:root:Epoch: 95, Iteration: 667, Loss: 0.6000517010688782
+INFO:root:Epoch: 95, Iteration: 668, Loss: 0.5837619304656982
+INFO:root:Epoch: 95, Iteration: 669, Loss: 0.6207169890403748
+INFO:root:Epoch: 95, Iteration: 670, Loss: 0.609376072883606
+INFO:root:Epoch: 95, Iteration: 671, Loss: 0.6290425062179565
+INFO:root:Epoch: 95, Iteration: 672, Loss: 0.6170010566711426
+INFO:root:Validation set mIOU: 71.39260805233384
+INFO:root:Epoch: 96, Iteration: 673, Loss: 0.6077180504798889
+INFO:root:Epoch: 96, Iteration: 674, Loss: 0.6102867722511292
+INFO:root:Epoch: 96, Iteration: 675, Loss: 0.5877556204795837
+INFO:root:Epoch: 96, Iteration: 676, Loss: 0.5950165390968323
+INFO:root:Epoch: 96, Iteration: 677, Loss: 0.6135897636413574
+INFO:root:Epoch: 96, Iteration: 678, Loss: 0.5992867946624756
+INFO:root:Epoch: 96, Iteration: 679, Loss: 0.6002330780029297
+INFO:root:Validation set mIOU: 72.5855948407429
+INFO:root:Epoch: 97, Iteration: 680, Loss: 0.6068376302719116
+INFO:root:Epoch: 97, Iteration: 681, Loss: 0.5910876989364624
+INFO:root:Epoch: 97, Iteration: 682, Loss: 0.6129986643791199
+INFO:root:Epoch: 97, Iteration: 683, Loss: 0.6099671721458435
+INFO:root:Epoch: 97, Iteration: 684, Loss: 0.5890327095985413
+INFO:root:Epoch: 97, Iteration: 685, Loss: 0.6074585318565369
+INFO:root:Epoch: 97, Iteration: 686, Loss: 0.590921938419342
+INFO:root:Validation set mIOU: 72.55730749217962
+INFO:root:Epoch: 98, Iteration: 687, Loss: 0.5947195291519165
+INFO:root:Epoch: 98, Iteration: 688, Loss: 0.6109702587127686
+INFO:root:Epoch: 98, Iteration: 689, Loss: 0.5986578464508057
+INFO:root:Epoch: 98, Iteration: 690, Loss: 0.6363396644592285
+INFO:root:Epoch: 98, Iteration: 691, Loss: 0.5911636352539062
+INFO:root:Epoch: 98, Iteration: 692, Loss: 0.6037918329238892
+INFO:root:Epoch: 98, Iteration: 693, Loss: 0.6011497378349304
+INFO:root:Validation set mIOU: 73.22520297026513
+INFO:root:Epoch: 99, Iteration: 694, Loss: 0.6100716590881348
+INFO:root:Epoch: 99, Iteration: 695, Loss: 0.5956960916519165
+INFO:root:Epoch: 99, Iteration: 696, Loss: 0.6196923851966858
+INFO:root:Epoch: 99, Iteration: 697, Loss: 0.5944205522537231
+INFO:root:Epoch: 99, Iteration: 698, Loss: 0.5962404012680054
+INFO:root:Epoch: 99, Iteration: 699, Loss: 0.5832487940788269
+INFO:root:Epoch: 99, Iteration: 700, Loss: 0.6000862121582031
+INFO:root:Validation set mIOU: 73.56786570095282
