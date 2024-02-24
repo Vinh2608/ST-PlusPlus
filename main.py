@@ -27,6 +27,8 @@ import math
 import yaml
 import logging
 import pprint
+import segmentation_models_pytorch as smp
+from torch.utils.data import ConcatDataset
 
 
 MODE = None
@@ -50,7 +52,7 @@ def parse_args():
     parser.add_argument('--crop-size', type=int, default=None)
     parser.add_argument('--backbone', type=str,
                         choices=['resnet50', 'resnet101'], default='resnet50')
-    parser.add_argument('--model', type=str, choices=['deeplabv3plus', 'pspnet', 'deeplabv2'],
+    parser.add_argument('--model', type=str, choices=['deeplabv3plus', 'pspnet', 'deeplabv2', 'unet'],
                         default='deeplabv3plus')
 
     # semi-supervised settings
@@ -128,7 +130,7 @@ def main(args):
                 filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st++log', level=logging.INFO)
         else:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st_extra_nang.log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st.log', level=logging.INFO)
 
     trainloader_labeled_loader = DataLoader(trainset_labeled, batch_size=args.batch_size, shuffle=True,
                                             pin_memory=True, num_workers=16, drop_last=True)
@@ -317,23 +319,39 @@ def init_basic_elems(args):
     # This is old code
     # model = model_zoo[args.model](args.backbone, 21 if args.dataset == 'pascal' else 19)
 
-    # This is for dataset1 and dataset2, lisc, raabin
-    model = model_zoo[args.model](args.backbone, 3)
+    # This is for dataset1 and dataset2
+    if args.model != 'unet':
+        model = model_zoo[args.model](args.backbone, 3)
 
-    head_lr_multiple = 10.0
-    if args.model == 'deeplabv2':
-        assert args.backbone == 'resnet101'
-        # model.load_state_dict(torch.load('pretrained/deeplabv2_resnet101_coco_pretrained.pth'))
-        head_lr_multiple = 1.0
+        head_lr_multiple = 10.0
+        if args.model == 'deeplabv2':
+            assert args.backbone == 'resnet101'
+            # model.load_state_dict(torch.load('pretrained/deeplabv2_resnet101_coco_pretrained.pth'))
+            head_lr_multiple = 1.0
 
-    optimizer = SGD([{'params': model.backbone.parameters(), 'lr': args.lr},
-                     {'params': [param for name, param in model.named_parameters()
-                                 if 'backbone' not in name],
-                      'lr': args.lr * head_lr_multiple}],
-                    lr=args.lr, momentum=0.9, weight_decay=1e-4)
+        optimizer = SGD([{'params': model.backbone.parameters(), 'lr': args.lr},
+                        {'params': [param for name, param in model.named_parameters()
+                                    if 'backbone' not in name],
+                        'lr': args.lr * head_lr_multiple}],
+                        lr=args.lr, momentum=0.9, weight_decay=1e-4)
+    else:
+        ENCODER = args.backbone
+        ENCODER_WEIGHTS = 'imagenet'
+        ACTIVATION = 'softmax2d'
+        
+        model = smp.Unet(
+            encoder_name=ENCODER,
+            encoder_weights=ENCODER_WEIGHTS,
+            in_channels = 3,
+            classes=3,
+            activation=ACTIVATION,
+        )
+
+        optimizer = torch.optim.Adam([
+            dict(params=model.parameters(), lr=0.0001, weight_decay=0.01),
+        ])
 
     model = DataParallel(model).cuda()
-
     return model, optimizer
 
 
@@ -403,9 +421,12 @@ def train(model, trainloader, valloader, criterion, criterion2, optimizer, args,
                     f"Epoch: {epoch}, Iteration: {iters}, Loss: {loss.item()}, Loss_s: {loss_s.item()}, Loss_u: {loss_u.item()}")
 
                 lr = args.lr * (1 - iters / total_iters) ** 0.9
-                optimizer.param_groups[0]["lr"] = lr
-                optimizer.param_groups[1]["lr"] = lr * \
-                    1.0 if args.model == 'deeplabv2' else lr * 10.0
+                if args.model == 'unet':
+                    optimizer.param_groups[0]['lr'] = lr
+                else:
+                    optimizer.param_groups[0]["lr"] = lr
+                    optimizer.param_groups[1]["lr"] = lr * \
+                        1.0 if args.model == 'deeplabv2' else lr * 10.0
 
                 tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         else:
@@ -427,8 +448,11 @@ def train(model, trainloader, valloader, criterion, criterion2, optimizer, args,
                 logging.info(
                     f"Epoch: {epoch}, Iteration: {iters}, Loss: {loss.item()}")
                 lr = args.lr * (1 - iters / total_iters) ** 0.9
-                optimizer.param_groups[0]["lr"] = lr
-                optimizer.param_groups[1]["lr"] = lr * \
+                if args.model == 'unet':
+                    optimizer.param_groups[0]['lr'] = lr
+                else:
+                    optimizer.param_groups[0]["lr"] = lr
+                    optimizer.param_groups[1]["lr"] = lr * \
                     1.0 if args.model == 'deeplabv2' else lr * 10.0
 
                 tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
@@ -524,9 +548,12 @@ def label(model, dataloader, args):
     with torch.no_grad():
         for img, mask, id in tbar:
             img = img.cuda()
-            pred = model(img, True)
+            if args.model != 'unet':
+                pred = model(img, True)
+            else:
+                pred = model(img)
+            
             pred = torch.argmax(pred, dim=1).cpu()
-
             # # Create a new figure
             # plt.figure(figsize=(10,10))
 
@@ -568,13 +595,13 @@ if __name__ == '__main__':
 
     if args.epochs is None:
         args.epochs = {'pascal': 80, 'cityscapes': 240,
-                       'dataset1': 100, 'dataset2': 100, 'lisc': 100, 'raabin': 100}[args.dataset]
+                       'dataset1': 100, 'dataset2': 100, 'lisc': 100}[args.dataset]
     if args.lr is None:
         args.lr = {'pascal': 0.001, 'cityscapes': 0.004, 'dataset1': 0.0009,
-                   'dataset2': 0.0009, 'lisc': 0.0009, 'raabin': 0.0009}[args.dataset] / 16 * args.batch_size
+                   'dataset2': 0.0009, 'lisc': 0.0009}[args.dataset] / 16 * args.batch_size
     if args.warm_up is None:
         args.warm_up = {'pascal': 20, 'cityscapes': 20,
-                        'dataset1': 20, 'dataset2': 30, 'lisc': 30, 'raabin': 30}[args.dataset]
+                        'dataset1': 20, 'dataset2': 30, 'lisc': 30}[args.dataset]
 
     if args.crop_size is None:
         if args.dataset == 'dataset1':
@@ -586,10 +613,6 @@ if __name__ == '__main__':
         elif args.dataset == 'lisc':
             args.crop_size = {'pascal': 321, 'cityscapes': 721,
                               'dataset2': 320, 'lisc': 128}[args.dataset]
-        elif args.dataset == 'raabin':
-            args.crop_size = {'pascal': 321, 'cityscapes': 721,
-                              'dataset2': 320, 'lisc': 128, 'raabin': 480}[args.dataset]
-
 
     print()
     print(args)

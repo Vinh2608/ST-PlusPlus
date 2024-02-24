@@ -74,9 +74,10 @@ class SemiDataset(Dataset):
             mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
             #mask_old = Image.open(os.path.join(self.root, id.split(' ')[1]))
             #This is for LISC only
-            if self.name == 'lisc':
-                mask = mask.resize((base_size, base_size), Image.NEAREST)
-
+            #if self.name == 'lisc':
+            mask = mask.resize((base_size, base_size), Image.NEAREST)
+            img = img.resize((base_size, base_size), Image.NEAREST)
+            
             mask = np.array(mask)
             mask[mask == 0] = 0
             mask[mask == 255] = 1
