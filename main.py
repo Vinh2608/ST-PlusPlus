@@ -232,8 +232,6 @@ def main(args):
 
     id_to_reliability = select_reliable(checkpoints, dataloader, args)
 
-    print('\n\n\n================> Total stage 2.5/6: Select reliable images for the 1st stage re-training')
-
     reliable_image_path = []
     unreliable_image_path = []
 
@@ -247,8 +245,6 @@ def main(args):
     for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
         unreliable_image_path.append(elem[0].split()[0])
 
-    fda_transfer(reliable_image_path, unreliable_image_path)
-
     # <================================ Pseudo label reliable images =================================>
     print('\n\n\n================> Total stage 3/6: Pseudo labeling reliable images')
 
@@ -260,6 +256,9 @@ def main(args):
                             pin_memory=True, num_workers=4, drop_last=False)
 
     label(best_model, dataloader, args)
+
+    print('\n\n\n================> Total stage 3.5/6: FDA transfer unreliable into reliable')
+    fda_transfer(reliable_image_path, unreliable_image_path)
 
     # <================================== The 1st stage re-training ==================================>
     print('\n\n\n================> Total stage 4/6: The 1st stage re-training on labeled and reliable unlabeled images')
@@ -557,7 +556,7 @@ def select_reliable(models, dataloader, args):
     return id_to_reliability
 
 
-def fda_transfer(reliable_image_paths, unreliable_image_paths, beta_limit=0.1):
+def fda_transfer(reliable_image_paths, unreliable_image_paths, beta_limit=0.01):
     def read_img_pil(file_path):
         with Image.open(file_path) as img:
             return np.array(img.convert('RGB'))
@@ -567,7 +566,7 @@ def fda_transfer(reliable_image_paths, unreliable_image_paths, beta_limit=0.1):
         reference_images=unreliable_image_paths,  # Paths to unreliable images
         beta_limit=beta_limit,
         read_fn=read_img_pil,  # Use the Pillow-based function for reading images
-        p=1.0  # Apply the transformation to all images
+        p=0.5  # Apply the transformation to all images
     )
     
     # Loop over the reliable images and apply the FDA transformation
