@@ -3,8 +3,9 @@ split="1_4"
 split_method="split_random"
 model="deeplabv3plus"
 backbone="resnet50"
-mode="self_training" # Change to "self_training++" for the other mode
+mode="self_training++" # Change to "self_training++" for the other mode
 consistency="False" # Directly use this in the consistency_training argument
+addition="fda"
 
 # Determine consistency training mode based on the consistency variable
 if [ "$consistency" = "True" ]; then
@@ -26,15 +27,28 @@ else
 fi
 
 # Construct the semi_setting path including the time path
-semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
+if [ "$addition" = "" ]; then
+    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
+else
+    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${addition}/${mode}/${consistency_training}/${time_path}"
+fi
+
+if [ "$mode" = "self_training++" ]; then
+    plus_flag="--plus"
+    reliable_id_path="--reliable-id-path outdir/reliable_ids/${semi_setting}"
+else
+    plus_flag=""
+    reliable_id_path=""
+fi
 
 # Command to run the Python script with dynamic paths and arguments
 python3 -W ignore main.py \
---dataset ${dataset} --config configs/${dataset}.yaml --data-root ./ \
+--dataset ${dataset} \
+--addition ${addition} --config configs/${dataset}.yaml --data-root ./ \
 --batch-size 16 --backbone ${backbone} --model ${model} \
 --labeled-id-path dataset/splits/${dataset}/${split}/${split_method}/labeled.txt \
 --unlabeled-id-path dataset/splits/${dataset}/${split}/${split_method}/unlabeled.txt \
 --pseudo-mask-path outdir/pseudo_masks/${semi_setting} \
 --save-path outdir/models/${semi_setting} \
---time ${time_phase} --consistency_training ${consistency}
-# Add additional flags as necessary
+--time ${time_phase} --consistency_training ${consistency} \
+${plus_flag} ${reliable_id_path}
