@@ -2,6 +2,7 @@ from dataset.semi import SemiDataset
 from model.semseg.deeplabv2 import DeepLabV2
 from model.semseg.deeplabv3plus import DeepLabV3Plus
 from model.semseg.pspnet import PSPNet
+from model.semseg.unet import UNet
 from utils import count_params, meanIOU, color_map
 import random
 import argparse
@@ -29,6 +30,9 @@ import logging
 import pprint
 import segmentation_models_pytorch as smp
 from torch.utils.data import ConcatDataset
+import albumentations as A
+from albumentations.augmentations.domain_adaptation import FDA
+import cv2
 
 
 MODE = None
@@ -57,6 +61,8 @@ def parse_args():
 
     # semi-supervised settings
     parser.add_argument('--labeled-id-path', type=str, required=True)
+    parser.add_argument('--addition', type=str, required=True)
+
     parser.add_argument('--unlabeled-id-path', type=str, required=True)
     parser.add_argument('--pseudo-mask-path', type=str, required=True)
     parser.add_argument('--pseudo-consistency-mask-path',
@@ -117,20 +123,20 @@ def main(args):
             trainset_unlabeled, batch_size=args.batch_size_consistency, shuffle=False, pin_memory=True, num_workers=4, drop_last=False)
         if args.plus:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_consistency_st++.log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_{args.addition}_consistency_st++.log', level=logging.INFO)
         else:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_consistency_st.log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_{args.addition}_consistency_st.log', level=logging.INFO)
     else:
         trainset_labeled.ids = 2 * \
             trainset_labeled.ids if len(
                 trainset_labeled.ids) < 200 else trainset_labeled.ids
         if args.plus:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st++log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_{args.addition}_non_consistency_st++log', level=logging.INFO)
         else:
             logging.basicConfig(
-                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_non_consistency_st.log', level=logging.INFO)
+                filename=f'log/{args.dataset}/{str(args.time)}/{args.model}/{args.backbone}/training_{args.addition}_non_consistency_st.log', level=logging.INFO)
 
     trainloader_labeled_loader = DataLoader(trainset_labeled, batch_size=args.batch_size, shuffle=True,
                                             pin_memory=True, num_workers=16, drop_last=True)
@@ -225,7 +231,20 @@ def main(args):
     dataloader = DataLoader(dataset, batch_size=1, shuffle=False,
                             pin_memory=True, num_workers=4, drop_last=False)
 
-    select_reliable(checkpoints, dataloader, args)
+    id_to_reliability = select_reliable(checkpoints, dataloader, args)
+
+    reliable_image_path = []
+    unreliable_image_path = []
+
+    dataset = SemiDataset(args.dataset, args.data_root,
+                          'label', None, None, args.unlabeled_id_path)
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False,
+                            pin_memory=True, num_workers=4, drop_last=False)
+    
+    for elem in id_to_reliability[:int(3/4 * len(id_to_reliability))]:
+        reliable_image_path.append(elem[0].split()[0])
+    for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
+        unreliable_image_path.append(elem[0].split()[0])
 
     # <================================ Pseudo label reliable images =================================>
     print('\n\n\n================> Total stage 3/6: Pseudo labeling reliable images')
@@ -238,10 +257,16 @@ def main(args):
                             pin_memory=True, num_workers=4, drop_last=False)
 
     label(best_model, dataloader, args)
+    
+    if args.addition == 'fda':
+
+        print('\n\n\n================> Total stage 3.5/6: FDA transfer unreliable into reliable')
+    
+        fda_transfer(reliable_image_path, unreliable_image_path)
 
     # <================================== The 1st stage re-training ==================================>
     print('\n\n\n================> Total stage 4/6: The 1st stage re-training on labeled and reliable unlabeled images')
-
+    
     MODE = 'semi_train'
 
     trainset = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size,
@@ -335,17 +360,8 @@ def init_basic_elems(args):
                         'lr': args.lr * head_lr_multiple}],
                         lr=args.lr, momentum=0.9, weight_decay=1e-4)
     else:
-        ENCODER = args.backbone
-        ENCODER_WEIGHTS = 'imagenet'
-        ACTIVATION = 'softmax2d'
-        
-        model = smp.Unet(
-            encoder_name=ENCODER,
-            encoder_weights=ENCODER_WEIGHTS,
-            in_channels = 3,
-            classes=3,
-            activation=ACTIVATION,
-        )
+
+        model = UNet(args.backbone, 3, args)
 
         optimizer = torch.optim.Adam([
             dict(params=model.parameters(), lr=0.0001, weight_decay=0.01),
@@ -453,7 +469,7 @@ def train(model, trainloader, valloader, criterion, criterion2, optimizer, args,
                 else:
                     optimizer.param_groups[0]["lr"] = lr
                     optimizer.param_groups[1]["lr"] = lr * \
-                    1.0 if args.model == 'deeplabv2' else lr * 10.0
+                        1.0 if args.model == 'deeplabv2' else lr * 10.0
 
                 tbar1.set_description('Loss: %.3f' % (total_loss / (i + 1)))
         # This is old code
@@ -528,11 +544,45 @@ def select_reliable(models, dataloader, args):
     id_to_reliability.sort(key=lambda elem: elem[1], reverse=True)
     with open(os.path.join(args.reliable_id_path, 'reliable_ids.txt'), 'w') as f:
         for elem in id_to_reliability[:int(3/4 * len(id_to_reliability))]:
-            f.write(elem[0] + '\n')
+            if args.addition == 'fda':
+                path = elem[0].replace(elem[0].split()[0].split('/')[0], elem[0].split()[0].split('/')[0] + '_fda')
+                f.write(path + '\n')
+            else:
+                f.write(elem[0] + '\n')
+
     with open(os.path.join(args.reliable_id_path, 'unreliable_ids.txt'), 'w') as f:
         for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
-            f.write(elem[0] + '\n')
+            if args.addition == 'fda':
+                path = elem[0].replace(elem[0].split()[0].split('/')[0], elem[0].split()[0].split('/')[0] + '_fda')
+                f.write(path + '\n')
+            else:
+                f.write(elem[0] + '\n')
 
+    return id_to_reliability
+
+
+def fda_transfer(reliable_image_paths, unreliable_image_paths, beta_limit=0.01):
+    def read_img_pil(file_path):
+        with Image.open(file_path) as img:
+            return np.array(img.convert('RGB'))
+
+    # Initialize the FDA transformation with the Pillow-based read function
+    fda_transform = FDA(
+        reference_images=unreliable_image_paths,  # Paths to unreliable images
+        beta_limit=beta_limit,
+        read_fn=read_img_pil,  # Use the Pillow-based function for reading images
+        p=0.5  # Apply the transformation to all images
+    )
+    
+    # Loop over the reliable images and apply the FDA transformation
+    for image_path in reliable_image_paths:
+        image = read_img_pil(image_path)
+        transformed = fda_transform(image=image)['image']
+        
+        # Save or display the transformed image using PIL
+        transformed_path = 'lisc_fda/Images/' + image_path.split('/')[2]
+        transformed_img = Image.fromarray(transformed)
+        transformed_img.save(transformed_path)
 
 def label(model, dataloader, args):
     model.eval()
@@ -548,11 +598,9 @@ def label(model, dataloader, args):
     with torch.no_grad():
         for img, mask, id in tbar:
             img = img.cuda()
-            if args.model != 'unet':
-                pred = model(img, True)
-            else:
-                pred = model(img)
             
+            pred = model(img, True)
+
             pred = torch.argmax(pred, dim=1).cpu()
             # # Create a new figure
             # plt.figure(figsize=(10,10))

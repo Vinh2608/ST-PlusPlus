@@ -1,13 +1,11 @@
-#!/bin/bash
-
-# Variables to define the configuration
 dataset="dataset2"
 split="1_4"
 split_method="split_random"
 model="unet"
-backbone="resnet50"
+backbone="resnet101"
 mode="self_training" # Change to "self_training++" for the other mode
 consistency="False" # Directly use this in the consistency_training argument
+addition="nothing"
 
 # Determine consistency training mode based on the consistency variable
 if [ "$consistency" = "True" ]; then
@@ -29,9 +27,12 @@ else
 fi
 
 # Construct the semi_setting path including the time path
-semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
+if [ "$addition" = "nothing" ]; then
+    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
+else
+    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${addition}/${mode}/${consistency_training}/${time_path}"
+fi
 
-# Check if mode is self_training++
 if [ "$mode" = "self_training++" ]; then
     plus_flag="--plus"
     reliable_id_path="--reliable-id-path outdir/reliable_ids/${semi_setting}"
@@ -40,9 +41,10 @@ else
     reliable_id_path=""
 fi
 
-# Run the Python script with dynamic paths and arguments
+# Command to run the Python script with dynamic paths and arguments
 python3 -W ignore main.py \
---dataset ${dataset} --config configs/${dataset}.yaml --data-root ./ \
+--dataset ${dataset} \
+--addition ${addition} --config configs/${dataset}.yaml --data-root ./ \
 --batch-size 16 --backbone ${backbone} --model ${model} \
 --labeled-id-path dataset/splits/${dataset}/${split}/${split_method}/labeled.txt \
 --unlabeled-id-path dataset/splits/${dataset}/${split}/${split_method}/unlabeled.txt \

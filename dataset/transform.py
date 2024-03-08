@@ -177,7 +177,7 @@ def cutout_circular_region(image, msk, radius, p, center=None, pixel_level=True,
         msk[mask == 255] = 0
 
         return image, msk
-        
+
     return image, msk
 
 
