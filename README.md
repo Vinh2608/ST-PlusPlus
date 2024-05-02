@@ -20,9 +20,6 @@ We have another simple yet stronger end-to-end framework **UniMatch** accepted b
 
 [ResNet-50](https://download.pytorch.org/models/resnet50-0676ba61.pth) | [ResNet-101](https://download.pytorch.org/models/resnet101-63fe2227.pth) | [DeepLabv2-ResNet-101](https://drive.google.com/file/d/14be0R1544P5hBmpmtr8q5KeRAvGunc6i/view?usp=sharing)
 
-#### Dataset
-
-[Pascal JPEGImages](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar) | [Pascal SegmentationClass](https://drive.google.com/file/d/1ikrDlsai5QSf2GiSUR3f8PZUzyTubcuF/view?usp=sharing) | [Cityscapes leftImg8bit](https://www.cityscapes-dataset.com/file-handling/?packageID=3) | [Cityscapes gtFine](https://drive.google.com/file/d/1E_27g9tuHm6baBqcA7jct_jqcGA89QPm/view?usp=sharing) 
 
 #### File Organization
 
@@ -45,17 +42,7 @@ We have another simple yet stronger end-to-end framework **UniMatch** accepted b
 ### Training and Testing
 
 ```
-export semi_setting='pascal/1_8/split_0'
-
-CUDA_VISIBLE_DEVICES=0,1 python -W ignore main.py \
-  --dataset pascal --data-root [Your Pascal Path] \
-  --batch-size 16 --backbone resnet50 --model deeplabv3plus \
-  --labeled-id-path dataset/splits/$semi_setting/labeled.txt \
-  --unlabeled-id-path dataset/splits/$semi_setting/unlabeled.txt \
-  --pseudo-mask-path outdir/pseudo_masks/$semi_setting \
-  --save-path outdir/models/$semi_setting
-```
-This script is for our ST framework. To run ST++, add ```--plus --reliable-id-path outdir/reliable_ids/$semi_setting```.
+To run, type in the command line ./dataset1.sh, ./dataset2.sh and ./lisc.sh```.
 
 
 ## Acknowledgement
