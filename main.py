@@ -94,6 +94,7 @@ def main(args):
             args.time), args.model, args.backbone))
 
     criterion = CrossEntropyLoss(ignore_index=255)
+
     criterion2 = CrossEntropyLoss(ignore_index=255, reduction='none')
 
     valset = SemiDataset(args.dataset, args.data_root, 'val', None)
@@ -187,7 +188,7 @@ def main(args):
 
        # Try to load the existing workbook or create a new one if it doesn't exist
         try:
-            workbook = openpyxl.load_workbook(f'{args.dataset}.xlsx')
+            workbook = openpyxl.load_workbook(f'{args.dataset}_{args.addition}.xlsx')
         except FileNotFoundError:
             workbook = openpyxl.Workbook()
 
@@ -217,7 +218,7 @@ def main(args):
             worksheet.cell(row=row_index, column=6, value=dataset_name)
             worksheet.cell(row=row_index, column=7, value=performance)
 
-        workbook.save(f'{args.dataset}.xlsx')
+        workbook.save(f'{args.dataset}_{args.addition}.xlsx')
         return
 
     """
@@ -257,22 +258,25 @@ def main(args):
                             pin_memory=True, num_workers=4, drop_last=False)
 
     label(best_model, dataloader, args)
-    
-    if args.addition == 'fda':
-
-        print('\n\n\n================> Total stage 3.5/6: FDA transfer unreliable into reliable')
-    
-        fda_transfer(reliable_image_path, unreliable_image_path)
 
     # <================================== The 1st stage re-training ==================================>
     print('\n\n\n================> Total stage 4/6: The 1st stage re-training on labeled and reliable unlabeled images')
-    
     MODE = 'semi_train'
 
-    trainset = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size,
-                           args.labeled_id_path, cur_unlabeled_id_path, args.pseudo_mask_path)
-    trainloader = DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
+    if args.addition == 'fda' or args.addition == 'all':
+        
+        trainset = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size,
+                           args.labeled_id_path, cur_unlabeled_id_path, args.pseudo_mask_path, unreliable_image_path)
+        
+        trainloader = DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
                              pin_memory=True, num_workers=16, drop_last=True)
+    else:
+        trainset = SemiDataset(args.dataset, args.data_root, MODE, args.crop_size,
+                           args.labeled_id_path, cur_unlabeled_id_path, args.pseudo_mask_path)
+        
+        trainloader = DataLoader(trainset, batch_size=args.batch_size, shuffle=True,
+                             pin_memory=True, num_workers=16, drop_last=True)
+
 
     model, optimizer = init_basic_elems(args)
 
@@ -305,7 +309,7 @@ def main(args):
         model, trainloader, valloader, criterion, None, optimizer, args, None, None, True)
 
     try:
-        workbook = openpyxl.load_workbook(f'{args.dataset}.xlsx')
+        workbook = openpyxl.load_workbook(f'{args.dataset}_{args.addition}.xlsx')
     except FileNotFoundError:
         workbook = openpyxl.Workbook()
 
@@ -335,7 +339,7 @@ def main(args):
         worksheet.cell(row=row_index, column=6, value=dataset_name)
         worksheet.cell(row=row_index, column=7, value=performance)
 
-    workbook.save(f'{args.dataset}.xlsx')
+    workbook.save(f'{args.dataset}_{args.addition}.xlsx')
 
 
 def init_basic_elems(args):
@@ -544,19 +548,11 @@ def select_reliable(models, dataloader, args):
     id_to_reliability.sort(key=lambda elem: elem[1], reverse=True)
     with open(os.path.join(args.reliable_id_path, 'reliable_ids.txt'), 'w') as f:
         for elem in id_to_reliability[:int(3/4 * len(id_to_reliability))]:
-            if args.addition == 'fda':
-                path = elem[0].replace(elem[0].split()[0].split('/')[0], elem[0].split()[0].split('/')[0] + '_fda')
-                f.write(path + '\n')
-            else:
-                f.write(elem[0] + '\n')
+            f.write(elem[0] + '\n')
 
     with open(os.path.join(args.reliable_id_path, 'unreliable_ids.txt'), 'w') as f:
         for elem in id_to_reliability[int(3/4 * len(id_to_reliability)):]:
-            if args.addition == 'fda':
-                path = elem[0].replace(elem[0].split()[0].split('/')[0], elem[0].split()[0].split('/')[0] + '_fda')
-                f.write(path + '\n')
-            else:
-                f.write(elem[0] + '\n')
+            f.write(elem[0] + '\n')
 
     return id_to_reliability
 

@@ -901,3 +901,10 @@ outdir/reliable_ids/dataset2/1_4/split_0/reliable_ids.txt
 outdir/reliable_ids/dataset2/1_4/split_0/unreliable_ids.txt
 Dataset1Full/*
 Dataset2Full/*
+dataset2MaskCircular/
+dataset2MaskNormal/
+liscMask/
+207_expert_cell1_(1).bmp
+207_expert_cell11.bmp
+outdir/
+pretrained/

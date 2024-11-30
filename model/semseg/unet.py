@@ -9,7 +9,6 @@ import torch.nn.functional as F
 import segmentation_models_pytorch as smp
 
 
-
 class UNet(BaseNet):
     def __init__(self, backbone, class_num, args):
         super(UNet, self).__init__(backbone)

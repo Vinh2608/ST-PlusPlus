@@ -1,5 +1,6 @@
 from dataset.transform import crop, hflip, normalize, resize, blur, cutout, obtain_cutmix_box, cutout_circular_region
 from dataset.transform import crop_img, hflip_img, resize_img, cutout_img
+from albumentations.augmentations.domain_adaptation import FDA
 import math
 import os
 from PIL import Image
@@ -15,7 +16,11 @@ import yaml
 
 
 class SemiDataset(Dataset):
-    def __init__(self, name, root, mode, size, labeled_id_path=None, unlabeled_id_path=None, pseudo_mask_path=None):
+    def read_img_pil(self, file_path):
+        with Image.open(file_path) as img:
+            return np.array(img)
+        
+    def __init__(self, name, root, mode, size, labeled_id_path=None, unlabeled_id_path=None, pseudo_mask_path=None, unreliable_image_paths=None):
         """
         :param name: dataset name, pascal or cityscapes
         :param root: root path of the dataset.
@@ -37,7 +42,22 @@ class SemiDataset(Dataset):
             open('configs/' + self.name + '.yaml', "r"), Loader=yaml.Loader)
 
         self.pseudo_mask_path = pseudo_mask_path
+        
+        if unreliable_image_paths != None:
+            self.unreliable_image_paths = unreliable_image_paths
+            self.beta_limit = 0.01
+            
+            self.fda_transform = FDA(
+                reference_images=unreliable_image_paths,
+                beta_limit=self.beta_limit,
+                read_fn=self.read_img_pil,
+                p=0.5
+            )
 
+        else:
+            self.unreliable_image_paths = None
+        
+        
         if mode == 'semi_train':
             with open(labeled_id_path, 'r') as f:
                 self.labeled_ids = f.read().splitlines()
@@ -51,6 +71,8 @@ class SemiDataset(Dataset):
         else:
             if mode == 'val':
                 id_path = 'dataset/splits/%s/val.txt' % name
+            elif mode == 'val2':
+                id_path = 'dataset/splits/%s/val2.txt' % name
             elif mode == 'label' or mode == 'consistency_training':
                 id_path = unlabeled_id_path
             elif mode == 'train':
@@ -63,17 +85,29 @@ class SemiDataset(Dataset):
 
             self.class_values = [255, 128]
 
+    
+        
     def __getitem__(self, item):
         id = self.ids[item]
         img = Image.open(os.path.join(self.root, id.split(' ')[0]))
         # img_old = Image.open(os.path.join(self.root, id.split(' ')[0]))
-
+        mean = [0.485, 0.456, 0.406]
+        std = [0.229, 0.224, 0.225]
+        # if self.name == 'dataset1':
+        #     mean = [0.8775001,  0.77965562, 0.64973898]
+        #     std = [0.20316671, 0.30358231, 0.21943319]
+        # elif self.name == 'dataset2':
+        #     mean = [0.82557683, 0.67072675, 0.68503826]
+        #     std = [0.18739882, 0.2288236,  0.09994926]
+        # elif self.name == 'lisc':
+        #     mean = [0.84130926, 0.76650068,0.89864814]
+        #     std = [0.15318868, 0.2175517, 0.11220778]
         # This is for dataset lisc only
         base_size = 128
         if self.name == 'lisc':
-            img = img.ss((base_size, base_size), Image.BILINEAR)
+            img = img.resize((base_size, base_size), Image.BILINEAR)
 
-        if self.mode == 'val' or self.mode == 'label':
+        if self.mode == 'val' or self.mode == 'label' or self.mode == 'val2':
             mask = Image.open(os.path.join(self.root, id.split(' ')[1]))
             # mask_old = Image.open(os.path.join(self.root, id.split(' ')[1]))
             # This is for LISC only
@@ -92,7 +126,7 @@ class SemiDataset(Dataset):
             mask[mask == 128] = 2
             mask = Image.fromarray(mask)
 
-            img, mask = normalize(img, mask)
+            img, mask = normalize(img, mean, std, mask)
             return img, mask, id
 
         if self.mode == 'train' or self.mode == 'warm_up' or self.mode == 'consistency_training' or (self.mode == 'semi_train' and id in self.labeled_ids):
@@ -145,7 +179,7 @@ class SemiDataset(Dataset):
         img, mask = hflip(img, mask, p=0.5)
 
         if self.mode == 'train' or self.mode == 'warm_up':
-            return normalize(img, mask)
+            return normalize(img, mean, std, mask)
 
         img_weak, img_strong = deepcopy(img), deepcopy(img)
 
@@ -164,15 +198,21 @@ class SemiDataset(Dataset):
             img_strong = transforms.RandomGrayscale(p=0.2)(img_strong)
             img_strong = blur(img_strong, p=0.5)
             # cutmix_box = obtain_cutmix_box(img_strong.size[0], p=0.5)
-            # img_strong, mask = cutout_circular_region(img_strong, mask, p=0.5)
-            img_strong, mask = cutout(img_strong, mask, p=0.5)
+            
+            if self.unreliable_image_paths != None:
+                transformed_data = self.fda_transform(image=np.array(img_strong))
+                img_strong = Image.fromarray(transformed_data['image'])
 
-        img_strong, mask = normalize(img_strong, mask)
+            #img_strong, mask = cutout(img_strong, mask, p=0.5)
+            img_strong, mask = cutout_circular_region(img_strong, mask, 15, 0.5)
+            
+
+        img_strong, mask = normalize(img_strong, mean, std, mask)
 
         if self.mode == 'semi_train':
             return img_strong, mask
         else:
-            return normalize(img_weak), img_strong  # , cutmix_box
+            return normalize(img_weak, mean, std), img_strong  # , cutmix_box
 
     def __len__(self):
         return len(self.ids)

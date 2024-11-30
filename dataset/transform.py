@@ -53,7 +53,7 @@ def hflip_img(img, p=0.5):
     return img
 
 
-def normalize(img, mask=None):
+def normalize(img, mean, std, mask=None):
     """
     :param img: PIL image
     :param mask: PIL image, corresponding mask
@@ -61,8 +61,8 @@ def normalize(img, mask=None):
     """
     img = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    ])(img)
+        transforms.Normalize(mean, std),
+        ])(img)
     if mask is not None:
         mask = torch.from_numpy(np.array(mask)).long()
         return img, mask
@@ -173,7 +173,7 @@ def cutout_circular_region(image, msk, radius, p, center=None, pixel_level=True,
         cv2.circle(mask, (x, y), radius, (255), thickness=-1)
 
         # Assuming you want to cut out to black; change as needed
-        image[mask == 255] = np.random.uniform(0, 255)
+        image[mask == 255] = 0
         msk[mask == 255] = 0
 
         return image, msk

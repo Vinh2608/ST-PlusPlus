@@ -1,54 +1,73 @@
+#!/bin/bash
+
+# Base Configuration settings
 dataset="dataset2"
 split="1_4"
 split_method="split_random"
-model="unet"
-backbone="resnet101"
-mode="self_training" # Change to "self_training++" for the other mode
-consistency="False" # Directly use this in the consistency_training argument
-addition="nothing"
+models=('deeplabv3plus' 'deeplabv2' 'pspnet')  # Allowed models
+backbones=('resnet101')  # Allowed backbones
+modes=('self_training++')  # Training modes
+consistencies=('False')  # Consistency training settings
+addition="all"
+time_phases=('1')  # Time phases
 
-# Determine consistency training mode based on the consistency variable
-if [ "$consistency" = "True" ]; then
-    consistency_training="consistency_training"
-else
-    consistency_training="non_consistency_training"
-fi
+# Iterate over all configurations
+for model in "${models[@]}"; do
+    for backbone in "${backbones[@]}"; do
+        # Check if model and backbone are compatible
+        if [[ "$model" == "deeplabv2" && "$backbone" != "resnet101" ]]; then
+            continue  # Skip incompatible backbone for deeplabv2
+        fi
+        for mode in "${modes[@]}"; do
+            for consistency in "${consistencies[@]}"; do
+                for time_phase in "${time_phases[@]}"; do
+                    # Determine consistency training mode
+                    consistency_training="non_consistency_training"
+                    if [ "$consistency" = "True" ]; then
+                        consistency_training="consistency_training"
+                    fi
 
-# Set the time phase based on your criteria, assuming it's manually set for now
-time_phase="1" # This could be dynamically determined as needed
+                    # Set the time path
+                    time_path="undefined_time"
+                    if [ "$time_phase" = "1" ]; then
+                        time_path="first_time"
+                    elif [ "$time_phase" = "2" ]; then
+                        time_path="second_time"
+                    fi
 
-# Depending on the time_phase, set the time path
-if [ "$time_phase" = "1" ]; then
-    time_path="first_time"
-elif [ "$time_phase" = "2" ]; then
-    time_path="second_time"
-else
-    time_path="undefined_time" # Fallback case
-fi
+                    # Construct the semi_setting path
+                    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
+                    if [ "$addition" != "nothing" ]; then
+                        semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${addition}/${mode}/${consistency_training}/${time_path}"
+                    fi
 
-# Construct the semi_setting path including the time path
-if [ "$addition" = "nothing" ]; then
-    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${mode}/${consistency_training}/${time_path}"
-else
-    semi_setting="${dataset}/${split}/${split_method}/${model}/${backbone}/${addition}/${mode}/${consistency_training}/${time_path}"
-fi
+                    # Configure additional flags for 'self_training++'
+                    plus_flag=""
+                    reliable_id_path=""
+                    if [ "$mode" = "self_training++" ]; then
+                        plus_flag="--plus"
+                        reliable_id_path="--reliable-id-path outdir/reliable_ids/${semi_setting}"
+                    fi
 
-if [ "$mode" = "self_training++" ]; then
-    plus_flag="--plus"
-    reliable_id_path="--reliable-id-path outdir/reliable_ids/${semi_setting}"
-else
-    plus_flag=""
-    reliable_id_path=""
-fi
-
-# Command to run the Python script with dynamic paths and arguments
-python3 -W ignore main.py \
---dataset ${dataset} \
---addition ${addition} --config configs/${dataset}.yaml --data-root ./ \
---batch-size 16 --backbone ${backbone} --model ${model} \
---labeled-id-path dataset/splits/${dataset}/${split}/${split_method}/labeled.txt \
---unlabeled-id-path dataset/splits/${dataset}/${split}/${split_method}/unlabeled.txt \
---pseudo-mask-path outdir/pseudo_masks/${semi_setting} \
---save-path outdir/models/${semi_setting} \
---time ${time_phase} --consistency_training ${consistency} \
-${plus_flag} ${reliable_id_path}
+                    # Execute the Python command
+                    echo "Running configuration: Model=$model, Backbone=$backbone, Mode=$mode, Consistency=$consistency, Time Phase=$time_phase"
+                    python3 -W ignore main.py \
+                    --dataset ${dataset} \
+                    --addition ${addition} \
+                    --config configs/${dataset}.yaml \
+                    --data-root ./ \
+                    --batch-size 16 \
+                    --backbone ${backbone} \
+                    --model ${model} \
+                    --labeled-id-path dataset/splits/${dataset}/${split}/${split_method}/labeled.txt \
+                    --unlabeled-id-path dataset/splits/${dataset}/${split}/${split_method}/unlabeled.txt \
+                    --pseudo-mask-path outdir/pseudo_masks/${semi_setting} \
+                    --save-path outdir/models/${semi_setting} \
+                    --time ${time_phase} \
+                    --consistency_training ${consistency} \
+                    ${plus_flag} ${reliable_id_path}
+                done
+            done
+        done
+    done
+done
